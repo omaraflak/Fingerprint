@@ -16,3 +16,5 @@ Short Android library that allows you to create fingerprint dialogs for authenti
           // fingerprint not recognized
         }
     });
+
+![alt text](https://oc.aflak.me/index.php/s/Y1MQO19nLolUNp0/download)
