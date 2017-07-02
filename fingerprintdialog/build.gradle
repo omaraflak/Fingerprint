@@ -1,0 +1,63 @@
+apply plugin: 'com.android.library'
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'fingerprintdialog'
+
+    publishedGroupId = 'me.aflak.libraries'
+    libraryName = 'FingerprintDialog'
+    artifact = 'fingerprintdialog'
+
+    libraryDescription = 'Short library that allows you to create fingerprint dialogs for authentications.'
+
+    siteUrl = 'https://github.com/omaflak/FingerprintDialog'
+    gitUrl = 'https://github.com/omaflak/FingerprintDialog.git'
+
+    libraryVersion = '1.0'
+
+    developerId = 'omaflak'
+    developerName = 'Omar Aflak'
+    developerEmail = 'aflakomar@hotmail.fr'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
+
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    implementation 'com.android.support:appcompat-v7:26.0.0-beta2'
+    testImplementation 'junit:junit:4.12'
+
+    compile 'com.daimajia.easing:library:2.0@aar'
+    compile 'com.daimajia.androidanimations:library:2.2@aar'
+}
+
+apply from: 'https://raw.githubusercontent.com/omaflak/Bintray/master/install.gradle'
+apply from: 'https://raw.githubusercontent.com/omaflak/Bintray/master/bintray.gradle'
