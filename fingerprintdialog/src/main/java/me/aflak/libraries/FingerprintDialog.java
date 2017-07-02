@@ -35,11 +35,17 @@ public class FingerprintDialog {
     private String title, message;
     private DialogInterface.OnClickListener listener;
 
+    private boolean animationEnabled;
+    private int successColor, errorColor;
+
     public FingerprintDialog(Context context){
         this.context = context;
         this.fingerprintManager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
         this.layoutInflater = LayoutInflater.from(context);
         this.builder = new AlertDialog.Builder(context);
+        this.animationEnabled = true;
+        this.successColor = R.color.auth_success;
+        this.errorColor = R.color.auth_failed;
     }
 
     public void setTitle(String title) {
@@ -109,7 +115,7 @@ public class FingerprintDialog {
         });
         builder.setView(view);
         dialog = builder.create();
-        if(dialog.getWindow() != null) {
+        if(dialog.getWindow() != null && animationEnabled) {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         }
         dialog.show();
@@ -117,21 +123,35 @@ public class FingerprintDialog {
         auth();
     }
 
-    public void hide(){
-        if(dialog.isShowing()){
-            dialog.cancel();
-        }
+    public void setExitAnimation(boolean enabled){
+        this.animationEnabled = enabled;
+    }
+
+    /**
+     * Set text and icon color
+     * @param successColor resource color e.g. R.color.white
+     */
+    public void setSuccessColor(int successColor){
+        this.successColor = successColor;
+    }
+
+    /**
+     * Set text and icon color
+     * @param errorColor resource color e.g. R.color.white
+     */
+    public void setErrorColor(int errorColor){
+        this.errorColor = errorColor;
     }
 
     private void auth(){
-        this.cancellationSignal = new CancellationSignal();
+        cancellationSignal = new CancellationSignal();
         if(fingerprintManager.isHardwareDetected()) {
             if (fingerprintManager.hasEnrolledFingerprints()) {
                 fingerprintManager.authenticate(null, cancellationSignal, 0, new FingerprintManager.AuthenticationCallback() {
                     @Override
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
-                        setStatus(R.string.state_failure, R.color.auth_failed, R.drawable.ic_close_white_24dp, null);
+                        setStatus(R.string.state_failure, errorColor, R.drawable.ic_close_white_24dp, null);
                         if (fingerprintCallback != null) {
                             fingerprintCallback.onFingerprintFailure();
                         }
@@ -140,7 +160,7 @@ public class FingerprintDialog {
                     @Override
                     public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
                         super.onAuthenticationHelp(helpCode, helpString);
-                        setStatus(R.string.state_failure, R.color.auth_failed, R.drawable.ic_close_white_24dp, null);
+                        setStatus(R.string.state_failure, errorColor, R.drawable.ic_close_white_24dp, null);
                         if (fingerprintCallback != null) {
                             fingerprintCallback.onFingerprintFailure();
                         }
@@ -149,7 +169,7 @@ public class FingerprintDialog {
                     @Override
                     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
-                        setStatus(R.string.state_success, R.color.auth_success, R.drawable.ic_check_white_24dp, new YoYo.AnimatorCallback() {
+                        setStatus(R.string.state_success, successColor, R.drawable.ic_check_white_24dp, new YoYo.AnimatorCallback() {
                             @Override
                             public void call(Animator animator) {
                                 dialog.cancel();
@@ -163,7 +183,7 @@ public class FingerprintDialog {
                     @Override
                     public void onAuthenticationFailed() {
                         super.onAuthenticationFailed();
-                        setStatus(R.string.state_failure, R.color.auth_failed, R.drawable.ic_close_white_24dp, null);
+                        setStatus(R.string.state_failure, errorColor, R.drawable.ic_close_white_24dp, null);
                         if (fingerprintCallback != null) {
                             fingerprintCallback.onFingerprintFailure();
                         }

@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity implements FingerprintCallba
         setContentView(R.layout.activity_main);
 
         dialog = new FingerprintDialog(this);
+        dialog.setSuccessColor(R.color.colorPrimary);
+        dialog.setErrorColor(R.color.colorAccent);
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
