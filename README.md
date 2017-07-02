@@ -2,6 +2,21 @@
 
 Short Android library that allows you to create fingerprint dialogs for authentications.
 
+# Dependencie
+
+Gradle :
+
+    compile 'me.aflak.libraries:fingerprintdialog:X.X'
+
+Maven :
+
+    <dependency>
+      <groupId>me.aflak.libraries</groupId>
+      <artifactId>fingerprintdialog</artifactId>
+      <version>1.0</version>
+      <type>pom</type>
+    </dependency>
+
 # Use
 
     FingerprintDialog dialog = new FingerprintDialog(this);
