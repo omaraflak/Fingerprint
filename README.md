@@ -1,4 +1,4 @@
-# Fingerprint Dialog
+# Fingerprint Dialog [ ![Download](https://api.bintray.com/packages/omaflak/maven/fingerprintdialog/images/download.svg) ](https://bintray.com/omaflak/maven/fingerprintdialog/_latestVersion)
 
 Short Android library that allows you to create fingerprint dialogs for authentications.
 
