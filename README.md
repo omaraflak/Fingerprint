@@ -31,5 +31,7 @@ Maven :
           // fingerprint not recognized
         }
     });
+    
+See **[MainActivity.java](https://github.com/omaflak/FingerprintDialog/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/MainActivity.java)**
 
 ![alt text](https://oc.aflak.me/index.php/s/Y1MQO19nLolUNp0/download)
