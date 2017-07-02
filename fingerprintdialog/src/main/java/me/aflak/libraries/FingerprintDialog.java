@@ -50,18 +50,38 @@ public class FingerprintDialog {
         this.message = message;
     }
 
+    /**
+     * Callback to know when user hit the Cancel button
+     * @param listener
+     */
     public void setCancelListener(DialogInterface.OnClickListener listener){
         this.listener = listener;
     }
 
+    /**
+     * Callback to know whether the authentication succeeded or not
+     * @param fingerprintCallback
+     */
     public void setFingerprintCallback(FingerprintCallback fingerprintCallback) {
         this.fingerprintCallback = fingerprintCallback;
     }
 
+    /**
+     * Show the dialog setting automatically Cancel listener to null
+     * @param title
+     * @param message
+     * @param callback
+     */
     public void show(String title, String message, FingerprintCallback callback){
         show(title, message, null, callback);
     }
 
+    /**
+     * Show the dialog
+     * @param title
+     * @param message
+     * @param fingerprintCallback
+     */
     public void show(String title, String message, DialogInterface.OnClickListener listener, FingerprintCallback fingerprintCallback){
         this.title = title;
         this.message = message;
@@ -71,6 +91,9 @@ public class FingerprintDialog {
         show();
     }
 
+    /**
+     * Show the dialog
+     */
     public void show(){
         view = layoutInflater.inflate(R.layout.dialog, null);
         ((TextView) view.findViewById(R.id.dialog_title)).setText(title);
@@ -92,6 +115,12 @@ public class FingerprintDialog {
         dialog.show();
 
         auth();
+    }
+
+    public void hide(){
+        if(dialog.isShowing()){
+            dialog.cancel();
+        }
     }
 
     private void auth(){

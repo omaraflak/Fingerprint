@@ -27,9 +27,11 @@ public class MainActivity extends AppCompatActivity implements FingerprintCallba
 
     @Override
     public void onFingerprintSuccess() {
+        // authentication succeeded
     }
 
     @Override
     public void onFingerprintFailure() {
+        // authentication failed
     }
 }
