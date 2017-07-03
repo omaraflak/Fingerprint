@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">FingerprintDialog</string>
-
     <string name="state_scanning">Touch sensor</string>
     <string name="state_success">Fingerprint recognized</string>
     <string name="state_failure">Fingerprint not recognized.\nTry again.</string>
