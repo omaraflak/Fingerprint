@@ -82,49 +82,22 @@ public class FingerprintDialog {
         this.message = context.getResources().getString(resMessage);
     }
 
-    /**
-     *
-     * @param listener Callback to know when user hit the Cancel button
-     */
     public void setCancelListener(DialogInterface.OnClickListener listener){
         this.listener = listener;
     }
 
-    /**
-     *
-     * @param fingerprintCallback Callback to know whether the authentication succeeded or not
-     */
     public void setFingerprintCallback(FingerprintCallback fingerprintCallback) {
         this.fingerprintCallback = fingerprintCallback;
     }
 
-    /**
-     * Show the dialog setting automatically Cancel listener to null
-     * @param title Title
-     * @param message Message
-     * @param fingerprintCallback Auth callback
-     */
     public void show(String title, String message, FingerprintCallback fingerprintCallback){
         show(title, message, null, fingerprintCallback);
     }
 
-    /**
-     * Show the dialog setting automatically Cancel listener to null
-     * @param resTitle Title resource
-     * @param resMessage Message resource
-     * @param fingerprintCallback Auth callback
-     */
     public void show(int resTitle, int resMessage, FingerprintCallback fingerprintCallback){
         show(resTitle, resMessage, null, fingerprintCallback);
     }
 
-    /**
-     * Show the dialog
-     * @param title Title
-     * @param message Message
-     * @param listener Cancel listener
-     * @param fingerprintCallback Auth callback
-     */
     public void show(String title, String message, DialogInterface.OnClickListener listener, FingerprintCallback fingerprintCallback){
         this.title = title;
         this.message = message;
@@ -134,13 +107,6 @@ public class FingerprintDialog {
         show();
     }
 
-    /**
-     * Show the dialog
-     * @param resTitle Title resource
-     * @param resMessage Message resource
-     * @param listener Cancel listener
-     * @param fingerprintCallback Auth callback
-     */
     public void show(int resTitle, int resMessage, DialogInterface.OnClickListener listener, FingerprintCallback fingerprintCallback){
         this.title = context.getResources().getString(resTitle);
         this.message = context.getResources().getString(resMessage);
@@ -150,9 +116,6 @@ public class FingerprintDialog {
         show();
     }
 
-    /**
-     * Show the dialog
-     */
     public void show(){
         view = layoutInflater.inflate(R.layout.dialog, null);
         ((TextView) view.findViewById(R.id.dialog_title)).setText(title);
@@ -180,18 +143,10 @@ public class FingerprintDialog {
         this.animationEnabled = enabled;
     }
 
-    /**
-     * Set text and icon color
-     * @param successColor resource color e.g. R.color.white
-     */
     public void setSuccessColor(int successColor){
         this.successColor = successColor;
     }
 
-    /**
-     * Set text and icon color
-     * @param errorColor resource color e.g. R.color.white
-     */
     public void setErrorColor(int errorColor){
         this.errorColor = errorColor;
     }
