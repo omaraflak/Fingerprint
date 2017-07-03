@@ -13,7 +13,7 @@ Maven :
     <dependency>
       <groupId>me.aflak.libraries</groupId>
       <artifactId>fingerprintdialog</artifactId>
-      <version>1.0</version>
+      <version>X.X</version>
       <type>pom</type>
     </dependency>
 
