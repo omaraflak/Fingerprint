@@ -33,9 +33,8 @@ public class FingerprintDialog {
     private View view;
 
     private String title, message;
-    private DialogInterface.OnClickListener listener;
 
-    private boolean animationEnabled;
+    private boolean animationEnabled, canceledOnTouchOutside;
     private int successColor, errorColor;
 
     public FingerprintDialog(Context context, FingerprintManager fingerprintManager){
@@ -56,6 +55,7 @@ public class FingerprintDialog {
         this.successColor = R.color.auth_success;
         this.errorColor = R.color.auth_failed;
         this.animationEnabled = true;
+        this.canceledOnTouchOutside = false;
     }
 
     public boolean isHardwareDetected(){
@@ -82,35 +82,34 @@ public class FingerprintDialog {
         this.message = context.getResources().getString(resMessage);
     }
 
-    public void setCancelListener(DialogInterface.OnClickListener listener){
-        this.listener = listener;
-    }
-
     public void setFingerprintCallback(FingerprintCallback fingerprintCallback) {
         this.fingerprintCallback = fingerprintCallback;
     }
 
-    public void show(String title, String message, FingerprintCallback fingerprintCallback){
-        show(title, message, null, fingerprintCallback);
+
+    public void setExitAnimation(boolean enabled){
+        this.animationEnabled = enabled;
+    }
+
+    public void setSuccessColor(int successColor){
+        this.successColor = successColor;
+    }
+
+    public void setErrorColor(int errorColor){
+        this.errorColor = errorColor;
+    }
+
+    public void setCanceledOnTouchOutside(boolean canceledOnTouchOutside) {
+        this.canceledOnTouchOutside = canceledOnTouchOutside;
     }
 
     public void show(int resTitle, int resMessage, FingerprintCallback fingerprintCallback){
-        show(resTitle, resMessage, null, fingerprintCallback);
+        show(context.getResources().getString(resTitle), context.getResources().getString(resMessage), fingerprintCallback);
     }
 
-    public void show(String title, String message, DialogInterface.OnClickListener listener, FingerprintCallback fingerprintCallback){
+    public void show(String title, String message, FingerprintCallback fingerprintCallback){
         this.title = title;
         this.message = message;
-        this.listener = listener;
-        this.fingerprintCallback = fingerprintCallback;
-
-        show();
-    }
-
-    public void show(int resTitle, int resMessage, DialogInterface.OnClickListener listener, FingerprintCallback fingerprintCallback){
-        this.title = context.getResources().getString(resTitle);
-        this.message = context.getResources().getString(resMessage);
-        this.listener = listener;
         this.fingerprintCallback = fingerprintCallback;
 
         show();
@@ -124,8 +123,8 @@ public class FingerprintDialog {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 cancellationSignal.cancel();
-                if(listener!=null) {
-                    listener.onClick(dialogInterface, i);
+                if(fingerprintCallback!=null) {
+                    fingerprintCallback.onUserCanceled();
                 }
             }
         });
@@ -134,21 +133,10 @@ public class FingerprintDialog {
         if(dialog.getWindow() != null && animationEnabled) {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         }
+        dialog.setCanceledOnTouchOutside(canceledOnTouchOutside);
         dialog.show();
 
         auth();
-    }
-
-    public void setExitAnimation(boolean enabled){
-        this.animationEnabled = enabled;
-    }
-
-    public void setSuccessColor(int successColor){
-        this.successColor = successColor;
-    }
-
-    public void setErrorColor(int errorColor){
-        this.errorColor = errorColor;
     }
 
     private void auth(){

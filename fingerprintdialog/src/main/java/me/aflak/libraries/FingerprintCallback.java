@@ -7,4 +7,5 @@ package me.aflak.libraries;
 public interface FingerprintCallback {
     void onFingerprintSuccess();
     void onFingerprintFailure();
+    void onUserCanceled();
 }
