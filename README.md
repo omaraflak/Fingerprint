@@ -34,4 +34,11 @@ Maven :
     
 See **[MainActivity.java](https://github.com/omaflak/FingerprintDialog/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/MainActivity.java)**
 
+# Customization
+
+- setSuccessColor();
+- setErrorColor();
+- setAnimation();
+- setCanceledOnTouchOutside();
+
 ![alt text](https://oc.aflak.me/index.php/s/Y1MQO19nLolUNp0/download)
