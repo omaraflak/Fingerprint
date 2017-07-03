@@ -8,6 +8,7 @@ import android.content.res.ColorStateList;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.CancellationSignal;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -38,6 +39,8 @@ public class FingerprintDialog {
     private int animation, successColor, errorColor;
 
     public final static int ENTER_ANIMATION_ONLY=0, EXIT_ANIMATION_ONLY=1, ENTER_EXIT_ANIMATION=2, NO_ANIMATION=3;
+
+    private final static String TAG = "FingerprintDialog";
 
     public FingerprintDialog(Context context, FingerprintManager fingerprintManager){
         this.context = context;
@@ -200,6 +203,12 @@ public class FingerprintDialog {
                     }
                 }, null);
             }
+            else{
+                Log.e(TAG, "No fingerprint enrolled");
+            }
+        }
+        else{
+            Log.e(TAG, "No fingerprint scanner detected");
         }
     }
 
