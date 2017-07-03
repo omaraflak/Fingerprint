@@ -36,9 +36,9 @@ See **[MainActivity.java](https://github.com/omaflak/FingerprintDialog/blob/mast
 
 # Customization
 
-- setSuccessColor();
-- setErrorColor();
-- setAnimation();
-- setCanceledOnTouchOutside();
+- **setSuccessColor**
+- **setErrorColor**
+- **setAnimation**
+- **setCanceledOnTouchOutside**
 
 ![alt text](https://oc.aflak.me/index.php/s/Y1MQO19nLolUNp0/download)
