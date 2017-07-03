@@ -34,8 +34,10 @@ public class FingerprintDialog {
 
     private String title, message;
 
-    private boolean animationEnabled, canceledOnTouchOutside;
-    private int successColor, errorColor;
+    private boolean canceledOnTouchOutside;
+    private int animation, successColor, errorColor;
+
+    public final static int ENTER_ANIMATION_ONLY=0, EXIT_ANIMATION_ONLY=1, ENTER_EXIT_ANIMATION=2, NO_ANIMATION=3;
 
     public FingerprintDialog(Context context, FingerprintManager fingerprintManager){
         this.context = context;
@@ -54,8 +56,8 @@ public class FingerprintDialog {
         this.builder = new AlertDialog.Builder(context);
         this.successColor = R.color.auth_success;
         this.errorColor = R.color.auth_failed;
-        this.animationEnabled = true;
         this.canceledOnTouchOutside = false;
+        this.animation = ENTER_EXIT_ANIMATION;
     }
 
     public boolean isHardwareDetected(){
@@ -87,8 +89,8 @@ public class FingerprintDialog {
     }
 
 
-    public void setExitAnimation(boolean enabled){
-        this.animationEnabled = enabled;
+    public void setAnimation(int animationCode){
+        this.animation = animationCode;
     }
 
     public void setSuccessColor(int successColor){
@@ -130,8 +132,20 @@ public class FingerprintDialog {
         });
         builder.setView(view);
         dialog = builder.create();
-        if(dialog.getWindow() != null && animationEnabled) {
-            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        if(dialog.getWindow() != null) {
+            switch (animation){
+                case ENTER_ANIMATION_ONLY:
+                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogEnterAnimation;
+                    break;
+                case EXIT_ANIMATION_ONLY:
+                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogExitAnimation;
+                    break;
+                case ENTER_EXIT_ANIMATION:
+                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogBothAnimation;
+                    break;
+                case NO_ANIMATION:
+                    break;
+            }
         }
         dialog.setCanceledOnTouchOutside(canceledOnTouchOutside);
         dialog.show();

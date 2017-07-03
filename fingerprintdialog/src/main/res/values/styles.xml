@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="DialogAnimation">
+    <style name="DialogBothAnimation">
+        <item name="android:windowExitAnimation">@anim/slide_bottom</item>
+        <item name="android:windowEnterAnimation">@anim/slide_top</item>
+    </style>
+
+    <style name="DialogEnterAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_top</item>
+    </style>
+
+    <style name="DialogExitAnimation">
         <item name="android:windowExitAnimation">@anim/slide_bottom</item>
     </style>
 </resources>
