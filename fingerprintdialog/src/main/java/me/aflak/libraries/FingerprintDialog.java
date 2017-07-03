@@ -38,35 +38,61 @@ public class FingerprintDialog {
     private boolean animationEnabled;
     private int successColor, errorColor;
 
+    public FingerprintDialog(Context context, FingerprintManager fingerprintManager){
+        this.context = context;
+        this.fingerprintManager = fingerprintManager;
+        init(context);
+    }
+
     public FingerprintDialog(Context context){
         this.context = context;
         this.fingerprintManager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
+        init(context);
+    }
+
+    private void init(Context context){
         this.layoutInflater = LayoutInflater.from(context);
         this.builder = new AlertDialog.Builder(context);
-        this.animationEnabled = true;
         this.successColor = R.color.auth_success;
         this.errorColor = R.color.auth_failed;
+        this.animationEnabled = true;
+    }
+
+    public boolean isHardwareDetected(){
+        return fingerprintManager.isHardwareDetected();
+    }
+
+    public boolean hasEnrolledFingerprints(){
+        return fingerprintManager.hasEnrolledFingerprints();
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public void setTitle(int resTitle){
+        this.title = context.getResources().getString(resTitle);
+    }
+
     public void setMessage(String message) {
         this.message = message;
     }
 
+    public void setMessage(int resMessage) {
+        this.message = context.getResources().getString(resMessage);
+    }
+
     /**
-     * Callback to know when user hit the Cancel button
-     * @param listener
+     *
+     * @param listener Callback to know when user hit the Cancel button
      */
     public void setCancelListener(DialogInterface.OnClickListener listener){
         this.listener = listener;
     }
 
     /**
-     * Callback to know whether the authentication succeeded or not
-     * @param fingerprintCallback
+     *
+     * @param fingerprintCallback Callback to know whether the authentication succeeded or not
      */
     public void setFingerprintCallback(FingerprintCallback fingerprintCallback) {
         this.fingerprintCallback = fingerprintCallback;
@@ -74,23 +100,50 @@ public class FingerprintDialog {
 
     /**
      * Show the dialog setting automatically Cancel listener to null
-     * @param title
-     * @param message
-     * @param callback
+     * @param title Title
+     * @param message Message
+     * @param fingerprintCallback Auth callback
      */
-    public void show(String title, String message, FingerprintCallback callback){
-        show(title, message, null, callback);
+    public void show(String title, String message, FingerprintCallback fingerprintCallback){
+        show(title, message, null, fingerprintCallback);
+    }
+
+    /**
+     * Show the dialog setting automatically Cancel listener to null
+     * @param resTitle Title resource
+     * @param resMessage Message resource
+     * @param fingerprintCallback Auth callback
+     */
+    public void show(int resTitle, int resMessage, FingerprintCallback fingerprintCallback){
+        show(resTitle, resMessage, null, fingerprintCallback);
     }
 
     /**
      * Show the dialog
-     * @param title
-     * @param message
-     * @param fingerprintCallback
+     * @param title Title
+     * @param message Message
+     * @param listener Cancel listener
+     * @param fingerprintCallback Auth callback
      */
     public void show(String title, String message, DialogInterface.OnClickListener listener, FingerprintCallback fingerprintCallback){
         this.title = title;
         this.message = message;
+        this.listener = listener;
+        this.fingerprintCallback = fingerprintCallback;
+
+        show();
+    }
+
+    /**
+     * Show the dialog
+     * @param resTitle Title resource
+     * @param resMessage Message resource
+     * @param listener Cancel listener
+     * @param fingerprintCallback Auth callback
+     */
+    public void show(int resTitle, int resMessage, DialogInterface.OnClickListener listener, FingerprintCallback fingerprintCallback){
+        this.title = context.getResources().getString(resTitle);
+        this.message = context.getResources().getString(resMessage);
         this.listener = listener;
         this.fingerprintCallback = fingerprintCallback;
 

@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements FingerprintCallba
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.show("Sign In", "Confirm fingerprint to continue", MainActivity.this);
+                dialog.show(R.string.title, R.string.message,MainActivity.this);
             }
         });
     }

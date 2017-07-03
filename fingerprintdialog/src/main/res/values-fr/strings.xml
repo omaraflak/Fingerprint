@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FingerprintDialog</string>
+
+    <string name="state_scanning">Touchez le capteur</string>
+    <string name="state_success">Empreinte reconnue</string>
+    <string name="state_failure">Empreinte non reconnue.\nRéessayez.</string>
+    <string name="cancel_button">Annuler</string>
+</resources>
