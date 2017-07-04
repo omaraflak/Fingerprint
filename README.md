@@ -41,4 +41,4 @@ See **[MainActivity.java](https://github.com/omaflak/FingerprintDialog/blob/mast
 - **setAnimation**
 - **setCanceledOnTouchOutside**
 
-![alt text](https://oc.aflak.me/index.php/s/Y1MQO19nLolUNp0/download)
+![alt text](https://github.com/omaflak/FingerprintDialog/blob/master/GIF/demo.gif?raw=true)
