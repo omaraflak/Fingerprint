@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/omaflak/FingerprintDialog'
     gitUrl = 'https://github.com/omaflak/FingerprintDialog.git'
 
-    libraryVersion = '1.2.5-1'
+    libraryVersion = '1.2.6'
 
     developerId = 'omaflak'
     developerName = 'Omar Aflak'
@@ -32,8 +32,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 26
-        versionCode 10
-        versionName "1.2.5-1"
+        versionCode 11
+        versionName "1.2.6"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

@@ -36,9 +36,11 @@ public class FingerprintDialog {
     private String title, message;
 
     private boolean canceledOnTouchOutside;
-    private int animation, successColor, errorColor;
+    private int enterAnimation, exitAnimation, successColor, errorColor;
 
-    public final static int ENTER_ANIMATION_ONLY=0, EXIT_ANIMATION_ONLY=1, ENTER_EXIT_ANIMATION=2, NO_ANIMATION=3;
+    public final static  int ENTER_FROM_BOTTOM=0, ENTER_FROM_TOP=1, ENTER_FROM_LEFT=2, ENTER_FROM_RIGHT=3;
+    public final static  int EXIT_TO_BOTTOM=0, EXIT_TO_TOP=1, EXIT_TO_LEFT=2, EXIT_TO_RIGHT=3;
+    public final static int NO_ANIMATION=4;
 
     private final static String TAG = "FingerprintDialog";
 
@@ -60,7 +62,8 @@ public class FingerprintDialog {
         this.successColor = R.color.auth_success;
         this.errorColor = R.color.auth_failed;
         this.canceledOnTouchOutside = false;
-        this.animation = ENTER_EXIT_ANIMATION;
+        this.enterAnimation = ENTER_FROM_BOTTOM;
+        this.exitAnimation = EXIT_TO_BOTTOM;
     }
 
     public boolean isHardwareDetected(){
@@ -91,9 +94,10 @@ public class FingerprintDialog {
         this.fingerprintCallback = fingerprintCallback;
     }
 
+    public void setAnimation(int enterAnimation, int exitAnimation) {
+        this.enterAnimation = enterAnimation;
+        this.exitAnimation = exitAnimation;
 
-    public void setAnimation(int animationCode){
-        this.animation = animationCode;
     }
 
     public void setSuccessColor(int successColor){
@@ -131,30 +135,81 @@ public class FingerprintDialog {
                 if(fingerprintCallback!=null) {
                     fingerprintCallback.onFingerprintCancel();
                 }
-
             }
         });
         builder.setView(view);
         dialog = builder.create();
-        if(dialog.getWindow() != null) {
-            switch (animation){
-                case ENTER_ANIMATION_ONLY:
-                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogEnterAnimation;
-                    break;
-                case EXIT_ANIMATION_ONLY:
-                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogExitAnimation;
-                    break;
-                case ENTER_EXIT_ANIMATION:
-                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogBothAnimation;
-                    break;
-                case NO_ANIMATION:
-                    break;
+        if(dialog.getWindow() != null && (enterAnimation!=NO_ANIMATION || exitAnimation!=NO_ANIMATION)) {
+            int style = getStyle();
+            if(style==-1){
+                Log.e(TAG, "The animation selected is not available");
+            }
+            else {
+                dialog.getWindow().getAttributes().windowAnimations = style;
             }
         }
         dialog.setCanceledOnTouchOutside(canceledOnTouchOutside);
         dialog.show();
 
         auth();
+    }
+
+    private int getStyle(){
+        switch (enterAnimation){
+            case ENTER_FROM_BOTTOM:
+                switch (exitAnimation){
+                    case EXIT_TO_BOTTOM:
+                        return R.style.BottomBottomAnimation;
+                    case EXIT_TO_TOP:
+                        return R.style.BottomTopAnimation;
+                    case NO_ANIMATION:
+                        return R.style.EnterFromBottomAnimation;
+                }
+                break;
+            case ENTER_FROM_TOP:
+                switch (exitAnimation){
+                    case EXIT_TO_BOTTOM:
+                        return R.style.TopBottomAnimation;
+                    case EXIT_TO_TOP:
+                        return R.style.TopTopAnimation;
+                    case NO_ANIMATION:
+                        return R.style.EnterFromTopAnimation;
+                }
+                break;
+            case ENTER_FROM_LEFT:
+                switch (exitAnimation){
+                    case EXIT_TO_LEFT:
+                        return R.style.LeftLeftAnimation;
+                    case EXIT_TO_RIGHT:
+                        return R.style.LeftRightAnimation;
+                    case NO_ANIMATION:
+                        return R.style.EnterFromLeftAnimation;
+                }
+                break;
+            case ENTER_FROM_RIGHT:
+                switch (exitAnimation){
+                    case EXIT_TO_LEFT:
+                        return R.style.RightLeftAnimation;
+                    case EXIT_TO_RIGHT:
+                        return R.style.RightRightAnimation;
+                    case NO_ANIMATION:
+                        return R.style.EnterFromRightAnimation;
+                }
+                break;
+            case NO_ANIMATION:
+                switch (exitAnimation){
+                    case EXIT_TO_BOTTOM:
+                        return R.style.ExitToBottomAnimation;
+                    case EXIT_TO_TOP:
+                        return R.style.ExitToTopAnimation;
+                    case EXIT_TO_LEFT:
+                        return R.style.ExitToLeftAnimation;
+                    case EXIT_TO_RIGHT:
+                        return R.style.ExitToRightAnimation;
+                }
+                break;
+        }
+        return -1;
     }
 
     private void auth(){
