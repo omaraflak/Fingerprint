@@ -220,19 +220,19 @@ public class FingerprintDialog {
                     @Override
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
-                        setStatus(errString.toString(), errorColor, R.drawable.ic_close_white_24dp, null);
+                        setStatus(errString.toString(), errorColor, R.drawable.fingerprint_error, null);
                     }
 
                     @Override
                     public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
                         super.onAuthenticationHelp(helpCode, helpString);
-                        setStatus(helpString.toString(), errorColor, R.drawable.ic_close_white_24dp, null);
+                        setStatus(helpString.toString(), errorColor, R.drawable.fingerprint_error, null);
                     }
 
                     @Override
                     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
-                        setStatus(R.string.state_success, successColor, R.drawable.ic_check_white_24dp, new YoYo.AnimatorCallback() {
+                        setStatus(R.string.state_success, successColor, R.drawable.fingerprint_success, new YoYo.AnimatorCallback() {
                             @Override
                             public void call(Animator animator) {
                                 dialog.cancel();
@@ -246,7 +246,7 @@ public class FingerprintDialog {
                     @Override
                     public void onAuthenticationFailed() {
                         super.onAuthenticationFailed();
-                        setStatus(R.string.state_failure, errorColor, R.drawable.ic_close_white_24dp, null);
+                        setStatus(R.string.state_failure, errorColor, R.drawable.fingerprint_error, null);
                     }
                 }, null);
             }
