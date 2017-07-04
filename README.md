@@ -27,8 +27,8 @@ Maven :
         }
 
         @Override
-        public void onFingerprintFailure() {
-          // fingerprint not recognized
+        public void onFingerprintCancel() {
+          // user pressed cancel button
         }
     });
     
