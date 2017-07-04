@@ -31,12 +31,7 @@ public class MainActivity extends AppCompatActivity implements FingerprintCallba
     }
 
     @Override
-    public void onFingerprintFailure() {
-        // authentication failed
-    }
-
-    @Override
-    public void onUserCanceled() {
+    public void onFingerprintCancel() {
         // user pressed cancel button
     }
 }

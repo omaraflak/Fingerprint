@@ -26,9 +26,9 @@ public class FingerprintDialog {
     private Context context;
     private FingerprintManager fingerprintManager;
     private CancellationSignal cancellationSignal;
+    private FingerprintCallback fingerprintCallback;
 
     private LayoutInflater layoutInflater;
-    private FingerprintCallback fingerprintCallback;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     private View view;
@@ -129,8 +129,9 @@ public class FingerprintDialog {
             public void onClick(DialogInterface dialogInterface, int i) {
                 cancellationSignal.cancel();
                 if(fingerprintCallback!=null) {
-                    fingerprintCallback.onUserCanceled();
+                    fingerprintCallback.onFingerprintCancel();
                 }
+
             }
         });
         builder.setView(view);
@@ -164,19 +165,13 @@ public class FingerprintDialog {
                     @Override
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
-                        setStatus(R.string.state_failure, errorColor, R.drawable.ic_close_white_24dp, null);
-                        if (fingerprintCallback != null) {
-                            fingerprintCallback.onFingerprintFailure();
-                        }
+                        setStatus(errString.toString(), errorColor, R.drawable.ic_close_white_24dp, null);
                     }
 
                     @Override
                     public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
                         super.onAuthenticationHelp(helpCode, helpString);
-                        setStatus(R.string.state_failure, errorColor, R.drawable.ic_close_white_24dp, null);
-                        if (fingerprintCallback != null) {
-                            fingerprintCallback.onFingerprintFailure();
-                        }
+                        setStatus(helpString.toString(), errorColor, R.drawable.ic_close_white_24dp, null);
                     }
 
                     @Override
@@ -197,9 +192,6 @@ public class FingerprintDialog {
                     public void onAuthenticationFailed() {
                         super.onAuthenticationFailed();
                         setStatus(R.string.state_failure, errorColor, R.drawable.ic_close_white_24dp, null);
-                        if (fingerprintCallback != null) {
-                            fingerprintCallback.onFingerprintFailure();
-                        }
                     }
                 }, null);
             }
@@ -212,7 +204,11 @@ public class FingerprintDialog {
         }
     }
 
-    private void setStatus(final int textId, final int color, final int drawable, final YoYo.AnimatorCallback callback){
+    private void setStatus(int textId, int color, int drawable, YoYo.AnimatorCallback callback){
+        setStatus(context.getResources().getString(textId), color, drawable, callback);
+    }
+
+    private void setStatus(final String text, final int color, final int drawable, final YoYo.AnimatorCallback callback){
         final RelativeLayout layout = view.findViewById(R.id.dialog_layout_icon);
         final View background = view.findViewById(R.id.dialog_icon_background);
         final ImageView foreground = view.findViewById(R.id.dialog_icon_foreground);
@@ -222,7 +218,7 @@ public class FingerprintDialog {
                 .onEnd(new YoYo.AnimatorCallback() {
                     @Override
                     public void call(Animator animator) {
-                        status.setText(textId);
+                        status.setText(text);
                         status.setTextColor(ContextCompat.getColor(context, color));
                         background.setBackgroundTintList(ColorStateList.valueOf(context.getColor(color)));
                         foreground.setImageResource(drawable);
