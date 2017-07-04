@@ -181,11 +181,11 @@ public class FingerprintDialog {
                             @Override
                             public void call(Animator animator) {
                                 dialog.cancel();
+                                if (fingerprintCallback != null) {
+                                    fingerprintCallback.onFingerprintSuccess();
+                                }
                             }
                         });
-                        if (fingerprintCallback != null) {
-                            fingerprintCallback.onFingerprintSuccess();
-                        }
                     }
 
                     @Override

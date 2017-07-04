@@ -1,6 +1,4 @@
 <resources>
-    <!--<string name="title">Identification</string>
-    <string name="message">Confirmez votre identité</string>-->
-    <string name="title">Sign in</string>
-    <string name="message">Confirm fingerprint to continue</string>
+    <string name="title">Identification</string>
+    <string name="message">Confirmez votre identité</string>
 </resources>
