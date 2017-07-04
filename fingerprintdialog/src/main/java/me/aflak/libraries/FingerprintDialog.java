@@ -38,8 +38,8 @@ public class FingerprintDialog {
     private boolean canceledOnTouchOutside;
     private int enterAnimation, exitAnimation, successColor, errorColor;
 
-    public final static  int ENTER_FROM_BOTTOM=0, ENTER_FROM_TOP=1, ENTER_FROM_LEFT=2, ENTER_FROM_RIGHT=3;
-    public final static  int EXIT_TO_BOTTOM=0, EXIT_TO_TOP=1, EXIT_TO_LEFT=2, EXIT_TO_RIGHT=3;
+    public final static int ENTER_FROM_BOTTOM=0, ENTER_FROM_TOP=1, ENTER_FROM_LEFT=2, ENTER_FROM_RIGHT=3;
+    public final static int EXIT_TO_BOTTOM=0, EXIT_TO_TOP=1, EXIT_TO_LEFT=2, EXIT_TO_RIGHT=3;
     public final static int NO_ANIMATION=4;
 
     private final static String TAG = "FingerprintDialog";
