@@ -78,26 +78,6 @@ public class FingerprintDialog {
         return fingerprintManager.hasEnrolledFingerprints();
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setTitle(int resTitle){
-        this.title = context.getResources().getString(resTitle);
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setMessage(int resMessage) {
-        this.message = context.getResources().getString(resMessage);
-    }
-
-    public void setFingerprintCallback(FingerprintCallback fingerprintCallback) {
-        this.fingerprintCallback = fingerprintCallback;
-    }
-
     public void setAnimation(int enterAnimation, int exitAnimation) {
         this.enterAnimation = enterAnimation;
         this.exitAnimation = exitAnimation;
@@ -160,7 +140,7 @@ public class FingerprintDialog {
         show();
     }
 
-    public void show(){
+    private void show(){
         view = layoutInflater.inflate(R.layout.dialog, null);
         ((TextView) view.findViewById(R.id.dialog_title)).setText(title);
         ((TextView) view.findViewById(R.id.dialog_message)).setText(message);
