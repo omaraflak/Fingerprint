@@ -49,6 +49,10 @@ See **[MainActivity.java](https://github.com/omaflak/FingerprintDialog/blob/mast
 
 - **show**
 - **showSecure**
+- **setTitle**
+- **setMessage**
+- **hasEnrolledFingerprints**
+- **isHardwareDetected**
 - **generateNewKey**
 - **setSuccessColor**
 - **setErrorColor**
