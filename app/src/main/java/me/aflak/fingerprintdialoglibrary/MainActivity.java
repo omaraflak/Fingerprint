@@ -16,9 +16,6 @@ public class MainActivity extends AppCompatActivity implements FingerprintSecure
         setContentView(R.layout.activity_main);
 
         dialog = new FingerprintDialog(this);
-        dialog.setErrorColor(android.R.color.holo_red_dark);
-        dialog.setAnimation(FingerprintDialog.ENTER_FROM_RIGHT, FingerprintDialog.EXIT_TO_RIGHT);
-
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

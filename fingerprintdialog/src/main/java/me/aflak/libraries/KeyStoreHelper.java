@@ -58,7 +58,7 @@ public class KeyStoreHelper {
     private boolean hasKey(){
         try {
             secretKey = (SecretKey) keyStore.getKey(keyName, null);
-            return true;
+            return secretKey!=null;
         } catch (UnrecoverableKeyException e){
             return false;
         } catch (KeyStoreException | NoSuchAlgorithmException e) {
