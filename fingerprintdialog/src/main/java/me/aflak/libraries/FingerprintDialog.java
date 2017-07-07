@@ -27,6 +27,8 @@ public class FingerprintDialog {
     private FingerprintManager fingerprintManager;
     private CancellationSignal cancellationSignal;
     private FingerprintCallback fingerprintCallback;
+    private FingerprintManager.CryptoObject cryptoObject;
+    private KeyStoreHelper keyStoreHelper;
 
     private LayoutInflater layoutInflater;
     private AlertDialog.Builder builder;
@@ -57,6 +59,7 @@ public class FingerprintDialog {
     }
 
     private void init(Context context){
+        this.keyStoreHelper = new KeyStoreHelper(context.getResources().getString(R.string.key_name));
         this.layoutInflater = LayoutInflater.from(context);
         this.builder = new AlertDialog.Builder(context);
         this.successColor = R.color.auth_success;
@@ -64,6 +67,7 @@ public class FingerprintDialog {
         this.canceledOnTouchOutside = false;
         this.enterAnimation = ENTER_FROM_BOTTOM;
         this.exitAnimation = EXIT_TO_BOTTOM;
+        this.cryptoObject = null;
     }
 
     public boolean isHardwareDetected(){
@@ -112,11 +116,43 @@ public class FingerprintDialog {
         this.canceledOnTouchOutside = canceledOnTouchOutside;
     }
 
+    public void generateNewKey(){
+        if(keyStoreHelper!=null){
+            keyStoreHelper.generateNewKey();
+        }
+    }
+
+    public void showSecure(int resTitle, int resMessage, FingerprintSecureCallback fingerprintSecureCallback){
+        showSecure(context.getResources().getString(resTitle), context.getResources().getString(resMessage), fingerprintSecureCallback);
+    }
+
+    public void showSecure(String title, String message, final FingerprintSecureCallback fingerprintSecureCallback){
+        this.title = title;
+        this.message = message;
+        this.fingerprintCallback = fingerprintSecureCallback;
+
+        keyStoreHelper.getCryptoObject(new KeyStoreHelperCallback() {
+            @Override
+            public void onNewFingerprintEnrolled() {
+                if(fingerprintSecureCallback!=null){
+                    fingerprintSecureCallback.onNewFingerprintEnrolled();
+                }
+            }
+
+            @Override
+            public void onCryptoObjectRetrieved(FingerprintManager.CryptoObject cryptoObject) {
+                FingerprintDialog.this.cryptoObject = cryptoObject;
+                show();
+            }
+        });
+    }
+
     public void show(int resTitle, int resMessage, FingerprintCallback fingerprintCallback){
         show(context.getResources().getString(resTitle), context.getResources().getString(resMessage), fingerprintCallback);
     }
 
     public void show(String title, String message, FingerprintCallback fingerprintCallback){
+        this.cryptoObject = null;
         this.title = title;
         this.message = message;
         this.fingerprintCallback = fingerprintCallback;
@@ -216,7 +252,7 @@ public class FingerprintDialog {
         cancellationSignal = new CancellationSignal();
         if(fingerprintManager.isHardwareDetected()) {
             if (fingerprintManager.hasEnrolledFingerprints()) {
-                fingerprintManager.authenticate(null, cancellationSignal, 0, new FingerprintManager.AuthenticationCallback() {
+                fingerprintManager.authenticate(cryptoObject, cancellationSignal, 0, new FingerprintManager.AuthenticationCallback() {
                     @Override
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);

@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import me.aflak.libraries.FingerprintDialog;
-import me.aflak.libraries.FingerprintCallback;
+import me.aflak.libraries.FingerprintSecureCallback;
 
-public class MainActivity extends AppCompatActivity implements FingerprintCallback {
+public class MainActivity extends AppCompatActivity implements FingerprintSecureCallback {
     private FingerprintDialog dialog;
 
     @Override
@@ -22,18 +22,28 @@ public class MainActivity extends AppCompatActivity implements FingerprintCallba
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.show(R.string.title, R.string.message,MainActivity.this);
+                dialog.showSecure(R.string.title, R.string.message, MainActivity.this);
             }
         });
     }
 
     @Override
     public void onFingerprintSuccess() {
-        // authentication succeeded
+        // Fingerprint recognized
     }
 
     @Override
     public void onFingerprintCancel() {
-        // user pressed cancel button
+        // User pressed cancel button
+    }
+
+    @Override
+    public void onNewFingerprintEnrolled() {
+        // A new fingerprint was added
+        // should prompt a password
+        // if (password correct) {
+        //      dialog.generateNewKey()
+        //      dialog.showSecure()
+        // }
     }
 }

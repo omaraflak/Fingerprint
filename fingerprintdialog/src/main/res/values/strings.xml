@@ -4,4 +4,6 @@
     <string name="state_failure">Fingerprint not recognized.\nTry again.</string>
     <string name="cancel_button">Cancel</string>
     <string name="description_fingerprint_icon">Fingerprint icon</string>
+
+    <string name="key_name">FingerprintDialogLibraryKey</string>
 </resources>

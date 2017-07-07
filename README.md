@@ -1,6 +1,7 @@
 # Fingerprint Dialog [ ![Download](https://api.bintray.com/packages/omaflak/maven/fingerprintdialog/images/download.svg) ](https://bintray.com/omaflak/maven/fingerprintdialog/_latestVersion)
 
-Short Android library that allows you to create fingerprint dialogs for authentications.
+Android library that allows you to create fingerprint dialogs for authentications.
+You can either choose to use a **CryptoObject** or not.
 
 # Dependencie
 
@@ -19,23 +20,36 @@ Maven :
 
 # Use
 
-    FingerprintDialog dialog = new FingerprintDialog(this);
-    dialog.show("Sign In", "Confirm fingerprint to continue", new FingerprintCallback() {
+    FingerprintDialog dialog = new FingerprintDialog(Context);
+    dialog.showSecure(R.string.title, R.string.message, new FingerprintSecureCallback() {
         @Override
         public void onFingerprintSuccess() {
-          // fingerprint recognized
+            // Fingerprint recognized
         }
 
         @Override
         public void onFingerprintCancel() {
-          // user pressed cancel button
+            // User pressed cancel button
+        }
+
+        @Override
+        public void onNewFingerprintEnrolled() {
+            // A new fingerprint was added
+            // should prompt a password
+            // if (password correct) {
+            //      dialog.generateNewKey()
+            //      dialog.showSecure()
+            // }
         }
     });
     
 See **[MainActivity.java](https://github.com/omaflak/FingerprintDialog/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/MainActivity.java)**
 
-# Customization
+# Methods
 
+- **show**
+- **showSecure**
+- **generateNewKey**
 - **setSuccessColor**
 - **setErrorColor**
 - **setAnimation**

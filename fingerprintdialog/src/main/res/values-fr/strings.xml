@@ -4,4 +4,6 @@
     <string name="state_success">Empreinte reconnue</string>
     <string name="state_failure">Empreinte non reconnue.\nRéessayez.</string>
     <string name="cancel_button">Annuler</string>
+
+    <string name="key_name">FingerprintDialogLibraryKey</string>
 </resources>
