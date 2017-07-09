@@ -1,6 +1,5 @@
 package me.aflak.libraries;
 
-
 import android.hardware.fingerprint.FingerprintManager;
 
 /**

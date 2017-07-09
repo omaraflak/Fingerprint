@@ -7,7 +7,7 @@ import android.content.res.ColorStateList;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.CancellationSignal;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +35,7 @@ public class FingerprintDialog {
     private String title, message;
 
     private boolean cancelOnTouchOutside;
-    private int enterAnimation, exitAnimation, successColor, errorColor;
+    private int enterAnimation, exitAnimation, successColor, errorColor, delayAfterSuccess;
 
     public final static int ENTER_FROM_BOTTOM=0, ENTER_FROM_TOP=1, ENTER_FROM_LEFT=2, ENTER_FROM_RIGHT=3;
     public final static int EXIT_TO_BOTTOM=0, EXIT_TO_TOP=1, EXIT_TO_LEFT=2, EXIT_TO_RIGHT=3;
@@ -63,10 +63,15 @@ public class FingerprintDialog {
         this.fingerprintSecureCallback = null;
         this.successColor = R.color.auth_success;
         this.errorColor = R.color.auth_failed;
+        this.delayAfterSuccess = 1200;
         this.cancelOnTouchOutside = false;
         this.enterAnimation = ENTER_FROM_BOTTOM;
         this.exitAnimation = EXIT_TO_BOTTOM;
         this.cryptoObject = null;
+    }
+
+    public static FingerprintDialog initialize(Context context, FingerprintManager fingerprintManager, String KEY_NAME){
+        return new FingerprintDialog(context, fingerprintManager, KEY_NAME);
     }
 
     public static FingerprintDialog initialize(Context context, String KEY_NAME){
@@ -110,6 +115,11 @@ public class FingerprintDialog {
 
     public FingerprintDialog errorColor(int errorColor){
         this.errorColor = errorColor;
+        return this;
+    }
+
+    public FingerprintDialog delayAfterSuccess(int delayAfterSuccess){
+        this.delayAfterSuccess = delayAfterSuccess;
         return this;
     }
 
@@ -288,7 +298,7 @@ public class FingerprintDialog {
                                     fingerprintCallback.onAuthenticated();
                                 }
                             }
-                        }, 1200);
+                        }, delayAfterSuccess);
                     }
 
                     @Override
@@ -312,13 +322,13 @@ public class FingerprintDialog {
     }
 
     private void setStatus(final String text, final int color, final int drawable){
-        View background = view.findViewById(R.id.dialog_icon_background);
         ImageView foreground = view.findViewById(R.id.dialog_icon_foreground);
+        View background = view.findViewById(R.id.dialog_icon_background);
         TextView status = view.findViewById(R.id.dialog_status);
 
-        status.setText(text);
-        status.setTextColor(ContextCompat.getColor(context, color));
-        background.setBackgroundTintList(ColorStateList.valueOf(context.getColor(color)));
         foreground.setImageResource(drawable);
+        background.setBackgroundTintList(ColorStateList.valueOf(context.getColor(color)));
+        status.setTextColor(ResourcesCompat.getColor(context.getResources(), color, null));
+        status.setText(text);
     }
 }
