@@ -45,6 +45,7 @@ public class FingerprintDialog {
     public final static int NO_ANIMATION=4;
 
     private final static String TAG = "FingerprintDialog";
+    private final String keyName = "FingerprintDialogLibraryKey";
 
     public FingerprintDialog(Context context, FingerprintManager fingerprintManager){
         this.context = context;
@@ -59,7 +60,7 @@ public class FingerprintDialog {
     }
 
     private void init(Context context){
-        this.keyStoreHelper = new KeyStoreHelper(context.getResources().getString(R.string.key_name));
+        this.keyStoreHelper = new KeyStoreHelper(keyName);
         this.layoutInflater = LayoutInflater.from(context);
         this.builder = new AlertDialog.Builder(context);
         this.successColor = R.color.auth_success;
@@ -149,7 +150,7 @@ public class FingerprintDialog {
             public void onClick(DialogInterface dialogInterface, int i) {
                 cancellationSignal.cancel();
                 if(fingerprintCallback!=null) {
-                    fingerprintCallback.onFingerprintCancel();
+                    fingerprintCallback.onCancelled();
                 }
             }
         });
@@ -253,7 +254,7 @@ public class FingerprintDialog {
                             public void call(Animator animator) {
                                 dialog.cancel();
                                 if (fingerprintCallback != null) {
-                                    fingerprintCallback.onFingerprintSuccess();
+                                    fingerprintCallback.onAuthenticated();
                                 }
                             }
                         });
@@ -274,6 +275,7 @@ public class FingerprintDialog {
             Log.e(TAG, "No fingerprint scanner detected");
         }
     }
+
 
     private void setStatus(int textId, int color, int drawable, YoYo.AnimatorCallback callback){
         setStatus(context.getResources().getString(textId), color, drawable, callback);

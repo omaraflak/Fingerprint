@@ -23,22 +23,22 @@ Maven :
     FingerprintDialog dialog = new FingerprintDialog(Context);
     dialog.showSecure(R.string.title, R.string.message, new FingerprintSecureCallback() {
         @Override
-        public void onFingerprintSuccess() {
+        public void onAuthenticated() {
             // Fingerprint recognized
         }
-
+    
         @Override
-        public void onFingerprintCancel() {
+        public void onCancelled() {
             // User pressed cancel button
         }
-
+    
         @Override
         public void onNewFingerprintEnrolled() {
             // A new fingerprint was added
             // should prompt a password
             // if (password correct) {
             //      dialog.generateNewKey()
-            //      dialog.showSecure()
+            //      dialog.showSecure(...)
             // }
         }
     });

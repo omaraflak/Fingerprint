@@ -8,29 +8,30 @@ import me.aflak.libraries.FingerprintDialog;
 import me.aflak.libraries.FingerprintSecureCallback;
 
 public class MainActivity extends AppCompatActivity implements FingerprintSecureCallback {
-    private FingerprintDialog dialog;
+    private FingerprintDialog fingerprintDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dialog = new FingerprintDialog(this);
+        fingerprintDialog = new FingerprintDialog(this);
+        fingerprintDialog.setAnimation(FingerprintDialog.ENTER_FROM_RIGHT, FingerprintDialog.EXIT_TO_RIGHT);
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.showSecure(R.string.title, R.string.message, MainActivity.this);
+                fingerprintDialog.showSecure(R.string.title, R.string.message, MainActivity.this);
             }
         });
     }
 
     @Override
-    public void onFingerprintSuccess() {
+    public void onAuthenticated() {
         // Fingerprint recognized
     }
 
     @Override
-    public void onFingerprintCancel() {
+    public void onCancelled() {
         // User pressed cancel button
     }
 
@@ -39,8 +40,8 @@ public class MainActivity extends AppCompatActivity implements FingerprintSecure
         // A new fingerprint was added
         // should prompt a password
         // if (password correct) {
-        //      dialog.generateNewKey()
-        //      dialog.showSecure()
+        //      fingerprintDialog.generateNewKey()
+        //      fingerprintDialog.showSecure()
         // }
     }
 }
