@@ -18,19 +18,15 @@ public class MainActivity extends AppCompatActivity implements FingerprintSecure
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fingerprintAuth();
+                FingerprintDialog.initialize(MainActivity.this, "ArbitraryKey")
+                        .enterAnimation(FingerprintDialog.ENTER_FROM_RIGHT)
+                        .exitAnimation(FingerprintDialog.EXIT_TO_RIGHT)
+                        .callback(MainActivity.this) // if you pass a FingerprintCallback object, the CryptoObject won't be used. If you pass a FingerprintSecureCallback object, it will.
+                        .title(R.string.title)
+                        .message(R.string.message)
+                        .show();
             }
         });
-    }
-
-    void fingerprintAuth(){
-        FingerprintDialog.initialize(this, "ArbitraryKey")
-                .enterAnimation(FingerprintDialog.ENTER_FROM_RIGHT)
-                .exitAnimation(FingerprintDialog.EXIT_TO_RIGHT)
-                .callback(this) // if you pass a FingerprintCallback object, the CryptoObject won't be used. If you pass a FingerprintSecureCallback object, it will.
-                .title(R.string.title)
-                .message(R.string.message)
-                .show();
     }
 
     @Override
@@ -49,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements FingerprintSecure
         // should prompt a password to verify identity
         // if (password correct) {
         //      helper.generateNewKey();
-        //      dialog.show()
+        //      dialog.show();
         // }
     }
 }

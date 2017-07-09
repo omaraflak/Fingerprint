@@ -42,7 +42,7 @@ The **FingerprintDialog** library provides a simple way to manage the dialog :
                     // should prompt a password to verify identity
                     // if (password correct) {
                     //      helper.generateNewKey();
-                    //      // show fingerprint dialog again
+                    //      dialog.show();
                     // }
                 }
             }) // if you pass a FingerprintCallback object, the CryptoObject won't be used. If you pass a FingerprintSecureCallback object, it will.
