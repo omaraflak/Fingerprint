@@ -37,7 +37,7 @@ The **FingerprintDialog** library provides a simple way to manage the dialog :
                 }
 
                 @Override
-                public void onNewFingerprintEnrolled(KeyStoreHelper helper) {
+                public void onNewFingerprintEnrolled(KeyStoreHelper helper, FingerprintDialog dialog) {
                     // A new fingerprint was added
                     // should prompt a password to verify identity
                     // if (password correct) {
