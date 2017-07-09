@@ -20,41 +20,38 @@ Maven :
 
 # Use
 
-    FingerprintDialog dialog = new FingerprintDialog(Context);
-    dialog.showSecure(R.string.title, R.string.message, new FingerprintSecureCallback() {
-        @Override
-        public void onAuthenticated() {
-            // Fingerprint recognized
-        }
-    
-        @Override
-        public void onCancelled() {
-            // User pressed cancel button
-        }
-    
-        @Override
-        public void onNewFingerprintEnrolled() {
-            // A new fingerprint was added
-            // should prompt a password
-            // if (password correct) {
-            //      dialog.generateNewKey()
-            //      dialog.showSecure(...)
-            // }
-        }
-    });
+The **FingerprintDialog** library provides a simple way to manage the dialog :
+
+    FingerprintDialog.initialize(this, "ArbitraryKey")
+            .enterAnimation(FingerprintDialog.ENTER_FROM_RIGHT)
+            .exitAnimation(FingerprintDialog.EXIT_TO_RIGHT)
+            .callback(new FingerprintSecureCallback() {
+                @Override
+                public void onAuthenticated() {
+                    // Fingerprint recognized
+                }
+
+                @Override
+                public void onCancelled() {
+                    // User pressed cancel button
+                }
+
+                @Override
+                public void onNewFingerprintEnrolled(KeyStoreHelper helper) {
+                    // A new fingerprint was added
+                    // should prompt a password to verify identity
+                    // if (password correct) {
+                    //      helper.generateNewKey();
+                    //      // show fingerprint dialog again
+                    // }
+                }
+            }) // if you pass a FingerprintCallback object, the CryptoObject won't be used. If you pass a FingerprintSecureCallback object, it will.
+            .title(R.string.title)
+            .message(R.string.message)
+            .show();
     
 See **[MainActivity.java](https://github.com/omaflak/FingerprintDialog/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/MainActivity.java)**
 
-# Methods
-
-- **show**
-- **showSecure**
-- **hasEnrolledFingerprints**
-- **isHardwareDetected**
-- **generateNewKey**
-- **setSuccessColor**
-- **setErrorColor**
-- **setAnimation**
-- **setCanceledOnTouchOutside**
+# Rendering
 
 ![alt text](https://github.com/omaflak/FingerprintDialog/blob/master/GIF/demo.gif?raw=true)
