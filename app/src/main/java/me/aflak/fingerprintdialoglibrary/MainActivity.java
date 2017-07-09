@@ -44,12 +44,12 @@ public class MainActivity extends AppCompatActivity implements FingerprintSecure
     }
 
     @Override
-    public void onNewFingerprintEnrolled(KeyStoreHelper helper) {
+    public void onNewFingerprintEnrolled(KeyStoreHelper helper, FingerprintDialog dialog) {
         // A new fingerprint was added
         // should prompt a password to verify identity
         // if (password correct) {
         //      helper.generateNewKey();
-        //      fingerprintAuth();
+        //      dialog.show()
         // }
     }
 }

@@ -7,5 +7,5 @@ package me.aflak.libraries;
 public interface FingerprintSecureCallback extends FingerprintCallback{
     void onAuthenticated();
     void onCancelled();
-    void onNewFingerprintEnrolled(KeyStoreHelper helper);
+    void onNewFingerprintEnrolled(KeyStoreHelper helper, FingerprintDialog dialog);
 }

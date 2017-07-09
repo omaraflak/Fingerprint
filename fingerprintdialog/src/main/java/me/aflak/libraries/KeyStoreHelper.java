@@ -4,6 +4,7 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
+
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyStore;
@@ -46,6 +47,10 @@ public class KeyStoreHelper {
             return;
         }
 
+        reloadKeyStore();
+    }
+
+    private void reloadKeyStore(){
         try {
             keyStore = KeyStore.getInstance(provider);
             keyStore.load(null);
@@ -115,6 +120,7 @@ public class KeyStoreHelper {
             createGenerator();
         }
         secretKey = keyGenerator.generateKey();
+        reloadKeyStore();
     }
 
     public void getCryptoObject(KeyStoreHelperCallback callback){
