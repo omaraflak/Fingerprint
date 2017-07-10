@@ -43,13 +43,13 @@ public class FingerprintDialog {
 
     private final static String TAG = "FingerprintDialog";
 
-    public FingerprintDialog(Context context, FingerprintManager fingerprintManager, String KEY_NAME){
+    private FingerprintDialog(Context context, FingerprintManager fingerprintManager, String KEY_NAME){
         this.context = context;
         this.fingerprintManager = fingerprintManager;
         init(KEY_NAME);
     }
 
-    public FingerprintDialog(Context context, String KEY_NAME){
+    private FingerprintDialog(Context context, String KEY_NAME){
         this.context = context;
         this.fingerprintManager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
         init(KEY_NAME);
@@ -160,7 +160,7 @@ public class FingerprintDialog {
             @Override
             public void onNewFingerprintEnrolled() {
                 if(fingerprintSecureCallback!=null){
-                    fingerprintSecureCallback.onNewFingerprintEnrolled(keyStoreHelper, FingerprintDialog.this);
+                    fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(keyStoreHelper, FingerprintDialog.this));
                 }
             }
 
@@ -182,10 +182,10 @@ public class FingerprintDialog {
     }
 
     private void showDialog(){
-        view = layoutInflater.inflate(R.layout.dialog, null);
-        ((TextView) view.findViewById(R.id.dialog_title)).setText(title);
-        ((TextView) view.findViewById(R.id.dialog_message)).setText(message);
-        builder.setPositiveButton(R.string.cancel_button, new DialogInterface.OnClickListener() {
+        view = layoutInflater.inflate(R.layout.fingerprint_dialog, null);
+        ((TextView) view.findViewById(R.id.fingerprint_dialog_title)).setText(title);
+        ((TextView) view.findViewById(R.id.fingerprint_dialog_message)).setText(message);
+        builder.setPositiveButton(R.string.fingerprint_cancel_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 cancellationSignal.cancel();
@@ -289,7 +289,7 @@ public class FingerprintDialog {
                     @Override
                     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
-                        setStatus(R.string.state_success, successColor, R.drawable.fingerprint_success);
+                        setStatus(R.string.fingerprint_state_success, successColor, R.drawable.fingerprint_success);
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -304,16 +304,16 @@ public class FingerprintDialog {
                     @Override
                     public void onAuthenticationFailed() {
                         super.onAuthenticationFailed();
-                        setStatus(R.string.state_failure, errorColor, R.drawable.fingerprint_error);
+                        setStatus(R.string.fingerprint_state_failure, errorColor, R.drawable.fingerprint_error);
                     }
                 }, null);
             }
             else{
-                Log.e(TAG,"No fingerprint enrolled. Use hasEnrolledFingerprints() before showing the dialog.");
+                Log.e(TAG,"No fingerprint enrolled. Use hasEnrolledFingerprints() before showing the fingerprint_dialog.");
             }
         }
         else{
-            Log.e(TAG, "No fingerprint scanner detected. Use isHardwareDetected() before showing the dialog.");
+            Log.e(TAG, "No fingerprint scanner detected. Use isHardwareDetected() before showing the fingerprint_dialog.");
         }
     }
 
@@ -322,9 +322,9 @@ public class FingerprintDialog {
     }
 
     private void setStatus(final String text, final int color, final int drawable){
-        ImageView foreground = view.findViewById(R.id.dialog_icon_foreground);
-        View background = view.findViewById(R.id.dialog_icon_background);
-        TextView status = view.findViewById(R.id.dialog_status);
+        ImageView foreground = view.findViewById(R.id.fingerprint_dialog_icon_foreground);
+        View background = view.findViewById(R.id.fingerprint_dialog_icon_background);
+        TextView status = view.findViewById(R.id.fingerprint_dialog_status);
 
         foreground.setImageResource(drawable);
         background.setBackgroundTintList(ColorStateList.valueOf(context.getColor(color)));

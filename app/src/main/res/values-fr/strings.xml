@@ -1,4 +1,7 @@
 <resources>
-    <string name="title">Identification</string>
-    <string name="message">Confirmez votre identité</string>
+    <string name="fingerprint_title">Identification</string>
+    <string name="fingerprint_message">Confirmez votre identité</string>
+
+    <string name="password_title">Mot de passe</string>
+    <string name="password_message">Vous devez entrez votre mot de passe car une nouvelle empreinte à été ajouté</string>
 </resources>

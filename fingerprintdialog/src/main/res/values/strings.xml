@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="state_scanning">Touch sensor</string>
-    <string name="state_success">Fingerprint recognized</string>
-    <string name="state_failure">Fingerprint not recognized.\nTry again.</string>
-    <string name="cancel_button">Cancel</string>
-    <string name="description_fingerprint_icon">Fingerprint icon</string>
+    <string name="fingerprint_state_scanning">Touch sensor</string>
+    <string name="fingerprint_state_success">Fingerprint recognized</string>
+    <string name="fingerprint_state_failure">Fingerprint not recognized.\nTry again.</string>
+    <string name="fingerprint_cancel_button">Cancel</string>
+    <string name="fingerprint_icon_description">Fingerprint icon</string>
+
+    <string name="password_confirm">Confirm</string>
+    <string name="password_cancel">Cancel</string>
 </resources>

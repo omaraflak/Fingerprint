@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Fingerprint Dialog Library</string>
 
-    <string name="title">Sign in</string>
-    <string name="message">Confirm fingerprint to continue</string>
+    <string name="fingerprint_title">Sign in</string>
+    <string name="fingerprint_message">Confirm fingerprint to continue</string>
+
+    <string name="password_title">Password</string>
+    <string name="password_message">You need to enter your password because a new fingerprint was added</string>
 </resources>

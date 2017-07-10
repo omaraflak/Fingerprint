@@ -8,7 +8,7 @@
     android:paddingTop="24dp">
 
     <TextView
-        android:id="@+id/dialog_title"
+        android:id="@+id/fingerprint_dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -16,7 +16,7 @@
         android:textAppearance="@android:style/TextAppearance.Material.Large"/>
 
     <TextView
-        android:id="@+id/dialog_message"
+        android:id="@+id/fingerprint_dialog_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
@@ -30,12 +30,12 @@
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:id="@+id/dialog_layout_icon"
+            android:id="@+id/fingerprint_dialog_layout_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <View
-                android:id="@+id/dialog_icon_background"
+                android:id="@+id/fingerprint_dialog_icon_background"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/circle"
@@ -43,24 +43,24 @@
                 android:layout_centerVertical="true"/>
 
             <ImageView
-                android:id="@+id/dialog_icon_foreground"
+                android:id="@+id/fingerprint_dialog_icon_foreground"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/fingerprint"
-                android:contentDescription="@string/description_fingerprint_icon"
+                android:contentDescription="@string/fingerprint_icon_description"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"/>
 
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/dialog_status"
+            android:id="@+id/fingerprint_dialog_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:textAppearance="@android:style/TextAppearance.Material.Body1"
-            android:text="@string/state_scanning"
+            android:text="@string/fingerprint_state_scanning"
             android:textSize="15sp"
             android:textColor="#42000000"/>
 
