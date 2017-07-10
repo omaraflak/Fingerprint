@@ -152,13 +152,14 @@ public class PasswordDialog {
                 })
                 .create();
 
-        if(dialog.getWindow() != null && (enterAnimation!=NO_ANIMATION || exitAnimation!=NO_ANIMATION)) {
-            int style = FingerprintDialog.getStyle(enterAnimation, exitAnimation);
-            if(style==-1){
-                Log.w(TAG, "The animation selected is not available. Default animation will be used.");
-            }
-            else {
-                dialog.getWindow().getAttributes().windowAnimations = style;
+        if(dialog.getWindow() != null) {
+            if(enterAnimation!=NO_ANIMATION || exitAnimation!=NO_ANIMATION) {
+                int style = FingerprintDialog.getStyle(enterAnimation, exitAnimation);
+                if (style == -1) {
+                    Log.w(TAG, "The animation selected is not available. Default animation will be used.");
+                } else {
+                    dialog.getWindow().getAttributes().windowAnimations = style;
+                }
             }
 
             if(!darkBackground){
