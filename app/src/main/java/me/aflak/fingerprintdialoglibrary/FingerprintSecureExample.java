@@ -2,10 +2,8 @@ package me.aflak.fingerprintdialoglibrary;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
-import me.aflak.libraries.FingerprintCallback;
 import me.aflak.libraries.FingerprintDialog;
 import me.aflak.libraries.FingerprintSecureCallback;
 import me.aflak.libraries.FingerprintToken;
@@ -34,12 +32,12 @@ public class FingerprintSecureExample extends AppCompatActivity implements Finge
     }
 
     @Override
-    public void onAuthenticated() {
+    public void onAuthenticationSuccess() {
         // Fingerprint recognized
     }
 
     @Override
-    public void onCancelled() {
+    public void onAuthenticationCancel() {
         // User pressed cancel button
     }
 
@@ -70,7 +68,7 @@ public class FingerprintSecureExample extends AppCompatActivity implements Finge
     }
 
     @Override
-    public void onCancel() {
+    public void onPasswordCancel() {
         // User pressed cancel button
     }
 }

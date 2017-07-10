@@ -190,7 +190,7 @@ public class FingerprintDialog {
             public void onClick(DialogInterface dialogInterface, int i) {
                 cancellationSignal.cancel();
                 if(fingerprintCallback!=null) {
-                    fingerprintCallback.onCancelled();
+                    fingerprintCallback.onAuthenticationCancel();
                 }
             }
         });
@@ -295,7 +295,7 @@ public class FingerprintDialog {
                             public void run() {
                                 dialog.cancel();
                                 if (fingerprintCallback != null) {
-                                    fingerprintCallback.onAuthenticated();
+                                    fingerprintCallback.onAuthenticationSuccess();
                                 }
                             }
                         }, delayAfterSuccess);

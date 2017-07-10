@@ -124,7 +124,7 @@ public class PasswordDialog {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(callback!=null){
-                            callback.onCancel();
+                            callback.onPasswordCancel();
                         }
                     }
                 })

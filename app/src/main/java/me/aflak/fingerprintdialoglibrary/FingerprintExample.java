@@ -34,12 +34,12 @@ public class FingerprintExample extends AppCompatActivity implements Fingerprint
     }
 
     @Override
-    public void onAuthenticated() {
+    public void onAuthenticationSuccess() {
         // Fingerprint recognized
     }
 
     @Override
-    public void onCancelled() {
+    public void onAuthenticationCancel() {
         // User pressed cancel button
     }
 }
