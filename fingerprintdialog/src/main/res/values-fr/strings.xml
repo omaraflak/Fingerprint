@@ -8,4 +8,5 @@
 
     <string name="password_confirm">Confirmer</string>
     <string name="password_cancel">Annuler</string>
+    <string name="password_incorrect">Mot de passe incorrect</string>
 </resources>

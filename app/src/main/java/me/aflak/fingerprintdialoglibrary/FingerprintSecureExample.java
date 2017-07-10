@@ -2,6 +2,7 @@ package me.aflak.fingerprintdialoglibrary;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import me.aflak.libraries.FingerprintCallback;
@@ -55,6 +56,8 @@ public class FingerprintSecureExample extends AppCompatActivity implements Finge
         //
         // Use PasswordDialog to simplify the process
 
+        Log.e("TEST", "NEW");
+
         PasswordDialog.initialize(FingerprintSecureExample.this, token)
                 .title(R.string.password_title)
                 .message(R.string.password_message)
@@ -66,11 +69,6 @@ public class FingerprintSecureExample extends AppCompatActivity implements Finge
     @Override
     public boolean onPasswordCheck(String password) {
         return password.equals("the correct password");
-    }
-
-    @Override
-    public void onPasswordWrong() {
-        // Condition in onPasswordCheck didn't pass
     }
 
     @Override

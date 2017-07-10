@@ -65,8 +65,8 @@ public class FingerprintDialog {
         this.errorColor = R.color.auth_failed;
         this.delayAfterSuccess = 1200;
         this.cancelOnTouchOutside = false;
-        this.enterAnimation = ENTER_FROM_BOTTOM;
-        this.exitAnimation = EXIT_TO_BOTTOM;
+        this.enterAnimation = NO_ANIMATION;
+        this.exitAnimation = NO_ANIMATION;
         this.cryptoObject = null;
     }
 
@@ -197,9 +197,9 @@ public class FingerprintDialog {
         builder.setView(view);
         dialog = builder.create();
         if(dialog.getWindow() != null && (enterAnimation!=NO_ANIMATION || exitAnimation!=NO_ANIMATION)) {
-            int style = getStyle();
+            int style = getStyle(enterAnimation, exitAnimation);
             if(style==-1){
-                Log.e(TAG, "The animation selected is not available. Default animation will be used.");
+                Log.w(TAG, "The animation selected is not available. Default animation will be used.");
             }
             else {
                 dialog.getWindow().getAttributes().windowAnimations = style;
@@ -211,7 +211,7 @@ public class FingerprintDialog {
         auth();
     }
 
-    private int getStyle(){
+    public static int getStyle(int enterAnimation, int exitAnimation){
         switch (enterAnimation){
             case ENTER_FROM_BOTTOM:
                 switch (exitAnimation){
