@@ -32,6 +32,7 @@ public class PasswordDialog {
         this.token = token;
         this.inflater = LayoutInflater.from(context);
         this.builder = new AlertDialog.Builder(context);
+        this.passwordType = PASSWORD_TYPE_TEXT;
         this.callback = null;
     }
 
