@@ -56,8 +56,6 @@ public class FingerprintSecureExample extends AppCompatActivity implements Finge
         //
         // Use PasswordDialog to simplify the process
 
-        Log.e("TEST", "NEW");
-
         PasswordDialog.initialize(FingerprintSecureExample.this, token)
                 .title(R.string.password_title)
                 .message(R.string.password_message)
