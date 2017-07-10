@@ -62,7 +62,7 @@
             android:textAppearance="@android:style/TextAppearance.Material.Body1"
             android:text="@string/fingerprint_state_scanning"
             android:textSize="15sp"
-            android:textColor="#42000000"/>
+            android:textColor="@color/fingerprint_auth_scanning"/>
 
     </LinearLayout>
 

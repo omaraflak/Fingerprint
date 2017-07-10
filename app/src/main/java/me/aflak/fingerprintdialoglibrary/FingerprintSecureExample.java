@@ -2,8 +2,10 @@ package me.aflak.fingerprintdialoglibrary;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import me.aflak.libraries.FailAuthCounterCallback;
 import me.aflak.libraries.FingerprintDialog;
 import me.aflak.libraries.FingerprintSecureCallback;
 import me.aflak.libraries.FingerprintToken;

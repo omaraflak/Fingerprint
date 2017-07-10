@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="fingerprint_circle">#607D8B</color>
-    <color name="auth_failed">#F4511E</color>
-    <color name="auth_success">#009688</color>
+    <color name="fingerprint_auth_failed">#F4511E</color>
+    <color name="fingerprint_auth_success">#009688</color>
+    <color name="fingerprint_auth_scanning">#42000000</color>
 </resources>
