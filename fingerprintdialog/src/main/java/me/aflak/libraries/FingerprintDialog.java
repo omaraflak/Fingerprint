@@ -35,7 +35,7 @@ public class FingerprintDialog {
 
     private String title, message;
 
-    private boolean cancelOnTouchOutside;
+    private boolean cancelOnTouchOutside, cancelOnPressBack;
     private int enterAnimation, exitAnimation, successColor, errorColor, delayAfterSuccess;
     private int limit, tryCounter;
 
@@ -68,6 +68,7 @@ public class FingerprintDialog {
         this.errorColor = R.color.fingerprint_auth_failed;
         this.delayAfterSuccess = 1200;
         this.cancelOnTouchOutside = false;
+        this.cancelOnPressBack = false;
         this.enterAnimation = NO_ANIMATION;
         this.exitAnimation = NO_ANIMATION;
         this.cryptoObject = null;
@@ -148,6 +149,11 @@ public class FingerprintDialog {
         return this;
     }
 
+    public FingerprintDialog cancelOnPressBack(boolean cancelOnPressBack){
+        this.cancelOnPressBack = cancelOnPressBack;
+        return this;
+    }
+
     public FingerprintDialog show(){
         if(title==null || message==null){
             throw new RuntimeException("Title or message cannot be null.");
@@ -216,6 +222,7 @@ public class FingerprintDialog {
             }
         }
         dialog.setCanceledOnTouchOutside(cancelOnTouchOutside);
+        dialog.setCancelable(cancelOnPressBack);
         dialog.show();
 
         auth();

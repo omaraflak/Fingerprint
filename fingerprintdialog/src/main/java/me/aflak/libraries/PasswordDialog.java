@@ -19,6 +19,7 @@ public class PasswordDialog {
     private FingerprintToken token;
     private LayoutInflater inflater;
     private PasswordCallback callback;
+    private FailAuthCounterCallback counterCallback;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
 
@@ -28,8 +29,9 @@ public class PasswordDialog {
 
     private int enterAnimation;
     private int exitAnimation;
+    private int limit, tryCounter;
 
-    private boolean cancelOnTouchOutside;
+    private boolean cancelOnTouchOutside, cancelOnPressBack;
 
     public static final int PASSWORD_TYPE_TEXT = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
     public static final int PASSWORD_TYPE_NUMBER = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD;
@@ -49,7 +51,10 @@ public class PasswordDialog {
         this.enterAnimation = NO_ANIMATION;
         this.exitAnimation = NO_ANIMATION;
         this.cancelOnTouchOutside = false;
+        this.cancelOnPressBack = false;
         this.callback = null;
+        this.counterCallback = null;
+        this.tryCounter = 0;
     }
 
     public static PasswordDialog initialize(Context context, FingerprintToken token){
@@ -81,6 +86,12 @@ public class PasswordDialog {
         return this;
     }
 
+    public PasswordDialog tryLimit(int limit, FailAuthCounterCallback counterCallback){
+        this.limit = limit;
+        this.counterCallback = counterCallback;
+        return this;
+    }
+
     public PasswordDialog passwordType(int passwordType){
         this.passwordType = passwordType;
         return this;
@@ -98,6 +109,11 @@ public class PasswordDialog {
 
     public PasswordDialog cancelOnTouchOutside(boolean cancelOnTouchOutside){
         this.cancelOnTouchOutside = cancelOnTouchOutside;
+        return this;
+    }
+
+    public PasswordDialog cancelOnPressBack(boolean cancelOnPressBack){
+        this.cancelOnPressBack = cancelOnPressBack;
         return this;
     }
 
@@ -140,6 +156,7 @@ public class PasswordDialog {
             }
         }
         dialog.setCanceledOnTouchOutside(cancelOnTouchOutside);
+        dialog.setCancelable(cancelOnPressBack);
         dialog.show();
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
@@ -152,9 +169,14 @@ public class PasswordDialog {
                     if (callback.onPasswordCheck(password)){
                         dialog.dismiss();
                         token.continueAuthentication();
+                        tryCounter = 0;
                     }
                     else{
                         input.setError(context.getResources().getString(R.string.password_incorrect));
+                        tryCounter++;
+                        if(counterCallback!=null && tryCounter==limit){
+                            counterCallback.onTryLimitReached();
+                        }
                     }
                 }
             }
