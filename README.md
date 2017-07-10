@@ -3,12 +3,6 @@
 Android library that allows you to create fingerprint dialogs for authentications.
 You can either choose to use a **CryptoObject** or not.
 
-# Dependencie
-
-Gradle :
-
-    implementation 'me.aflak.libraries:fingerprintdialog:X.X'
-
 # Use
 
 The **FingerprintDialog** library provides a simple way to manage the dialog :
@@ -23,6 +17,10 @@ The **FingerprintDialog** library provides a simple way to manage the dialog :
     
 **[EXAMPLES HERE](https://github.com/omaflak/FingerprintDialog-Library/tree/master/app/src/main/java/me/aflak/fingerprintdialoglibrary)**
 
+# Gradle
+
+    implementation 'me.aflak.libraries:fingerprintdialog:X.X'
+    
 # Rendering
 
 ![alt text](https://github.com/omaflak/FingerprintDialog/blob/master/GIF/demo.gif?raw=true)
