@@ -35,7 +35,7 @@ public class FingerprintDialog {
 
     private String title, message;
 
-    private boolean cancelOnTouchOutside, cancelOnPressBack;
+    private boolean cancelOnTouchOutside, cancelOnPressBack, darkBackground;
     private int enterAnimation, exitAnimation, successColor, errorColor, delayAfterSuccess;
     private int limit, tryCounter;
 
@@ -69,6 +69,7 @@ public class FingerprintDialog {
         this.delayAfterSuccess = 1200;
         this.cancelOnTouchOutside = false;
         this.cancelOnPressBack = false;
+        this.darkBackground = true;
         this.enterAnimation = NO_ANIMATION;
         this.exitAnimation = NO_ANIMATION;
         this.cryptoObject = null;
@@ -154,6 +155,11 @@ public class FingerprintDialog {
         return this;
     }
 
+    public FingerprintDialog darkBackground(boolean darkBackground){
+        this.darkBackground = darkBackground;
+        return this;
+    }
+
     public FingerprintDialog show(){
         if(title==null || message==null){
             throw new RuntimeException("Title or message cannot be null.");
@@ -219,6 +225,10 @@ public class FingerprintDialog {
             }
             else {
                 dialog.getWindow().getAttributes().windowAnimations = style;
+            }
+
+            if(!darkBackground){
+                dialog.getWindow().setDimAmount(0.0f);
             }
         }
         dialog.setCanceledOnTouchOutside(cancelOnTouchOutside);

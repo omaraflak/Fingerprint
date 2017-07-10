@@ -31,7 +31,7 @@ public class PasswordDialog {
     private int exitAnimation;
     private int limit, tryCounter;
 
-    private boolean cancelOnTouchOutside, cancelOnPressBack;
+    private boolean cancelOnTouchOutside, cancelOnPressBack, darkBackground;
 
     public static final int PASSWORD_TYPE_TEXT = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
     public static final int PASSWORD_TYPE_NUMBER = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD;
@@ -52,6 +52,7 @@ public class PasswordDialog {
         this.exitAnimation = NO_ANIMATION;
         this.cancelOnTouchOutside = false;
         this.cancelOnPressBack = false;
+        this.darkBackground = true;
         this.callback = null;
         this.counterCallback = null;
         this.tryCounter = 0;
@@ -117,6 +118,11 @@ public class PasswordDialog {
         return this;
     }
 
+    public PasswordDialog darkBackground(boolean darkBackground){
+        this.darkBackground = darkBackground;
+        return this;
+    }
+
     public PasswordDialog show(){
         if(title==null || message==null) {
             throw new RuntimeException("Title or message cannot be null.");
@@ -153,6 +159,10 @@ public class PasswordDialog {
             }
             else {
                 dialog.getWindow().getAttributes().windowAnimations = style;
+            }
+
+            if(!darkBackground){
+                dialog.getWindow().setDimAmount(0.0f);
             }
         }
         dialog.setCanceledOnTouchOutside(cancelOnTouchOutside);
