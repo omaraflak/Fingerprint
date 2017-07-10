@@ -30,7 +30,7 @@ The **FingerprintDialog** library provides a simple way to manage the dialog :
         .message(R.string.message)
         .show();
     
-See **[EXAMPLE HERE](https://github.com/omaflak/FingerprintDialog-Library/tree/master/app/src/main/java/me/aflak/fingerprintdialoglibrary)**
+**[EXAMPLES HERE](https://github.com/omaflak/FingerprintDialog-Library/tree/master/app/src/main/java/me/aflak/fingerprintdialoglibrary)**
 
 # Rendering
 
