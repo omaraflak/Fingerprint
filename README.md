@@ -9,15 +9,6 @@ Gradle :
 
     implementation 'me.aflak.libraries:fingerprintdialog:X.X'
 
-Maven :
-
-    <dependency>
-      <groupId>me.aflak.libraries</groupId>
-      <artifactId>fingerprintdialog</artifactId>
-      <version>X.X</version>
-      <type>pom</type>
-    </dependency>
-
 # Use
 
 The **FingerprintDialog** library provides a simple way to manage the dialog :
