@@ -28,19 +28,18 @@ public class FingerprintDialog {
     private FailAuthCounterCallback counterCallback;
     private FingerprintManager.CryptoObject cryptoObject;
     private KeyStoreHelper keyStoreHelper;
+    private Handler handler;
 
     private LayoutInflater layoutInflater;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     private View view;
 
-    private Handler handler;
-
     private String title, message;
-
-    private boolean cancelOnTouchOutside, cancelOnPressBack, dimBackground;
-    private int enterAnimation, exitAnimation, successColor, errorColor, delayAfterSuccess;
+    private long delayAfterSuccess, delayAfterError;
+    private int enterAnimation, exitAnimation, successColor, errorColor;
     private int limit, tryCounter;
+    private boolean cancelOnTouchOutside, cancelOnPressBack, dimBackground;
 
     private final static String TAG = "FingerprintDialog";
 
@@ -67,6 +66,7 @@ public class FingerprintDialog {
         this.successColor = R.color.fingerprint_auth_success;
         this.errorColor = R.color.fingerprint_auth_failed;
         this.delayAfterSuccess = 1200;
+        this.delayAfterError = 1200;
         this.cancelOnTouchOutside = false;
         this.cancelOnPressBack = false;
         this.dimBackground = true;
@@ -124,8 +124,13 @@ public class FingerprintDialog {
         return this;
     }
 
-    public FingerprintDialog delayAfterSuccess(int delayAfterSuccess){
+    public FingerprintDialog delayAfterSuccess(long delayAfterSuccess){
         this.delayAfterSuccess = delayAfterSuccess;
+        return this;
+    }
+
+    public FingerprintDialog delayAfterError(long delayAfterError){
+        this.delayAfterError = delayAfterError;
         return this;
     }
 
@@ -304,7 +309,7 @@ public class FingerprintDialog {
     }
 
     private void returnToScanningStatus() {
-        handler.postDelayed(returnToScanning, 1200);
+        handler.postDelayed(returnToScanning, delayAfterError);
     }
 
     private Runnable returnToScanning = new Runnable() {
