@@ -34,6 +34,8 @@ public class FingerprintDialog {
     private AlertDialog dialog;
     private View view;
 
+    private Handler handler;
+
     private String title, message;
 
     private boolean cancelOnTouchOutside, cancelOnPressBack, dimBackground;
@@ -58,6 +60,7 @@ public class FingerprintDialog {
         this.keyStoreHelper = new KeyStoreHelper(KEY_NAME);
         this.layoutInflater = LayoutInflater.from(context);
         this.builder = new AlertDialog.Builder(context);
+        this.handler = new Handler();
         this.fingerprintCallback = null;
         this.fingerprintSecureCallback = null;
         this.counterCallback = null;
@@ -249,8 +252,10 @@ public class FingerprintDialog {
                     @Override
                     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
+                        handler.removeCallbacks(returnToScanning);
                         setStatus(R.string.fingerprint_state_success, successColor, successColor, R.drawable.fingerprint_success);
-                        new Handler().postDelayed(new Runnable() {
+
+                        handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 dialog.cancel();
@@ -275,11 +280,11 @@ public class FingerprintDialog {
                 }, null);
             }
             else{
-                Log.e(TAG,"No fingerprint enrolled. Use hasEnrolledFingerprints() before showing the fingerprint_dialog.");
+                Log.e(TAG,"No fingerprint enrolled. Use FingerprintManager#hasEnrolledFingerprints() before.");
             }
         }
         else{
-            Log.e(TAG, "No fingerprint scanner detected. Use isHardwareDetected() before showing the fingerprint_dialog.");
+            Log.e(TAG, "No fingerprint scanner detected. Use FingerprintManager#isHardwareDetected() before.");
         }
     }
 
@@ -299,11 +304,13 @@ public class FingerprintDialog {
     }
 
     private void returnToScanningStatus() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setStatus(R.string.fingerprint_state_scanning, R.color.fingerprint_circle, R.color.fingerprint_auth_scanning, R.drawable.fingerprint);
-            }
-        }, 1200);
+        handler.postDelayed(returnToScanning, 1200);
     }
+
+    private Runnable returnToScanning = new Runnable() {
+        @Override
+        public void run() {
+            setStatus(R.string.fingerprint_state_scanning, R.color.fingerprint_circle, R.color.fingerprint_auth_scanning, R.drawable.fingerprint);
+        }
+    };
 }
