@@ -8,8 +8,8 @@ You can either choose to use a **CryptoObject** or not.
 The **FingerprintDialog** library provides a simple way to manage the dialog :
 
     FingerprintDialog.initialize(Context, "ArbitraryKey")
-        .enterAnimation(FingerprintDialog.ENTER_FROM_RIGHT)
-        .exitAnimation(FingerprintDialog.EXIT_TO_RIGHT)
+        .enterAnimation(DialogAnimation.ENTER_FROM_RIGHT)
+        .exitAnimation(DialogAnimation.EXIT_TO_RIGHT)
         .callback(new FingerprintCallback(...)) // if you pass a FingerprintCallback object, the CryptoObject won't be used. If you pass a FingerprintSecureCallback object, it will.
         .title(R.string.title)
         .message(R.string.message)

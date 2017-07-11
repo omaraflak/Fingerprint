@@ -11,6 +11,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,13 +36,9 @@ public class FingerprintDialog {
 
     private String title, message;
 
-    private boolean cancelOnTouchOutside, cancelOnPressBack, darkBackground;
+    private boolean cancelOnTouchOutside, cancelOnPressBack, dimBackground;
     private int enterAnimation, exitAnimation, successColor, errorColor, delayAfterSuccess;
     private int limit, tryCounter;
-
-    public final static int ENTER_FROM_BOTTOM=0, ENTER_FROM_TOP=1, ENTER_FROM_LEFT=2, ENTER_FROM_RIGHT=3;
-    public final static int EXIT_TO_BOTTOM=0, EXIT_TO_TOP=1, EXIT_TO_LEFT=2, EXIT_TO_RIGHT=3;
-    public final static int NO_ANIMATION=4;
 
     private final static String TAG = "FingerprintDialog";
 
@@ -69,9 +66,9 @@ public class FingerprintDialog {
         this.delayAfterSuccess = 1200;
         this.cancelOnTouchOutside = false;
         this.cancelOnPressBack = false;
-        this.darkBackground = true;
-        this.enterAnimation = NO_ANIMATION;
-        this.exitAnimation = NO_ANIMATION;
+        this.dimBackground = true;
+        this.enterAnimation = DialogAnimation.NO_ANIMATION;
+        this.exitAnimation = DialogAnimation.NO_ANIMATION;
         this.cryptoObject = null;
         this.tryCounter = 0;
     }
@@ -155,8 +152,8 @@ public class FingerprintDialog {
         return this;
     }
 
-    public FingerprintDialog darkBackground(boolean darkBackground){
-        this.darkBackground = darkBackground;
+    public FingerprintDialog dimBackground(boolean dimBackground){
+        this.dimBackground = dimBackground;
         return this;
     }
 
@@ -165,19 +162,16 @@ public class FingerprintDialog {
             throw new RuntimeException("Title or message cannot be null.");
         }
         else if(fingerprintCallback!=null){
-            show(title, message, fingerprintCallback);
+            this.cryptoObject = null;
+            showDialog();
         }
         else if(fingerprintSecureCallback!=null){
-            showSecure(title, message, fingerprintSecureCallback);
+            showSecure();
         }
         return this;
     }
 
-    private void showSecure(String title, String message, final FingerprintSecureCallback fingerprintSecureCallback){
-        this.title = title;
-        this.message = message;
-        this.fingerprintCallback = fingerprintSecureCallback;
-
+    private void showSecure(){
         keyStoreHelper.getCryptoObject(new KeyStoreHelperCallback() {
             @Override
             public void onNewFingerprintEnrolled() {
@@ -192,15 +186,6 @@ public class FingerprintDialog {
                 showDialog();
             }
         });
-    }
-
-    private void show(String title, String message, FingerprintCallback fingerprintCallback){
-        this.cryptoObject = null;
-        this.title = title;
-        this.message = message;
-        this.fingerprintCallback = fingerprintCallback;
-
-        showDialog();
     }
 
     private void showDialog(){
@@ -219,82 +204,27 @@ public class FingerprintDialog {
         builder.setView(view);
         dialog = builder.create();
         if(dialog.getWindow() != null) {
-            if(enterAnimation!=NO_ANIMATION || exitAnimation!=NO_ANIMATION) {
-                int style = getStyle(enterAnimation, exitAnimation);
-                if (style == -1) {
-                    Log.w(TAG, "The animation selected is not available. Default animation will be used.");
-                } else {
+            if(enterAnimation!=DialogAnimation.NO_ANIMATION || exitAnimation!=DialogAnimation.NO_ANIMATION) {
+                int style = DialogAnimation.getStyle(enterAnimation, exitAnimation);
+                if (style != -1) {
                     dialog.getWindow().getAttributes().windowAnimations = style;
+                } else {
+                    Log.w(TAG, "The animation selected is not available. Default animation will be used.");
                 }
             }
 
-            if(!darkBackground){
-                dialog.getWindow().setDimAmount(0.0f);
+            if(!dimBackground){
+                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             }
+        }
+        else{
+            Log.w(TAG, "Could not get window from dialog");
         }
         dialog.setCanceledOnTouchOutside(cancelOnTouchOutside);
         dialog.setCancelable(cancelOnPressBack);
         dialog.show();
 
         auth();
-    }
-
-    public static int getStyle(int enterAnimation, int exitAnimation){
-        switch (enterAnimation){
-            case ENTER_FROM_BOTTOM:
-                switch (exitAnimation){
-                    case EXIT_TO_BOTTOM:
-                        return R.style.BottomBottomAnimation;
-                    case EXIT_TO_TOP:
-                        return R.style.BottomTopAnimation;
-                    case NO_ANIMATION:
-                        return R.style.EnterFromBottomAnimation;
-                }
-                break;
-            case ENTER_FROM_TOP:
-                switch (exitAnimation){
-                    case EXIT_TO_BOTTOM:
-                        return R.style.TopBottomAnimation;
-                    case EXIT_TO_TOP:
-                        return R.style.TopTopAnimation;
-                    case NO_ANIMATION:
-                        return R.style.EnterFromTopAnimation;
-                }
-                break;
-            case ENTER_FROM_LEFT:
-                switch (exitAnimation){
-                    case EXIT_TO_LEFT:
-                        return R.style.LeftLeftAnimation;
-                    case EXIT_TO_RIGHT:
-                        return R.style.LeftRightAnimation;
-                    case NO_ANIMATION:
-                        return R.style.EnterFromLeftAnimation;
-                }
-                break;
-            case ENTER_FROM_RIGHT:
-                switch (exitAnimation){
-                    case EXIT_TO_LEFT:
-                        return R.style.RightLeftAnimation;
-                    case EXIT_TO_RIGHT:
-                        return R.style.RightRightAnimation;
-                    case NO_ANIMATION:
-                        return R.style.EnterFromRightAnimation;
-                }
-                break;
-            case NO_ANIMATION:
-                switch (exitAnimation){
-                    case EXIT_TO_BOTTOM:
-                        return R.style.ExitToBottomAnimation;
-                    case EXIT_TO_TOP:
-                        return R.style.ExitToTopAnimation;
-                    case EXIT_TO_LEFT:
-                        return R.style.ExitToLeftAnimation;
-                    case EXIT_TO_RIGHT:
-                        return R.style.ExitToRightAnimation;
-                }
-                break;
-        }
-        return -1;
     }
 
     private void auth(){

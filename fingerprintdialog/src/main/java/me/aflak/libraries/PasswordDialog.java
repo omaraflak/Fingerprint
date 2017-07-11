@@ -7,6 +7,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -31,14 +32,10 @@ public class PasswordDialog {
     private int exitAnimation;
     private int limit, tryCounter;
 
-    private boolean cancelOnTouchOutside, cancelOnPressBack, darkBackground;
+    private boolean cancelOnTouchOutside, cancelOnPressBack, dimBackground;
 
     public static final int PASSWORD_TYPE_TEXT = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
     public static final int PASSWORD_TYPE_NUMBER = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD;
-
-    public final static int ENTER_FROM_BOTTOM=0, ENTER_FROM_TOP=1, ENTER_FROM_LEFT=2, ENTER_FROM_RIGHT=3;
-    public final static int EXIT_TO_BOTTOM=0, EXIT_TO_TOP=1, EXIT_TO_LEFT=2, EXIT_TO_RIGHT=3;
-    public final static int NO_ANIMATION=4;
 
     private final static String TAG = "PasswordDialog";
 
@@ -48,11 +45,11 @@ public class PasswordDialog {
         this.inflater = LayoutInflater.from(context);
         this.builder = new AlertDialog.Builder(context);
         this.passwordType = PASSWORD_TYPE_TEXT;
-        this.enterAnimation = NO_ANIMATION;
-        this.exitAnimation = NO_ANIMATION;
+        this.enterAnimation = DialogAnimation.NO_ANIMATION;
+        this.exitAnimation = DialogAnimation.NO_ANIMATION;
         this.cancelOnTouchOutside = false;
         this.cancelOnPressBack = false;
-        this.darkBackground = true;
+        this.dimBackground = true;
         this.callback = null;
         this.counterCallback = null;
         this.tryCounter = 0;
@@ -118,8 +115,8 @@ public class PasswordDialog {
         return this;
     }
 
-    public PasswordDialog darkBackground(boolean darkBackground){
-        this.darkBackground = darkBackground;
+    public PasswordDialog dimBackground(boolean dimBackground){
+        this.dimBackground = dimBackground;
         return this;
     }
 
@@ -153,18 +150,21 @@ public class PasswordDialog {
                 .create();
 
         if(dialog.getWindow() != null) {
-            if(enterAnimation!=NO_ANIMATION || exitAnimation!=NO_ANIMATION) {
-                int style = FingerprintDialog.getStyle(enterAnimation, exitAnimation);
-                if (style == -1) {
-                    Log.w(TAG, "The animation selected is not available. Default animation will be used.");
-                } else {
+            if(enterAnimation!=DialogAnimation.NO_ANIMATION || exitAnimation!=DialogAnimation.NO_ANIMATION) {
+                int style = DialogAnimation.getStyle(enterAnimation, exitAnimation);
+                if (style != -1) {
                     dialog.getWindow().getAttributes().windowAnimations = style;
+                } else {
+                    Log.w(TAG, "The animation selected is not available. Default animation will be used.");
                 }
             }
 
-            if(!darkBackground){
-                dialog.getWindow().setDimAmount(0.0f);
+            if(!dimBackground){
+                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             }
+        }
+        else{
+            Log.w(TAG, "Could not get window from dialog");
         }
         dialog.setCanceledOnTouchOutside(cancelOnTouchOutside);
         dialog.setCancelable(cancelOnPressBack);

@@ -2,10 +2,9 @@ package me.aflak.fingerprintdialoglibrary;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
-import me.aflak.libraries.FailAuthCounterCallback;
+import me.aflak.libraries.DialogAnimation;
 import me.aflak.libraries.FingerprintDialog;
 import me.aflak.libraries.FingerprintSecureCallback;
 import me.aflak.libraries.FingerprintToken;
@@ -23,8 +22,8 @@ public class FingerprintSecureExample extends AppCompatActivity implements Finge
             @Override
             public void onClick(View view) {
                 FingerprintDialog.initialize(FingerprintSecureExample.this, "ArbitraryKey")
-                        .enterAnimation(FingerprintDialog.ENTER_FROM_RIGHT)
-                        .exitAnimation(FingerprintDialog.EXIT_TO_RIGHT)
+                        .enterAnimation(DialogAnimation.ENTER_FROM_RIGHT)
+                        .exitAnimation(DialogAnimation.EXIT_TO_RIGHT)
                         .callback(FingerprintSecureExample.this) // if you pass a FingerprintCallback object, the CryptoObject won't be used. If you pass a FingerprintSecureCallback object, it will.
                         .title(R.string.fingerprint_title)
                         .message(R.string.fingerprint_message)
