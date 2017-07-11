@@ -1,5 +1,6 @@
 package me.aflak.fingerprintdialoglibrary;
 
+import android.hardware.fingerprint.FingerprintManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -33,8 +34,9 @@ public class FingerprintSecureExample extends AppCompatActivity implements Finge
     }
 
     @Override
-    public void onAuthenticationSuccess() {
+    public void onAuthenticationSuccess(FingerprintManager.CryptoObject cryptoObject) {
         // Fingerprint recognized
+        // CryptoObject can be used to perform a cryptographic operation
     }
 
     @Override

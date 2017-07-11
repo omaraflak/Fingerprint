@@ -41,6 +41,8 @@ public class FingerprintDialog {
     private int limit, tryCounter;
     private boolean cancelOnTouchOutside, cancelOnPressBack, dimBackground;
 
+    private boolean isSecure;
+
     private final static String TAG = "FingerprintDialog";
 
     private FingerprintDialog(Context context, FingerprintManager fingerprintManager, String KEY_NAME){
@@ -169,12 +171,17 @@ public class FingerprintDialog {
         if(title==null || message==null){
             throw new RuntimeException("Title or message cannot be null.");
         }
+        else if(fingerprintSecureCallback!=null){
+            isSecure = true;
+            showSecure();
+        }
         else if(fingerprintCallback!=null){
-            this.cryptoObject = null;
+            cryptoObject = null;
+            isSecure = false;
             showDialog();
         }
-        else if(fingerprintSecureCallback!=null){
-            showSecure();
+        else{
+            throw new RuntimeException("You must specify a callback.");
         }
         return this;
     }
@@ -183,9 +190,7 @@ public class FingerprintDialog {
         keyStoreHelper.getCryptoObject(new KeyStoreHelperCallback() {
             @Override
             public void onNewFingerprintEnrolled() {
-                if(fingerprintSecureCallback!=null){
-                    fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(keyStoreHelper, FingerprintDialog.this));
-                }
+                fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(keyStoreHelper, FingerprintDialog.this));
             }
 
             @Override
@@ -204,7 +209,10 @@ public class FingerprintDialog {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 cancellationSignal.cancel();
-                if(fingerprintCallback!=null) {
+                if(isSecure){
+                    fingerprintSecureCallback.onAuthenticationCancel();
+                }
+                else{
                     fingerprintCallback.onAuthenticationCancel();
                 }
             }
@@ -264,7 +272,10 @@ public class FingerprintDialog {
                             @Override
                             public void run() {
                                 dialog.cancel();
-                                if (fingerprintCallback != null) {
+                                if(isSecure){
+                                    fingerprintSecureCallback.onAuthenticationSuccess(cryptoObject);
+                                }
+                                else{
                                     fingerprintCallback.onAuthenticationSuccess();
                                 }
                             }
