@@ -28,8 +28,8 @@ public class PasswordDialog {
     private String message;
     private int passwordType;
 
-    private int enterAnimation;
-    private int exitAnimation;
+    private DialogAnimation.Enter enterAnimation;
+    private DialogAnimation.Exit exitAnimation;
     private int limit, tryCounter;
 
     private boolean cancelOnTouchOutside, cancelOnPressBack, dimBackground;
@@ -45,8 +45,8 @@ public class PasswordDialog {
         this.inflater = LayoutInflater.from(context);
         this.builder = new AlertDialog.Builder(context);
         this.passwordType = PASSWORD_TYPE_TEXT;
-        this.enterAnimation = DialogAnimation.NO_ANIMATION;
-        this.exitAnimation = DialogAnimation.NO_ANIMATION;
+        this.enterAnimation = DialogAnimation.Enter.APPEAR;
+        this.exitAnimation = DialogAnimation.Exit.DISAPPEAR;
         this.cancelOnTouchOutside = false;
         this.cancelOnPressBack = false;
         this.dimBackground = true;
@@ -95,12 +95,12 @@ public class PasswordDialog {
         return this;
     }
 
-    public PasswordDialog enterAnimation(int enterAnimation){
+    public PasswordDialog enterAnimation(DialogAnimation.Enter enterAnimation){
         this.enterAnimation = enterAnimation;
         return this;
     }
 
-    public PasswordDialog exitAnimation(int exitAnimation){
+    public PasswordDialog exitAnimation(DialogAnimation.Exit exitAnimation){
         this.exitAnimation = exitAnimation;
         return this;
     }
@@ -150,7 +150,7 @@ public class PasswordDialog {
                 .create();
 
         if(dialog.getWindow() != null) {
-            if(enterAnimation!=DialogAnimation.NO_ANIMATION || exitAnimation!=DialogAnimation.NO_ANIMATION) {
+            if(enterAnimation!=DialogAnimation.Enter.APPEAR || exitAnimation!=DialogAnimation.Exit.DISAPPEAR) {
                 int style = DialogAnimation.getStyle(enterAnimation, exitAnimation);
                 if (style != -1) {
                     dialog.getWindow().getAttributes().windowAnimations = style;

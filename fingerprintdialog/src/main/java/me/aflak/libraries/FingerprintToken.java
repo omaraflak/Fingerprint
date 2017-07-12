@@ -5,17 +5,17 @@ package me.aflak.libraries;
  */
 
 public class FingerprintToken {
-    private KeyStoreHelper keyStoreHelper;
+    private CryptoObjectHelper cryptoObjectHelper;
     private FingerprintDialog fingerprintDialog;
 
-    public FingerprintToken(KeyStoreHelper keyStoreHelper, FingerprintDialog fingerprintDialog) {
-        this.keyStoreHelper = keyStoreHelper;
+    public FingerprintToken(CryptoObjectHelper cryptoObjectHelper, FingerprintDialog fingerprintDialog) {
+        this.cryptoObjectHelper = cryptoObjectHelper;
         this.fingerprintDialog = fingerprintDialog;
     }
 
     public void continueAuthentication(){
-        if(keyStoreHelper!=null && fingerprintDialog!=null) {
-            keyStoreHelper.generateNewKey();
+        if(cryptoObjectHelper !=null && fingerprintDialog!=null) {
+            cryptoObjectHelper.generateNewKey();
             fingerprintDialog.show();
         }
     }

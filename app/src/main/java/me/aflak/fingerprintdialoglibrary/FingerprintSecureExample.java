@@ -5,38 +5,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import me.aflak.libraries.DialogAnimation;
 import me.aflak.libraries.FingerprintDialog;
 import me.aflak.libraries.FingerprintSecureCallback;
 import me.aflak.libraries.FingerprintToken;
 import me.aflak.libraries.PasswordCallback;
 import me.aflak.libraries.PasswordDialog;
 
-public class FingerprintSecureExample extends AppCompatActivity implements FingerprintSecureCallback, PasswordCallback {
+public class FingerprintSecureExample extends AppCompatActivity implements View.OnClickListener, FingerprintSecureCallback, PasswordCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.button).setOnClickListener(this);
+    }
 
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FingerprintDialog.initialize(FingerprintSecureExample.this, "ArbitraryKey")
-                        .enterAnimation(DialogAnimation.ENTER_FROM_RIGHT)
-                        .exitAnimation(DialogAnimation.EXIT_TO_RIGHT)
-                        .callback(FingerprintSecureExample.this) // if you pass a FingerprintCallback object, the CryptoObject won't be used. If you pass a FingerprintSecureCallback object, it will.
-                        .title(R.string.fingerprint_title)
-                        .message(R.string.fingerprint_message)
-                        .show();
-            }
-        });
+    @Override
+    public void onClick(View view) {
+        if(FingerprintDialog.isAvailable(this)){
+            FingerprintDialog.initialize(this, "KeyName")
+                    .title(R.string.fingerprint_title)
+                    .message(R.string.fingerprint_message)
+                    .callback(this) // when only FingerprintSecureCallback is passed, a Cipher in Encryption mode will be used
+                    .show();
+        }
     }
 
     @Override
     public void onAuthenticationSuccess(FingerprintManager.CryptoObject cryptoObject) {
         // Fingerprint recognized
-        // CryptoObject can be used to perform a cryptographic operation
+        // Use CryptoObject to perform cryptographic operations on data
     }
 
     @Override

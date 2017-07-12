@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import me.aflak.libraries.DialogAnimation;
 import me.aflak.libraries.FingerprintCallback;
 import me.aflak.libraries.FingerprintDialog;
 
@@ -13,25 +12,24 @@ import me.aflak.libraries.FingerprintDialog;
  * Created by Omar on 10/07/2017.
  */
 
-public class FingerprintExample extends AppCompatActivity implements FingerprintCallback{
+public class FingerprintExample extends AppCompatActivity implements View.OnClickListener, FingerprintCallback{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.button).setOnClickListener(this);
+    }
 
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FingerprintDialog.initialize(FingerprintExample.this, "ArbitraryKey")
-                        .enterAnimation(DialogAnimation.ENTER_FROM_RIGHT)
-                        .exitAnimation(DialogAnimation.EXIT_TO_RIGHT)
-                        .callback(FingerprintExample.this) // if you pass a FingerprintCallback object, the CryptoObject won't be used. If you pass a FingerprintSecureCallback object, it will.
-                        .title(R.string.fingerprint_title)
-                        .message(R.string.fingerprint_message)
-                        .show();
-            }
-        });
+    @Override
+    public void onClick(View view) {
+        if(FingerprintDialog.isAvailable(this)) {
+            FingerprintDialog.initialize(this, "KeyName")
+                    .title(R.string.fingerprint_title)
+                    .message(R.string.fingerprint_message)
+                    .callback(this)
+                    .show();
+        }
     }
 
     @Override

@@ -15,6 +15,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import javax.crypto.Cipher;
+
 /**
  * Created by Omar on 02/07/2017.
  */
@@ -27,7 +29,7 @@ public class FingerprintDialog {
     private FingerprintSecureCallback fingerprintSecureCallback;
     private FailAuthCounterCallback counterCallback;
     private FingerprintManager.CryptoObject cryptoObject;
-    private KeyStoreHelper keyStoreHelper;
+    private CryptoObjectHelper cryptoObjectHelper;
     private Handler handler;
 
     private LayoutInflater layoutInflater;
@@ -37,11 +39,13 @@ public class FingerprintDialog {
 
     private String title, message;
     private long delayAfterSuccess, delayAfterError;
-    private int enterAnimation, exitAnimation, successColor, errorColor;
+    private CryptoObjectHelper.Type cryptoObjectType;
+    private DialogAnimation.Enter enterAnimation;
+    private DialogAnimation.Exit exitAnimation;
+    private int cryptoObjectMode;
     private int limit, tryCounter;
+    private int successColor, errorColor;
     private boolean cancelOnTouchOutside, cancelOnPressBack, dimBackground;
-
-    private boolean isSecure;
 
     private final static String TAG = "FingerprintDialog";
 
@@ -58,7 +62,7 @@ public class FingerprintDialog {
     }
 
     private void init(String KEY_NAME){
-        this.keyStoreHelper = new KeyStoreHelper(KEY_NAME);
+        this.cryptoObjectHelper = new CryptoObjectHelper(KEY_NAME);
         this.layoutInflater = LayoutInflater.from(context);
         this.builder = new AlertDialog.Builder(context);
         this.handler = new Handler();
@@ -72,10 +76,15 @@ public class FingerprintDialog {
         this.cancelOnTouchOutside = false;
         this.cancelOnPressBack = false;
         this.dimBackground = true;
-        this.enterAnimation = DialogAnimation.NO_ANIMATION;
-        this.exitAnimation = DialogAnimation.NO_ANIMATION;
+        this.enterAnimation = DialogAnimation.Enter.APPEAR;
+        this.exitAnimation = DialogAnimation.Exit.DISAPPEAR;
         this.cryptoObject = null;
         this.tryCounter = 0;
+    }
+
+    public static boolean isAvailable(Context context){
+        FingerprintManager manager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
+        return (manager.isHardwareDetected() && manager.hasEnrolledFingerprints());
     }
 
     public static FingerprintDialog initialize(Context context, FingerprintManager fingerprintManager, String KEY_NAME){
@@ -112,7 +121,13 @@ public class FingerprintDialog {
     }
 
     public FingerprintDialog callback(FingerprintSecureCallback fingerprintSecureCallback){
+        return callback(fingerprintSecureCallback, CryptoObjectHelper.Type.CIPHER, Cipher.ENCRYPT_MODE);
+    }
+
+    public FingerprintDialog callback(FingerprintSecureCallback fingerprintSecureCallback, CryptoObjectHelper.Type cryptoObjectType, int cryptoObjectMode){
         this.fingerprintSecureCallback = fingerprintSecureCallback;
+        this.cryptoObjectType = cryptoObjectType;
+        this.cryptoObjectMode = cryptoObjectMode;
         return this;
     }
 
@@ -136,12 +151,12 @@ public class FingerprintDialog {
         return this;
     }
 
-    public FingerprintDialog enterAnimation(int enterAnimation){
+    public FingerprintDialog enterAnimation(DialogAnimation.Enter enterAnimation){
         this.enterAnimation = enterAnimation;
         return this;
     }
 
-    public FingerprintDialog exitAnimation(int exitAnimation){
+    public FingerprintDialog exitAnimation(DialogAnimation.Exit exitAnimation){
         this.exitAnimation = exitAnimation;
         return this;
     }
@@ -167,30 +182,34 @@ public class FingerprintDialog {
         return this;
     }
 
+    public FingerprintDialog cryptoObject(FingerprintManager.CryptoObject cryptoObject){
+        this.cryptoObject = cryptoObject;
+        return this;
+    }
+
     public FingerprintDialog show(){
         if(title==null || message==null){
             throw new RuntimeException("Title or message cannot be null.");
         }
-        else if(fingerprintSecureCallback!=null){
-            isSecure = true;
+
+        if(fingerprintSecureCallback!=null){
             showSecure();
         }
         else if(fingerprintCallback!=null){
-            cryptoObject = null;
-            isSecure = false;
             showDialog();
         }
         else{
             throw new RuntimeException("You must specify a callback.");
         }
+
         return this;
     }
 
     private void showSecure(){
-        keyStoreHelper.getCryptoObject(new KeyStoreHelperCallback() {
+        cryptoObjectHelper.getCryptoObject(cryptoObjectType, cryptoObjectMode, new CryptoObjectHelperCallback() {
             @Override
             public void onNewFingerprintEnrolled() {
-                fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(keyStoreHelper, FingerprintDialog.this));
+                fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(cryptoObjectHelper, FingerprintDialog.this));
             }
 
             @Override
@@ -209,7 +228,7 @@ public class FingerprintDialog {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 cancellationSignal.cancel();
-                if(isSecure){
+                if(fingerprintSecureCallback!=null){
                     fingerprintSecureCallback.onAuthenticationCancel();
                 }
                 else{
@@ -220,7 +239,7 @@ public class FingerprintDialog {
         builder.setView(view);
         dialog = builder.create();
         if(dialog.getWindow() != null) {
-            if(enterAnimation!=DialogAnimation.NO_ANIMATION || exitAnimation!=DialogAnimation.NO_ANIMATION) {
+            if(enterAnimation!=DialogAnimation.Enter.APPEAR || exitAnimation!=DialogAnimation.Exit.DISAPPEAR) {
                 int style = DialogAnimation.getStyle(enterAnimation, exitAnimation);
                 if (style != -1) {
                     dialog.getWindow().getAttributes().windowAnimations = style;
@@ -245,62 +264,57 @@ public class FingerprintDialog {
 
     private void auth(){
         cancellationSignal = new CancellationSignal();
-        if(fingerprintManager.isHardwareDetected()) {
-            if (fingerprintManager.hasEnrolledFingerprints()) {
-                fingerprintManager.authenticate(cryptoObject, cancellationSignal, 0, new FingerprintManager.AuthenticationCallback() {
-                    @Override
-                    public void onAuthenticationError(int errorCode, CharSequence errString) {
-                        super.onAuthenticationError(errorCode, errString);
-                        setStatus(errString.toString(), errorColor, errorColor, R.drawable.fingerprint_error);
-                        returnToScanningStatus();
-                    }
+        if(fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints()) {
+            fingerprintManager.authenticate(cryptoObject, cancellationSignal, 0, new FingerprintManager.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationError(int errorCode, CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                    setStatus(errString.toString(), errorColor, errorColor, R.drawable.fingerprint_error);
+                    returnToScanningStatus();
+                }
 
-                    @Override
-                    public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
-                        super.onAuthenticationHelp(helpCode, helpString);
-                        setStatus(helpString.toString(), errorColor, errorColor, R.drawable.fingerprint_error);
-                        returnToScanningStatus();
-                    }
+                @Override
+                public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
+                    super.onAuthenticationHelp(helpCode, helpString);
+                    setStatus(helpString.toString(), errorColor, errorColor, R.drawable.fingerprint_error);
+                    returnToScanningStatus();
+                }
 
-                    @Override
-                    public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
-                        super.onAuthenticationSucceeded(result);
-                        handler.removeCallbacks(returnToScanning);
-                        setStatus(R.string.fingerprint_state_success, successColor, successColor, R.drawable.fingerprint_success);
+                @Override
+                public void onAuthenticationSucceeded(final FingerprintManager.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
+                    handler.removeCallbacks(returnToScanning);
+                    setStatus(R.string.fingerprint_state_success, successColor, successColor, R.drawable.fingerprint_success);
 
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                dialog.cancel();
-                                if(isSecure){
-                                    fingerprintSecureCallback.onAuthenticationSuccess(cryptoObject);
-                                }
-                                else{
-                                    fingerprintCallback.onAuthenticationSuccess();
-                                }
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.cancel();
+                            if(fingerprintSecureCallback!=null){
+                                fingerprintSecureCallback.onAuthenticationSuccess(result.getCryptoObject());
                             }
-                        }, delayAfterSuccess);
-                        tryCounter = 0;
-                    }
-
-                    @Override
-                    public void onAuthenticationFailed() {
-                        super.onAuthenticationFailed();
-                        setStatus(R.string.fingerprint_state_failure, errorColor, errorColor, R.drawable.fingerprint_error);
-                        returnToScanningStatus();
-                        tryCounter++;
-                        if(counterCallback!=null && tryCounter==limit){
-                            counterCallback.onTryLimitReached();
+                            else{
+                                fingerprintCallback.onAuthenticationSuccess();
+                            }
                         }
+                    }, delayAfterSuccess);
+                    tryCounter = 0;
+                }
+
+                @Override
+                public void onAuthenticationFailed() {
+                    super.onAuthenticationFailed();
+                    setStatus(R.string.fingerprint_state_failure, errorColor, errorColor, R.drawable.fingerprint_error);
+                    returnToScanningStatus();
+                    tryCounter++;
+                    if(counterCallback!=null && tryCounter==limit){
+                        counterCallback.onTryLimitReached();
                     }
-                }, null);
-            }
-            else{
-                Log.e(TAG,"No fingerprint enrolled. Use FingerprintManager#hasEnrolledFingerprints() before.");
-            }
+                }
+            }, null);
         }
         else{
-            Log.e(TAG, "No fingerprint scanner detected. Use FingerprintManager#isHardwareDetected() before.");
+            Log.e(TAG, "Fingerprint scanner not detected or no fingerprint enrolled. Use FingerprintDialog#isAvailable(Context) before.");
         }
     }
 

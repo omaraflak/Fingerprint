@@ -7,10 +7,10 @@ You can either choose to use a **CryptoObject** or not.
 
 The **FingerprintDialog** library provides a simple way to manage the dialog :
 
-    FingerprintDialog.initialize(Context, "ArbitraryKey")
-        .enterAnimation(DialogAnimation.ENTER_FROM_RIGHT)
-        .exitAnimation(DialogAnimation.EXIT_TO_RIGHT)
-        .callback(new FingerprintCallback(...)) // if you pass a FingerprintCallback object, the CryptoObject won't be used. If you pass a FingerprintSecureCallback object, it will.
+    FingerprintDialog.initialize(Context, "ArbitraryKeyName")
+        .enterAnimation(DialogAnimation.Enter.RIGHT)
+        .exitAnimation(DialogAnimation.Exit.RIGHT)
+        .callback(new FingerprintCallback(...))
         .title(R.string.title)
         .message(R.string.message)
         .show();
