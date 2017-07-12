@@ -38,9 +38,18 @@ public class CryptoObjectHelper {
     private SecretKey cipherKey;
     private KeyGenerator cipherKeyGenerator;
 
+    private Signature signature;
+    private KeyPair signatureKey;
+    private KeyPairGenerator signatureKeyGenerator;
+
+    private CryptoObjectHelperCallback callback;
+
     private boolean keyStoreLoaded;
+
     private boolean cipherKeyGenCreated;
     private boolean cipherCreated;
+    private boolean signatureKeyGenCreated;
+    private boolean signatureCreated;
 
     private Type type;
     private int mode;
@@ -50,6 +59,7 @@ public class CryptoObjectHelper {
 
     public enum Type{
         CIPHER,
+        SIGNATURE
     }
 
     public CryptoObjectHelper(String keyName){
@@ -57,6 +67,8 @@ public class CryptoObjectHelper {
         this.keyStoreLoaded = false;
         this.cipherKeyGenCreated = false;
         this.cipherCreated = false;
+        this.signatureKeyGenCreated = false;
+        this.signatureCreated = false;
         this.mode = -1;
     }
 
@@ -84,6 +96,15 @@ public class CryptoObjectHelper {
                 case CIPHER:
                     cipherKey = (SecretKey) keyStore.getKey(keyName, null);
                     return cipherKey != null;
+                case SIGNATURE:
+                    Certificate certificate = keyStore.getCertificate(keyName);
+                    if(certificate==null){
+                        return false;
+                    }
+                    PublicKey publicKey = certificate.getPublicKey();
+                    PrivateKey privateKey = (PrivateKey) keyStore.getKey(keyName, null);
+                    signatureKey = new KeyPair(publicKey, privateKey);
+                    return true; //(publicKey != null && privateKey != null);
             }
         } catch (UnrecoverableKeyException e){
             return false;
@@ -148,10 +169,62 @@ public class CryptoObjectHelper {
         throw new RuntimeException("mode not found");
     }
 
+    private void createSignatureKeyGenerator(){
+        if(signatureKeyGenCreated){
+            return;
+        }
+        try {
+            signatureKeyGenerator = KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_EC, provider);
+            signatureKeyGenerator.initialize(new KeyGenParameterSpec.Builder(keyName, KeyProperties.PURPOSE_SIGN)
+                    .setDigests(KeyProperties.DIGEST_SHA256)
+                    .setAlgorithmParameterSpec(new ECGenParameterSpec("secp256r1"))
+                    .setUserAuthenticationRequired(true)
+                    .build());
+
+            signatureKeyGenCreated = true;
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidAlgorithmParameterException e) {
+            throw new RuntimeException("Failed to create key generator", e);
+        }
+    }
+
+    private void createSignature(){
+        if(signatureCreated){
+            return;
+        }
+
+        try {
+            signature = Signature.getInstance("SHA256withECDSA");
+            signatureCreated = true;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Failed to get an instance of Signature", e);
+        }
+    }
+
+    private boolean initSignature() {
+        try {
+            switch (mode) {
+                case KeyProperties.PURPOSE_SIGN:
+                    signature.initSign(signatureKey.getPrivate());
+                    return true;
+                case KeyProperties.PURPOSE_VERIFY:
+                    signature.initVerify(signatureKey.getPublic());
+                    return true;
+            }
+        } catch (KeyPermanentlyInvalidatedException e) {
+            return false;
+        } catch (InvalidKeyException e) {
+            throw new RuntimeException("Failed to init Signature", e);
+        }
+        throw new RuntimeException("mode not found");
+    }
+
     private void create(){
         switch (type) {
             case CIPHER:
                 createCipher();
+                break;
+            case SIGNATURE:
+                createSignature();
                 break;
         }
     }
@@ -160,6 +233,8 @@ public class CryptoObjectHelper {
         switch (type) {
             case CIPHER:
                 return initCipher();
+            case SIGNATURE:
+                return initSignature();
         }
         throw new RuntimeException("type not found");
     }
@@ -168,6 +243,8 @@ public class CryptoObjectHelper {
         switch (type) {
             case CIPHER:
                 return new FingerprintManager.CryptoObject(cipher);
+            case SIGNATURE:
+                return new FingerprintManager.CryptoObject(signature);
         }
         throw new RuntimeException("type not found");
     }
@@ -182,13 +259,22 @@ public class CryptoObjectHelper {
                 createCipherKeyGenerator();
                 cipherKey = cipherKeyGenerator.generateKey();
                 break;
+            case SIGNATURE:
+                createSignatureKeyGenerator();
+                signatureKey = signatureKeyGenerator.generateKeyPair();
+                break;
         }
         reloadKeyStore();
+    }
+
+    public void recall(){
+        getCryptoObject(type, mode, callback);
     }
 
     public void getCryptoObject(Type type, int mode, CryptoObjectHelperCallback callback){
         this.type = type;
         this.mode = mode;
+        this.callback = callback;
 
         loadKeyStore();
         if(!hasKey()){

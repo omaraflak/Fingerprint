@@ -18,6 +18,7 @@ import android.widget.TextView;
 public class PasswordDialog {
     private Context context;
     private FingerprintToken token;
+    private CryptoObjectHelper cryptoObjectHelper;
     private LayoutInflater inflater;
     private PasswordCallback callback;
     private FailAuthCounterCallback counterCallback;
@@ -33,6 +34,7 @@ public class PasswordDialog {
     private int limit, tryCounter;
 
     private boolean cancelOnTouchOutside, cancelOnPressBack, dimBackground;
+    private boolean manualMode;
 
     public static final int PASSWORD_TYPE_TEXT = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
     public static final int PASSWORD_TYPE_NUMBER = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD;
@@ -42,6 +44,18 @@ public class PasswordDialog {
     private PasswordDialog(Context context, FingerprintToken token){
         this.context = context;
         this.token = token;
+        this.manualMode = false;
+        init();
+    }
+
+    private PasswordDialog(Context context, CryptoObjectHelper cryptoObjectHelper){
+        this.context = context;
+        this.cryptoObjectHelper = cryptoObjectHelper;
+        this.manualMode = true;
+        init();
+    }
+
+    private void init(){
         this.inflater = LayoutInflater.from(context);
         this.builder = new AlertDialog.Builder(context);
         this.passwordType = PASSWORD_TYPE_TEXT;
@@ -57,6 +71,10 @@ public class PasswordDialog {
 
     public static PasswordDialog initialize(Context context, FingerprintToken token){
         return new PasswordDialog(context, token);
+    }
+
+    public static PasswordDialog initialize(Context context, CryptoObjectHelper helper){
+        return new PasswordDialog(context, helper);
     }
 
     public PasswordDialog title(String title){
@@ -179,7 +197,13 @@ public class PasswordDialog {
                     String password = input.getText().toString();
                     if (callback.onPasswordCheck(password)){
                         dialog.dismiss();
-                        token.continueAuthentication();
+                        if(manualMode){
+                            cryptoObjectHelper.generateNewKey();
+                            cryptoObjectHelper.recall();
+                        }
+                        else {
+                            token.continueAuthentication();
+                        }
                         tryCounter = 0;
                     }
                     else{

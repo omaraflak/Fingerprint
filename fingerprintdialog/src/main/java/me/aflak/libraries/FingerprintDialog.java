@@ -39,30 +39,29 @@ public class FingerprintDialog {
 
     private String title, message;
     private long delayAfterSuccess, delayAfterError;
-    private CryptoObjectHelper.Type cryptoObjectType;
-    private DialogAnimation.Enter enterAnimation;
-    private DialogAnimation.Exit exitAnimation;
-    private int cryptoObjectMode;
     private int limit, tryCounter;
     private int successColor, errorColor;
     private boolean cancelOnTouchOutside, cancelOnPressBack, dimBackground;
 
+    private DialogAnimation.Enter enterAnimation;
+    private DialogAnimation.Exit exitAnimation;
+
     private final static String TAG = "FingerprintDialog";
 
-    private FingerprintDialog(Context context, FingerprintManager fingerprintManager, String KEY_NAME){
+    private FingerprintDialog(Context context, FingerprintManager fingerprintManager){
         this.context = context;
         this.fingerprintManager = fingerprintManager;
-        init(KEY_NAME);
+        init();
     }
 
-    private FingerprintDialog(Context context, String KEY_NAME){
+    private FingerprintDialog(Context context){
         this.context = context;
         this.fingerprintManager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
-        init(KEY_NAME);
+        init();
     }
 
-    private void init(String KEY_NAME){
-        this.cryptoObjectHelper = new CryptoObjectHelper(KEY_NAME);
+    private void init(){
+        this.cryptoObjectHelper = null;
         this.layoutInflater = LayoutInflater.from(context);
         this.builder = new AlertDialog.Builder(context);
         this.handler = new Handler();
@@ -87,12 +86,12 @@ public class FingerprintDialog {
         return (manager.isHardwareDetected() && manager.hasEnrolledFingerprints());
     }
 
-    public static FingerprintDialog initialize(Context context, FingerprintManager fingerprintManager, String KEY_NAME){
-        return new FingerprintDialog(context, fingerprintManager, KEY_NAME);
+    public static FingerprintDialog initialize(Context context, FingerprintManager fingerprintManager){
+        return new FingerprintDialog(context, fingerprintManager);
     }
 
-    public static FingerprintDialog initialize(Context context, String KEY_NAME){
-        return new FingerprintDialog(context, KEY_NAME);
+    public static FingerprintDialog initialize(Context context){
+        return new FingerprintDialog(context);
     }
 
     public FingerprintDialog title(String title){
@@ -120,14 +119,9 @@ public class FingerprintDialog {
         return this;
     }
 
-    public FingerprintDialog callback(FingerprintSecureCallback fingerprintSecureCallback){
-        return callback(fingerprintSecureCallback, CryptoObjectHelper.Type.CIPHER, Cipher.ENCRYPT_MODE);
-    }
-
-    public FingerprintDialog callback(FingerprintSecureCallback fingerprintSecureCallback, CryptoObjectHelper.Type cryptoObjectType, int cryptoObjectMode){
+    public FingerprintDialog callback(FingerprintSecureCallback fingerprintSecureCallback, String KEY_NAME){
         this.fingerprintSecureCallback = fingerprintSecureCallback;
-        this.cryptoObjectType = cryptoObjectType;
-        this.cryptoObjectMode = cryptoObjectMode;
+        this.cryptoObjectHelper = new CryptoObjectHelper(KEY_NAME);
         return this;
     }
 
@@ -193,6 +187,9 @@ public class FingerprintDialog {
         }
 
         if(fingerprintSecureCallback!=null){
+            if(cryptoObject!=null){
+                throw new RuntimeException("If you specify a CryptoObject you have to use FingerprintCallback");
+            }
             showSecure();
         }
         else if(fingerprintCallback!=null){
@@ -206,7 +203,7 @@ public class FingerprintDialog {
     }
 
     private void showSecure(){
-        cryptoObjectHelper.getCryptoObject(cryptoObjectType, cryptoObjectMode, new CryptoObjectHelperCallback() {
+        cryptoObjectHelper.getCryptoObject(CryptoObjectHelper.Type.CIPHER, Cipher.ENCRYPT_MODE, new CryptoObjectHelperCallback() {
             @Override
             public void onNewFingerprintEnrolled() {
                 fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(cryptoObjectHelper, FingerprintDialog.this));
@@ -291,7 +288,7 @@ public class FingerprintDialog {
                         public void run() {
                             dialog.cancel();
                             if(fingerprintSecureCallback!=null){
-                                fingerprintSecureCallback.onAuthenticationSuccess(result.getCryptoObject());
+                                fingerprintSecureCallback.onAuthenticationSuccess();
                             }
                             else{
                                 fingerprintCallback.onAuthenticationSuccess();

@@ -24,7 +24,7 @@ public class FingerprintExample extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         if(FingerprintDialog.isAvailable(this)) {
-            FingerprintDialog.initialize(this, "KeyName")
+            FingerprintDialog.initialize(this)
                     .title(R.string.fingerprint_title)
                     .message(R.string.fingerprint_message)
                     .callback(this)
