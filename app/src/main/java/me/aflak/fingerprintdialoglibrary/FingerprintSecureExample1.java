@@ -25,7 +25,7 @@ public class FingerprintSecureExample1 extends AppCompatActivity implements View
             FingerprintDialog.initialize(this)
                     .title(R.string.fingerprint_title)
                     .message(R.string.fingerprint_message)
-                    .callback(this, "KeyName")
+                    .callback(this, "KeyName1")
                     .show();
         }
     }

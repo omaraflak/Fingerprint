@@ -15,7 +15,6 @@ import me.aflak.libraries.PasswordDialog;
 
 public class FingerprintSecureExample2 extends AppCompatActivity implements View.OnClickListener, FingerprintCallback, PasswordCallback {
     private CryptoObjectHelper helper;
-    private FingerprintManager.CryptoObject cryptoObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +22,12 @@ public class FingerprintSecureExample2 extends AppCompatActivity implements View
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.button).setOnClickListener(FingerprintSecureExample2.this);
-        helper = new CryptoObjectHelper("KeyName");
+        helper = new CryptoObjectHelper("KeyName2");
     }
 
     @Override
     public void onClick(View view) {
-        helper.getCryptoObject(CryptoObjectHelper.Type.SIGNATURE, KeyProperties.PURPOSE_SIGN, new CryptoObjectHelperCallback() {
+        helper.getCryptoObject(CryptoObjectHelper.Type.SIGNATURE, KeyProperties.PURPOSE_VERIFY, new CryptoObjectHelperCallback() {
             @Override
             public void onNewFingerprintEnrolled() {
                 // /!\ A new fingerprint was added /!\
