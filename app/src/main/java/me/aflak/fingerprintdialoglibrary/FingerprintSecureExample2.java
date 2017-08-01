@@ -26,7 +26,7 @@ public class FingerprintSecureExample2 extends AppCompatActivity implements View
 
     @Override
     public void onClick(View view) {
-        FingerprintManager.CryptoObject cryptoObject = helper.getCryptoObject(CryptoObjectHelper.Type.SIGNATURE, KeyProperties.PURPOSE_VERIFY);
+        FingerprintManager.CryptoObject cryptoObject = helper.getCryptoObject(CryptoObjectHelper.Type.SIGNATURE, KeyProperties.PURPOSE_SIGN);
         if(cryptoObject==null) {
             // /!\ A new fingerprint was added /!\
             //
@@ -39,19 +39,19 @@ public class FingerprintSecureExample2 extends AppCompatActivity implements View
             //
             // Use PasswordDialog to simplify the process
 
-            PasswordDialog.initialize(FingerprintSecureExample2.this, helper)
+            PasswordDialog.initialize(this, helper)
                     .title(R.string.password_title)
                     .message(R.string.password_message)
-                    .callback(FingerprintSecureExample2.this)
+                    .callback(this)
                     .passwordType(PasswordDialog.PASSWORD_TYPE_TEXT)
                     .show();
         }
         else{
-            if(FingerprintDialog.isAvailable(FingerprintSecureExample2.this)) {
-                FingerprintDialog.initialize(FingerprintSecureExample2.this)
+            if(FingerprintDialog.isAvailable(this)) {
+                FingerprintDialog.initialize(this)
                         .title(R.string.fingerprint_title)
                         .message(R.string.fingerprint_message)
-                        .callback(FingerprintSecureExample2.this)
+                        .callback(this)
                         .cryptoObject(cryptoObject)
                         .show();
             }

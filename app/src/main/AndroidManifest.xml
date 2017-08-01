@@ -12,14 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".FingerprintSecureExample1">
+        <activity android:name=".FingerprintExample">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".FingerprintExample"/>
+        <activity android:name=".FingerprintSecureExample1"/>
         <activity android:name=".FingerprintSecureExample2"/>
 
     </application>
