@@ -53,10 +53,10 @@ public class FingerprintSecureExample1 extends AppCompatActivity implements View
         //
         // Use PasswordDialog to simplify the process
 
-        PasswordDialog.initialize(FingerprintSecureExample1.this, token)
+        PasswordDialog.initialize(this, token)
                 .title(R.string.password_title)
                 .message(R.string.password_message)
-                .callback(FingerprintSecureExample1.this)
+                .callback(this)
                 .passwordType(PasswordDialog.PASSWORD_TYPE_TEXT)
                 .show();
     }
