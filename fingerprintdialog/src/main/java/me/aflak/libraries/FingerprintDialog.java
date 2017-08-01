@@ -203,18 +203,13 @@ public class FingerprintDialog {
     }
 
     private void showSecure(){
-        cryptoObjectHelper.getCryptoObject(CryptoObjectHelper.Type.CIPHER, Cipher.ENCRYPT_MODE, new CryptoObjectHelperCallback() {
-            @Override
-            public void onNewFingerprintEnrolled() {
-                fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(cryptoObjectHelper, FingerprintDialog.this));
-            }
-
-            @Override
-            public void onCryptoObjectRetrieved(FingerprintManager.CryptoObject cryptoObject) {
-                FingerprintDialog.this.cryptoObject = cryptoObject;
-                showDialog();
-            }
-        });
+        this.cryptoObject = cryptoObjectHelper.getCryptoObject(CryptoObjectHelper.Type.CIPHER, Cipher.ENCRYPT_MODE);
+        if(cryptoObject==null) {
+            fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(cryptoObjectHelper, FingerprintDialog.this));
+        }
+        else{
+            showDialog();
+        }
     }
 
     private void showDialog(){

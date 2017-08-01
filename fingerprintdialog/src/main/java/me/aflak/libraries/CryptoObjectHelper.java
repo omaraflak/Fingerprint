@@ -42,8 +42,6 @@ public class CryptoObjectHelper {
     private KeyPair signatureKey;
     private KeyPairGenerator signatureKeyGenerator;
 
-    private CryptoObjectHelperCallback callback;
-
     private boolean keyStoreLoaded;
 
     private boolean cipherKeyGenCreated;
@@ -268,13 +266,12 @@ public class CryptoObjectHelper {
     }
 
     public void recall(){
-        getCryptoObject(type, mode, callback);
+        getCryptoObject(type, mode);
     }
 
-    public void getCryptoObject(Type type, int mode, CryptoObjectHelperCallback callback){
+    public FingerprintManager.CryptoObject getCryptoObject(Type type, int mode){
         this.type = type;
         this.mode = mode;
-        this.callback = callback;
 
         loadKeyStore();
         if(!hasKey()){
@@ -283,13 +280,9 @@ public class CryptoObjectHelper {
 
         create();
         if (init()) {
-            if (callback != null) {
-                callback.onCryptoObjectRetrieved(getObject());
-            }
+            return getObject();
         } else {
-            if (callback != null) {
-                callback.onNewFingerprintEnrolled();
-            }
+            return null;
         }
     }
 }

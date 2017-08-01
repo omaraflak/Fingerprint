@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import me.aflak.libraries.CryptoObjectHelper;
-import me.aflak.libraries.CryptoObjectHelperCallback;
 import me.aflak.libraries.FingerprintCallback;
 import me.aflak.libraries.FingerprintDialog;
 import me.aflak.libraries.PasswordCallback;
@@ -27,40 +26,36 @@ public class FingerprintSecureExample2 extends AppCompatActivity implements View
 
     @Override
     public void onClick(View view) {
-        helper.getCryptoObject(CryptoObjectHelper.Type.SIGNATURE, KeyProperties.PURPOSE_VERIFY, new CryptoObjectHelperCallback() {
-            @Override
-            public void onNewFingerprintEnrolled() {
-                // /!\ A new fingerprint was added /!\
-                //
-                // Prompt a password to verify identity, then :
-                // if (password correct) {
-                //      helper.generateNewKey();
-                // }
-                //
-                // OR
-                //
-                // Use PasswordDialog to simplify the process
+        FingerprintManager.CryptoObject cryptoObject = helper.getCryptoObject(CryptoObjectHelper.Type.SIGNATURE, KeyProperties.PURPOSE_VERIFY);
+        if(cryptoObject==null) {
+            // /!\ A new fingerprint was added /!\
+            //
+            // Prompt a password to verify identity, then :
+            // if (password correct) {
+            //      helper.generateNewKey();
+            // }
+            //
+            // OR
+            //
+            // Use PasswordDialog to simplify the process
 
-                PasswordDialog.initialize(FingerprintSecureExample2.this, helper)
-                        .title(R.string.password_title)
-                        .message(R.string.password_message)
+            PasswordDialog.initialize(FingerprintSecureExample2.this, helper)
+                    .title(R.string.password_title)
+                    .message(R.string.password_message)
+                    .callback(FingerprintSecureExample2.this)
+                    .passwordType(PasswordDialog.PASSWORD_TYPE_TEXT)
+                    .show();
+        }
+        else{
+            if(FingerprintDialog.isAvailable(FingerprintSecureExample2.this)) {
+                FingerprintDialog.initialize(FingerprintSecureExample2.this)
+                        .title(R.string.fingerprint_title)
+                        .message(R.string.fingerprint_message)
                         .callback(FingerprintSecureExample2.this)
-                        .passwordType(PasswordDialog.PASSWORD_TYPE_TEXT)
+                        .cryptoObject(cryptoObject)
                         .show();
             }
-
-            @Override
-            public void onCryptoObjectRetrieved(FingerprintManager.CryptoObject cryptoObject) {
-                if(FingerprintDialog.isAvailable(FingerprintSecureExample2.this)) {
-                    FingerprintDialog.initialize(FingerprintSecureExample2.this)
-                            .title(R.string.fingerprint_title)
-                            .message(R.string.fingerprint_message)
-                            .callback(FingerprintSecureExample2.this)
-                            .cryptoObject(cryptoObject)
-                            .show();
-                }
-            }
-        });
+        }
     }
 
     @Override
