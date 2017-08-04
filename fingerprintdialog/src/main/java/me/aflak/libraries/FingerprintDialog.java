@@ -29,7 +29,7 @@ public class FingerprintDialog {
     private FingerprintSecureCallback fingerprintSecureCallback;
     private FailAuthCounterCallback counterCallback;
     private FingerprintManager.CryptoObject cryptoObject;
-    private CryptoObjectHelper cryptoObjectHelper;
+    private CipherHelper cipherHelper;
     private Handler handler;
 
     private LayoutInflater layoutInflater;
@@ -61,7 +61,7 @@ public class FingerprintDialog {
     }
 
     private void init(){
-        this.cryptoObjectHelper = null;
+        this.cipherHelper = null;
         this.layoutInflater = LayoutInflater.from(context);
         this.builder = new AlertDialog.Builder(context);
         this.handler = new Handler();
@@ -121,7 +121,7 @@ public class FingerprintDialog {
 
     public FingerprintDialog callback(FingerprintSecureCallback fingerprintSecureCallback, String KEY_NAME){
         this.fingerprintSecureCallback = fingerprintSecureCallback;
-        this.cryptoObjectHelper = new CryptoObjectHelper(KEY_NAME);
+        this.cipherHelper = new CipherHelper(KEY_NAME);
         return this;
     }
 
@@ -203,9 +203,9 @@ public class FingerprintDialog {
     }
 
     private void showSecure(){
-        this.cryptoObject = cryptoObjectHelper.getCryptoObject(CryptoObjectHelper.Type.CIPHER, Cipher.ENCRYPT_MODE);
+        this.cryptoObject = cipherHelper.getEncryptionCryptoObject();
         if(cryptoObject==null) {
-            fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(cryptoObjectHelper, FingerprintDialog.this));
+            fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(cipherHelper, FingerprintDialog.this));
         }
         else{
             showDialog();

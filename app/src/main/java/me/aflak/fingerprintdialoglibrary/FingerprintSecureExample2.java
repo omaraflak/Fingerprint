@@ -2,20 +2,19 @@ package me.aflak.fingerprintdialoglibrary;
 
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
-import android.security.keystore.KeyProperties;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import java.security.Signature;
 
-import me.aflak.libraries.CryptoObjectHelper;
 import me.aflak.libraries.FingerprintCallback;
 import me.aflak.libraries.FingerprintDialog;
 import me.aflak.libraries.PasswordCallback;
 import me.aflak.libraries.PasswordDialog;
+import me.aflak.libraries.SignatureHelper;
 
 public class FingerprintSecureExample2 extends AppCompatActivity implements View.OnClickListener, FingerprintCallback, PasswordCallback {
-    private CryptoObjectHelper helper;
+    private SignatureHelper helper;
     private FingerprintManager.CryptoObject cryptoObject;
 
     @Override
@@ -23,12 +22,12 @@ public class FingerprintSecureExample2 extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.button).setOnClickListener(this);
-        helper = new CryptoObjectHelper("KeyName2");
+        helper = new SignatureHelper("KeyName2");
     }
 
     @Override
     public void onClick(View view) {
-        cryptoObject = helper.getCryptoObject(CryptoObjectHelper.Type.SIGNATURE, KeyProperties.PURPOSE_SIGN);
+        cryptoObject = helper.getSigningCryptoObject();
         if(cryptoObject==null) {
             // /!\ A new fingerprint was added /!\
             //

@@ -18,7 +18,8 @@ import android.widget.TextView;
 public class PasswordDialog {
     private Context context;
     private FingerprintToken token;
-    private CryptoObjectHelper cryptoObjectHelper;
+    private CipherHelper cipherHelper;
+    private SignatureHelper signatureHelper;
     private LayoutInflater inflater;
     private PasswordCallback callback;
     private FailAuthCounterCallback counterCallback;
@@ -34,7 +35,7 @@ public class PasswordDialog {
     private int limit, tryCounter;
 
     private boolean cancelOnTouchOutside, cancelOnPressBack, dimBackground;
-    private boolean manualMode;
+    private boolean manualMode, isUsingCipher;
 
     public static final int PASSWORD_TYPE_TEXT = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
     public static final int PASSWORD_TYPE_NUMBER = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD;
@@ -48,10 +49,19 @@ public class PasswordDialog {
         init();
     }
 
-    private PasswordDialog(Context context, CryptoObjectHelper cryptoObjectHelper){
+    private PasswordDialog(Context context, CipherHelper cipherHelper){
         this.context = context;
-        this.cryptoObjectHelper = cryptoObjectHelper;
+        this.cipherHelper = cipherHelper;
         this.manualMode = true;
+        this.isUsingCipher = true;
+        init();
+    }
+
+    private PasswordDialog(Context context, SignatureHelper signatureHelper){
+        this.context = context;
+        this.signatureHelper = signatureHelper;
+        this.manualMode = true;
+        this.isUsingCipher = false;
         init();
     }
 
@@ -73,7 +83,11 @@ public class PasswordDialog {
         return new PasswordDialog(context, token);
     }
 
-    public static PasswordDialog initialize(Context context, CryptoObjectHelper helper){
+    public static PasswordDialog initialize(Context context, CipherHelper helper){
+        return new PasswordDialog(context, helper);
+    }
+
+    public static PasswordDialog initialize(Context context, SignatureHelper helper){
         return new PasswordDialog(context, helper);
     }
 
@@ -198,8 +212,14 @@ public class PasswordDialog {
                     if (callback.onPasswordCheck(password)){
                         dialog.dismiss();
                         if(manualMode){
-                            cryptoObjectHelper.generateNewKey();
-                            cryptoObjectHelper.recall();
+                            if(isUsingCipher){
+                                cipherHelper.generateNewKey();
+                                cipherHelper.recall();
+                            }
+                            else{
+                                signatureHelper.generateNewKey();
+                                signatureHelper.recall();
+                            }
                         }
                         else {
                             token.continueAuthentication();
