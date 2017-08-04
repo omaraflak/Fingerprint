@@ -32,9 +32,6 @@ public class CipherHelper {
     private boolean keyStoreLoaded;
     private boolean cipherKeyGenCreated;
     private boolean cipherCreated;
-    private boolean lastCallEncryption;
-
-    private byte[] ivBytes;
 
     private final String keyName;
     private final String provider = "AndroidKeyStore";
@@ -108,15 +105,24 @@ public class CipherHelper {
         }
     }
 
-    private boolean initEncryptionCipher() {
+    private boolean initEncryptionCipher(byte[] ivBytes) {
         try {
-            cipher.init(Cipher.ENCRYPT_MODE, cipherKey);
+            if(ivBytes!=null) {
+                cipher.init(Cipher.ENCRYPT_MODE, cipherKey, new IvParameterSpec(ivBytes));
+            }
+            else{
+                cipher.init(Cipher.ENCRYPT_MODE, cipherKey);
+            }
             return true;
         } catch (KeyPermanentlyInvalidatedException e) {
             return false;
-        } catch (InvalidKeyException e) {
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
             throw new RuntimeException("Failed to init Cipher", e);
         }
+    }
+
+    private boolean initEncryptionCipher() {
+        return initDecryptionCipher(null);
     }
 
     private boolean initDecryptionCipher(byte[] ivBytes){
@@ -136,35 +142,25 @@ public class CipherHelper {
         reloadKeyStore();
     }
 
-    public void recall(){
-        if(lastCallEncryption){
-            getEncryptionCryptoObject();
-        }
-        else{
-            getDecryptionCryptoObject(ivBytes);
-        }
-    }
-
-    public FingerprintManager.CryptoObject getEncryptionCryptoObject(){
-        this.lastCallEncryption = true;
-
+    public FingerprintManager.CryptoObject getEncryptionCryptoObject(byte[] ivBytes){
         loadKeyStore();
         if(!hasKey()){
             generateNewKey();
         }
 
         createCipher();
-        if (initEncryptionCipher()) {
+        if (initEncryptionCipher(ivBytes)) {
             return new FingerprintManager.CryptoObject(cipher);
         } else {
             return null;
         }
     }
 
-    public FingerprintManager.CryptoObject getDecryptionCryptoObject(byte[] ivBytes){
-        this.lastCallEncryption = false;
-        this.ivBytes = ivBytes;
+    public FingerprintManager.CryptoObject getEncryptionCryptoObject(){
+        return getEncryptionCryptoObject(null);
+    }
 
+    public FingerprintManager.CryptoObject getDecryptionCryptoObject(byte[] ivBytes){
         loadKeyStore();
         if(!hasKey()){
             generateNewKey();

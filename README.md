@@ -35,7 +35,6 @@ The CryptoObject will be valid only if the user has authenticated via fingerprin
         // Prompt a password to verify identity, then :
         // if (password correct) {
         //      helper.generateNewKey();
-        //      // then recall getEncryptionCryptoObject()
         // }
         //
         // OR

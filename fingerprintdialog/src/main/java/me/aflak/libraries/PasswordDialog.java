@@ -214,11 +214,9 @@ public class PasswordDialog {
                         if(manualMode){
                             if(isUsingCipher){
                                 cipherHelper.generateNewKey();
-                                cipherHelper.recall();
                             }
                             else{
                                 signatureHelper.generateNewKey();
-                                signatureHelper.recall();
                             }
                         }
                         else {

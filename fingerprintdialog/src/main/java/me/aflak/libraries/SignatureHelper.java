@@ -34,7 +34,6 @@ public class SignatureHelper {
     private boolean keyStoreLoaded;
     private boolean signatureKeyGenCreated;
     private boolean signatureCreated;
-    private boolean lastCallSigning;
 
     private final String keyName;
     private final String provider = "AndroidKeyStore";
@@ -140,18 +139,7 @@ public class SignatureHelper {
         reloadKeyStore();
     }
 
-    public void recall(){
-        if(lastCallSigning){
-            getSigningCryptoObject();
-        }
-        else{
-            getVerifyingCryptoObject();
-        }
-    }
-
     public FingerprintManager.CryptoObject getSigningCryptoObject(){
-        this.lastCallSigning = true;
-
         loadKeyStore();
         if(!hasKey()){
             generateNewKey();
@@ -166,8 +154,6 @@ public class SignatureHelper {
     }
 
     public FingerprintManager.CryptoObject getVerifyingCryptoObject(){
-        this.lastCallSigning = false;
-
         loadKeyStore();
         if(!hasKey()){
             generateNewKey();
