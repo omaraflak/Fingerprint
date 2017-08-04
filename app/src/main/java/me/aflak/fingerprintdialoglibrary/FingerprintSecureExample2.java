@@ -34,6 +34,7 @@ public class FingerprintSecureExample2 extends AppCompatActivity implements View
             // Prompt a password to verify identity, then :
             // if (password correct) {
             //      helper.generateNewKey();
+            //      // then recall getSigningCryptoObject()
             // }
             //
             // OR

@@ -27,25 +27,33 @@ Check if the user's fingerprint is enrolled in the phone and detect if a new fin
 
 The CryptoObject will be valid only if the user has authenticated via fingerprint. This is one way to ensure that it is the correct user that is performing an operation (via Signature for example).
 
-    CryptoObjectHelper helper = new CryptoObjectHelper("KeyName");
-    FingerprintManager.CryptoObject cryptoObject = helper.getCryptoObject(CryptoObjectHelper.Type.SIGNATURE, KeyProperties.PURPOSE_SIGN);
+    CipherHelper helper = new CipherHelper("KeyName");
+    FingerprintManager.CryptoObject cryptoObject = helper.getEncryptionCryptoObject();
     if(cryptoObject==null){
         // /!\ A new fingerprint was added /!\
         //
         // Prompt a password to verify identity, then :
         // if (password correct) {
         //      helper.generateNewKey();
+        //      // then recall getEncryptionCryptoObject()
         // }
         //
         // OR
         //
         // Use PasswordDialog to simplify the process
+        
+        PasswordDialog.initialize(this, helper)
+                .title(R.string.password_title)
+                .message(R.string.password_message)
+                .callback(this)
+                .passwordType(PasswordDialog.PASSWORD_TYPE_TEXT)
+                .show();
     }
     else{
         if(FingerprintDialog.isAvailable(Context)) {
             FingerprintDialog.initialize(Context)
-                    .title(R.string.title)
-                    .message(R.string.message)
+                    .title(R.string.fingerprint_title)
+                    .message(R.string.fingerprint_message)
                     .callback(new FingerprintCallback(...))
                     .cryptoObject(cryptoObject)
                     .show();
