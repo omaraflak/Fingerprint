@@ -105,24 +105,15 @@ public class CipherHelper {
         }
     }
 
-    private boolean initEncryptionCipher(byte[] ivBytes) {
+    private boolean initEncryptionCipher() {
         try {
-            if(ivBytes!=null) {
-                cipher.init(Cipher.ENCRYPT_MODE, cipherKey, new IvParameterSpec(ivBytes));
-            }
-            else{
-                cipher.init(Cipher.ENCRYPT_MODE, cipherKey);
-            }
+            cipher.init(Cipher.ENCRYPT_MODE, cipherKey);
             return true;
         } catch (KeyPermanentlyInvalidatedException e) {
             return false;
-        } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
+        } catch (InvalidKeyException e) {
             throw new RuntimeException("Failed to init Cipher", e);
         }
-    }
-
-    private boolean initEncryptionCipher() {
-        return initDecryptionCipher(null);
     }
 
     private boolean initDecryptionCipher(byte[] ivBytes){
@@ -142,22 +133,18 @@ public class CipherHelper {
         reloadKeyStore();
     }
 
-    public FingerprintManager.CryptoObject getEncryptionCryptoObject(byte[] ivBytes){
+    public FingerprintManager.CryptoObject getEncryptionCryptoObject(){
         loadKeyStore();
         if(!hasKey()){
             generateNewKey();
         }
 
         createCipher();
-        if (initEncryptionCipher(ivBytes)) {
+        if (initEncryptionCipher()) {
             return new FingerprintManager.CryptoObject(cipher);
         } else {
             return null;
         }
-    }
-
-    public FingerprintManager.CryptoObject getEncryptionCryptoObject(){
-        return getEncryptionCryptoObject(null);
     }
 
     public FingerprintManager.CryptoObject getDecryptionCryptoObject(byte[] ivBytes){
