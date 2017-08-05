@@ -31,8 +31,8 @@ Check if the user's fingerprint is enrolled in the phone and detect if a new fin
 
 The CryptoObject will be valid only if the user has authenticated via fingerprint. This is one way to ensure that it is the correct user that is performing an operation (via Signature for example).
 
-    CipherHelper helper = new CipherHelper("KeyName");
-    FingerprintManager.CryptoObject cryptoObject = helper.getEncryptionCryptoObject();
+    SignatureHelper helper = new SignatureHelper("KeyName");
+    FingerprintManager.CryptoObject cryptoObject = helper.getSigningCryptoObject();
     if(cryptoObject==null){
         // /!\ A new fingerprint was added /!\
         //
