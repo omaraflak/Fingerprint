@@ -7,7 +7,7 @@
 You only want to check if the user's fingerprint is enrolled in the phone.
 
 ```java
-FingerprintDialog.initialize(Context)
+FingerprintDialog.initialize(this)
     .title(R.string.title)
     .message(R.string.message)
     .callback(new FingerprintCallback(...))
@@ -21,7 +21,7 @@ FingerprintDialog.initialize(Context)
 Check if the user's fingerprint is enrolled in the phone and detect if a new fingerprint was added since last time authentication was used.
 
 ```java
-FingerprintDialog.initialize(Context)
+FingerprintDialog.initialize(this)
     .title(R.string.title)
     .message(R.string.message)
     .callback(new FingerprintSecureCallback(...), "KeyName")
@@ -58,8 +58,8 @@ if(cryptoObject==null){
             .show();
 }
 else{
-    if(FingerprintDialog.isAvailable(Context)) {
-        FingerprintDialog.initialize(Context)
+    if(FingerprintDialog.isAvailable(this)) {
+        FingerprintDialog.initialize(this)
                 .title(R.string.fingerprint_title)
                 .message(R.string.fingerprint_message)
                 .callback(new FingerprintCallback(...))
