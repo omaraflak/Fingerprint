@@ -13,6 +13,8 @@ You only want to check if the user's fingerprint is enrolled in the phone.
         .callback(new FingerprintCallback(...))
         .show();
         
+[EXAMPLE](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintExample.java)
+        
 # Usecase n°2 : With CryptoObject
 
 Check if the user's fingerprint is enrolled in the phone and detect if a new fingerprint was added since last time authentication was used.
@@ -23,6 +25,8 @@ Check if the user's fingerprint is enrolled in the phone and detect if a new fin
         .callback(new FingerprintSecureCallback(...), "KeyName")
         .show();
         
+[EXAMPLE](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureExample1.java)
+
 # Usecase n°3 : Secure a CryptoObject via authentication
 
 The CryptoObject will be valid only if the user has authenticated via fingerprint. This is one way to ensure that it is the correct user that is performing an operation (via Signature for example).
@@ -59,7 +63,7 @@ The CryptoObject will be valid only if the user has authenticated via fingerprin
         }   
     }
     
-**[EXAMPLES HERE](https://github.com/omaflak/FingerprintDialog-Library/tree/master/app/src/main/java/me/aflak/fingerprintdialoglibrary)**
+[EXAMPLE](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureExample2.java)
 
 # Gradle
 
