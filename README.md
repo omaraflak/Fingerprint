@@ -2,7 +2,7 @@
 
 **FingerprintDialog** is an Android library that simplifies the process of fingerprint authentications.
 
-# Usecase n°1 : No CryptoObject
+# Usecase n°1 : Without CryptoObject
 
 You only want to check if the user's fingerprint is enrolled in the phone.
 
