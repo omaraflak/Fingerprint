@@ -1,7 +1,6 @@
-# Fingerprint Dialog [ ![Download](https://api.bintray.com/packages/omaflak/maven/fingerprintdialog/images/download.svg) ](https://bintray.com/omaflak/maven/fingerprintdialog/_latestVersion)
+# FingerprintDialog [ ![Download](https://api.bintray.com/packages/omaflak/maven/fingerprintdialog/images/download.svg) ](https://bintray.com/omaflak/maven/fingerprintdialog/_latestVersion)
 
-**FingerprintDialog** is an Android library that allows you to create fingerprint dialogs for authentications.
-You can either choose to use a **CryptoObject** or not.
+**FingerprintDialog** is an Android library that simplifies the process of fingerprint authentications.
 
 # Usecase n°1 : No CryptoObject
 
