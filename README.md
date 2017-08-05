@@ -48,7 +48,7 @@ The CryptoObject will be valid only if the user has authenticated via fingerprin
         PasswordDialog.initialize(this, helper)
                 .title(R.string.password_title)
                 .message(R.string.password_message)
-                .callback(this)
+                .callback(new PasswordCallback(...))
                 .passwordType(PasswordDialog.PASSWORD_TYPE_TEXT)
                 .show();
     }
