@@ -9,4 +9,7 @@
     <string name="password_confirm">Confirm</string>
     <string name="password_cancel">Cancel</string>
     <string name="password_incorrect">Incorrect Password</string>
+
+    <string name="activity_menu_fingerprint_example">Simple Auth</string>
+    <string name="activity_menu_fingerprint_secure_example1">Secure Auth 1</string>
 </resources>

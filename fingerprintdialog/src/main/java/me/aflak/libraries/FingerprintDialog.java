@@ -1,6 +1,5 @@
 package me.aflak.libraries;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
@@ -9,20 +8,16 @@ import android.os.CancellationSignal;
 import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import javax.crypto.Cipher;
-
 /**
  * Created by Omar on 02/07/2017.
  */
 
-public class FingerprintDialog {
-    private Context context;
+public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
     private FingerprintManager fingerprintManager;
     private CancellationSignal cancellationSignal;
     private FingerprintCallback fingerprintCallback;
@@ -32,38 +27,26 @@ public class FingerprintDialog {
     private CipherHelper cipherHelper;
     private Handler handler;
 
-    private LayoutInflater layoutInflater;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
-    private View view;
-
-    private String title, message;
     private long delayAfterSuccess, delayAfterError;
     private int limit, tryCounter;
     private int successColor, errorColor;
-    private boolean cancelOnTouchOutside, cancelOnPressBack, dimBackground;
-
-    private DialogAnimation.Enter enterAnimation;
-    private DialogAnimation.Exit exitAnimation;
 
     private final static String TAG = "FingerprintDialog";
 
     private FingerprintDialog(Context context, FingerprintManager fingerprintManager){
-        this.context = context;
+        super(context);
         this.fingerprintManager = fingerprintManager;
         init();
     }
 
     private FingerprintDialog(Context context){
-        this.context = context;
+        super(context);
         this.fingerprintManager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
         init();
     }
 
     private void init(){
         this.cipherHelper = null;
-        this.layoutInflater = LayoutInflater.from(context);
-        this.builder = new AlertDialog.Builder(context);
         this.handler = new Handler();
         this.fingerprintCallback = null;
         this.fingerprintSecureCallback = null;
@@ -72,18 +55,13 @@ public class FingerprintDialog {
         this.errorColor = R.color.fingerprint_auth_failed;
         this.delayAfterSuccess = 1200;
         this.delayAfterError = 1200;
-        this.cancelOnTouchOutside = false;
-        this.cancelOnPressBack = false;
-        this.dimBackground = true;
-        this.enterAnimation = DialogAnimation.Enter.APPEAR;
-        this.exitAnimation = DialogAnimation.Exit.DISAPPEAR;
         this.cryptoObject = null;
         this.tryCounter = 0;
     }
 
     public static boolean isAvailable(Context context){
         FingerprintManager manager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
-        return (manager.isHardwareDetected() && manager.hasEnrolledFingerprints());
+        return (manager!=null && manager.isHardwareDetected() && manager.hasEnrolledFingerprints());
     }
 
     public static FingerprintDialog initialize(Context context, FingerprintManager fingerprintManager){
@@ -94,26 +72,6 @@ public class FingerprintDialog {
         return new FingerprintDialog(context);
     }
 
-    public FingerprintDialog title(String title){
-        this.title = title;
-        return this;
-    }
-
-    public FingerprintDialog message(String message){
-        this.message = message;
-        return this;
-    }
-
-    public FingerprintDialog title(int resTitle){
-        this.title = context.getResources().getString(resTitle);
-        return this;
-    }
-
-    public FingerprintDialog message(int resMessage){
-        this.message = context.getResources().getString(resMessage);
-        return this;
-    }
-
     public FingerprintDialog callback(FingerprintCallback fingerprintCallback){
         this.fingerprintCallback = fingerprintCallback;
         return this;
@@ -122,6 +80,11 @@ public class FingerprintDialog {
     public FingerprintDialog callback(FingerprintSecureCallback fingerprintSecureCallback, String KEY_NAME){
         this.fingerprintSecureCallback = fingerprintSecureCallback;
         this.cipherHelper = new CipherHelper(KEY_NAME);
+        return this;
+    }
+
+    public FingerprintDialog cryptoObject(FingerprintManager.CryptoObject cryptoObject){
+        this.cryptoObject = cryptoObject;
         return this;
     }
 
@@ -145,39 +108,9 @@ public class FingerprintDialog {
         return this;
     }
 
-    public FingerprintDialog enterAnimation(DialogAnimation.Enter enterAnimation){
-        this.enterAnimation = enterAnimation;
-        return this;
-    }
-
-    public FingerprintDialog exitAnimation(DialogAnimation.Exit exitAnimation){
-        this.exitAnimation = exitAnimation;
-        return this;
-    }
-
     public FingerprintDialog tryLimit(int limit, FailAuthCounterCallback counterCallback){
         this.limit = limit;
         this.counterCallback = counterCallback;
-        return this;
-    }
-
-    public FingerprintDialog cancelOnTouchOutside(boolean cancelOnTouchOutside) {
-        this.cancelOnTouchOutside = cancelOnTouchOutside;
-        return this;
-    }
-
-    public FingerprintDialog cancelOnPressBack(boolean cancelOnPressBack){
-        this.cancelOnPressBack = cancelOnPressBack;
-        return this;
-    }
-
-    public FingerprintDialog dimBackground(boolean dimBackground){
-        this.dimBackground = dimBackground;
-        return this;
-    }
-
-    public FingerprintDialog cryptoObject(FingerprintManager.CryptoObject cryptoObject){
-        this.cryptoObject = cryptoObject;
         return this;
     }
 
@@ -216,6 +149,8 @@ public class FingerprintDialog {
         view = layoutInflater.inflate(R.layout.fingerprint_dialog, null);
         ((TextView) view.findViewById(R.id.fingerprint_dialog_title)).setText(title);
         ((TextView) view.findViewById(R.id.fingerprint_dialog_message)).setText(message);
+
+        builder.setView(view);
         builder.setPositiveButton(R.string.fingerprint_cancel_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -228,7 +163,7 @@ public class FingerprintDialog {
                 }
             }
         });
-        builder.setView(view);
+
         dialog = builder.create();
         if(dialog.getWindow() != null) {
             if(enterAnimation!=DialogAnimation.Enter.APPEAR || exitAnimation!=DialogAnimation.Exit.DISAPPEAR) {
@@ -243,9 +178,6 @@ public class FingerprintDialog {
             if(!dimBackground){
                 dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             }
-        }
-        else{
-            Log.w(TAG, "Could not get window from dialog");
         }
         dialog.setCanceledOnTouchOutside(cancelOnTouchOutside);
         dialog.setCancelable(cancelOnPressBack);

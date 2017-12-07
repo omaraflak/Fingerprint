@@ -32,49 +32,27 @@ FingerprintDialog.initialize(this)
 
 # Usecase n°3 : Secure a CryptoObject via authentication
 
-The CryptoObject will be valid only if the user has authenticated via fingerprint. This is one way to ensure that it is the correct user that is performing an operation (via Signature for example).
+The CryptoObject will be valid only if the user has authenticated via fingerprint.
+You have to use `setUserAuthenticationRequired(true)` when creating the CryptoObject.
 
 ```java
-// You can use CipherHelper and SignatureHelper to generate a CryptoObject, or you can create your own one
-SignatureHelper helper = new SignatureHelper("KeyName");
-FingerprintManager.CryptoObject cryptoObject = helper.getSigningCryptoObject();
-if(cryptoObject==null){
-    // /!\ A new fingerprint was added /!\
-    //
-    // Prompt a password to verify identity, then :
-    // if (password correct) {
-    //      helper.generateNewKey();
-    // }
-    //
-    // OR
-    //
-    // Use PasswordDialog to simplify the process
+FingerprintManager.CryptoObject cryptoObject;
+// cryptoObject = ...
 
-    PasswordDialog.initialize(this, helper)
-            .title(R.string.password_title)
-            .message(R.string.password_message)
-            .callback(new PasswordCallback(...))
-            .passwordType(PasswordDialog.PASSWORD_TYPE_TEXT)
+if(FingerprintDialog.isAvailable(this)) {
+    FingerprintDialog.initialize(this)
+            .title(R.string.fingerprint_title)
+            .message(R.string.fingerprint_message)
+            .callback(new FingerprintCallback(...))
+            .cryptoObject(cryptoObject)
             .show();
 }
-else{
-    if(FingerprintDialog.isAvailable(this)) {
-        FingerprintDialog.initialize(this)
-                .title(R.string.fingerprint_title)
-                .message(R.string.fingerprint_message)
-                .callback(new FingerprintCallback(...))
-                .cryptoObject(cryptoObject)
-                .show();
-    }   
-}
 ```
-
-[EXAMPLE](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureExample2.java)
 
 # Gradle
 
 ```gradle
-implementation 'me.aflak.libraries:fingerprintdialog:X.X'
+implementation 'me.aflak.libraries:fingerprintdialog:2.4.3'
 ```
     
 # Rendering

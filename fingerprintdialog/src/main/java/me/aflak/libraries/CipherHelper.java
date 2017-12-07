@@ -23,7 +23,7 @@ import javax.crypto.spec.IvParameterSpec;
  * Created by Omar on 04/08/2017.
  */
 
-public class CipherHelper {
+class CipherHelper {
     private KeyStore keyStore;
     private Cipher cipher;
     private SecretKey cipherKey;

@@ -45,7 +45,7 @@ public class FingerprintSecureExample1 extends AppCompatActivity implements View
         // /!\ A new fingerprint was added /!\
         //
         // Prompt a password to verify identity, then :
-        // if (password correct) {
+        // if (password.correct()) {
         //      token.continueAuthentication();
         // }
         //
