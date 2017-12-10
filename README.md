@@ -52,7 +52,7 @@ if(FingerprintDialog.isAvailable(this)) {
 # Gradle
 
 ```gradle
-implementation 'me.aflak.libraries:fingerprintdialog:2.4.3'
+implementation 'me.aflak.libraries:fingerprintdialog:2.4.4'
 ```
     
 # Rendering

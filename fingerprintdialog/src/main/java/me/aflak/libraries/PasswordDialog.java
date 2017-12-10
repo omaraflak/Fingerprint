@@ -40,6 +40,10 @@ public class PasswordDialog extends AnimatedDialog<PasswordDialog> {
         return new PasswordDialog(context, token);
     }
 
+    public static PasswordDialog initialize(Context context){
+        return new PasswordDialog(context, null);
+    }
+
     public PasswordDialog callback(PasswordCallback callback){
         this.callback = callback;
         return this;
@@ -72,7 +76,7 @@ public class PasswordDialog extends AnimatedDialog<PasswordDialog> {
                 .setPositiveButton(R.string.password_confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // got to use another listener because this one will close the dialog.
+                        // have to override this listener, otherwise it will close the dialog
                     }
                 })
                 .setNegativeButton(R.string.password_cancel, new DialogInterface.OnClickListener() {
@@ -115,10 +119,13 @@ public class PasswordDialog extends AnimatedDialog<PasswordDialog> {
                     String password = input.getText().toString();
                     if (callback.onPasswordCheck(password)){
                         dialog.dismiss();
-                        token.continueAuthentication();
+                        if(token!=null) {
+                            token.validate();
+                        }
                         tryCounter = 0;
                     }
                     else{
+                        input.setText("");
                         input.setError(context.getResources().getString(R.string.password_incorrect));
                         tryCounter++;
                         if(counterCallback!=null && tryCounter==limit){

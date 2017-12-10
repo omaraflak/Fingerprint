@@ -6,17 +6,14 @@ package me.aflak.libraries;
 
 public class FingerprintToken {
     private CipherHelper cipherHelper;
-    private FingerprintDialog fingerprintDialog;
 
-    public FingerprintToken(CipherHelper cipherHelper, FingerprintDialog fingerprintDialog) {
+    public FingerprintToken(CipherHelper cipherHelper) {
         this.cipherHelper = cipherHelper;
-        this.fingerprintDialog = fingerprintDialog;
     }
 
-    public void continueAuthentication(){
-        if(cipherHelper !=null && fingerprintDialog!=null) {
+    public void validate(){
+        if(cipherHelper !=null) {
             cipherHelper.generateNewKey();
-            fingerprintDialog.show();
         }
     }
 }
