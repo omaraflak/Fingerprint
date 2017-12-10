@@ -49,6 +49,21 @@ if(FingerprintDialog.isAvailable(this)) {
 }
 ```
 
+# Customization
+
+Several functions are available to customize your dialog.
+
+```java
+FingerprintDialog.initialize(this)
+        .title(R.string.fingerprint_title)
+        .message(R.string.fingerprint_message)
+        .enterAnimation(DialogAnimation.Enter.RIGHT)
+        .exitAnimation(DialogAnimation.Exit.RIGHT)
+        .iconCircleScanningColor(R.color.colorAccent)
+        .callback(this)
+        .show();
+```
+
 # Gradle
 
 ```gradle
