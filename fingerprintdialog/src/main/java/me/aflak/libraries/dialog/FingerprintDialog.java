@@ -36,8 +36,8 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
     private long delayAfterSuccess, delayAfterError;
     private int limit, tryCounter;
 
-    private int iconScanningColor, iconSuccessColor, iconErrorColor;
-    private int iconCircleScanningColor, iconCircleSuccessColor, iconCircleErrorColor;
+    private int fingerprintScanningColor, fingerprintSuccessColor, fingerprintErrorColor;
+    private int circleScanningColor, circleSuccessColor, circleErrorColor;
     private int statusScanningColor, statusSuccessColor, statusErrorColor;
 
     private View.OnClickListener onUsePassword;
@@ -64,12 +64,12 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
         this.counterCallback = null;
         this.onUsePassword = null;
         this.cryptoObject = null;
-        this.iconScanningColor = R.color.icon_scanning;
-        this.iconSuccessColor = R.color.icon_success;
-        this.iconErrorColor = R.color.icon_failed;
-        this.iconCircleScanningColor = R.color.icon_circle_scanning;
-        this.iconCircleSuccessColor = R.color.icon_circle_success;
-        this.iconCircleErrorColor = R.color.icon_circle_failed;
+        this.fingerprintScanningColor = R.color.fingerprint_scanning;
+        this.fingerprintSuccessColor = R.color.fingerprint_success;
+        this.fingerprintErrorColor = R.color.fingerprint_failed;
+        this.circleScanningColor = R.color.circle_scanning;
+        this.circleSuccessColor = R.color.circle_success;
+        this.circleErrorColor = R.color.circle_failed;
         this.statusScanningColor = R.color.status_scanning;
         this.statusSuccessColor = R.color.status_success;
         this.statusErrorColor = R.color.status_failed;
@@ -107,33 +107,33 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
         return this;
     }
 
-    public FingerprintDialog iconScanningColor(int iconScanningColor){
-        this.iconScanningColor = iconScanningColor;
+    public FingerprintDialog fingerprintScanningColor(int fingerprintScanningColor){
+        this.fingerprintScanningColor = fingerprintScanningColor;
         return this;
     }
 
-    public FingerprintDialog iconSuccessColor(int iconSuccessColor){
-        this.iconSuccessColor = iconSuccessColor;
+    public FingerprintDialog fingerprintSuccessColor(int fingerprintSuccessColor){
+        this.fingerprintSuccessColor = fingerprintSuccessColor;
         return this;
     }
 
-    public FingerprintDialog iconErrorColor(int iconErrorColor){
-        this.iconErrorColor = iconErrorColor;
+    public FingerprintDialog fingerprintErrorColor(int fingerprintErrorColor){
+        this.fingerprintErrorColor = fingerprintErrorColor;
         return this;
     }
 
-    public FingerprintDialog iconCircleScanningColor(int iconCircleScanningColor){
-        this.iconCircleScanningColor = iconCircleScanningColor;
+    public FingerprintDialog circleScanningColor(int circleScanningColor){
+        this.circleScanningColor = circleScanningColor;
         return this;
     }
 
-    public FingerprintDialog iconCircleSuccessColor(int iconCircleSuccessColor){
-        this.iconCircleSuccessColor = iconCircleSuccessColor;
+    public FingerprintDialog circleSuccessColor(int circleSuccessColor){
+        this.circleSuccessColor = circleSuccessColor;
         return this;
     }
 
-    public FingerprintDialog iconCircleErrorColor(int iconCircleErrorColor){
-        this.iconCircleErrorColor = iconCircleErrorColor;
+    public FingerprintDialog circleErrorColor(int circleErrorColor){
+        this.circleErrorColor = circleErrorColor;
         return this;
     }
 
@@ -212,7 +212,7 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
         AppCompatButton usePasswordButton = view.findViewById(R.id.fingerprint_dialog_use_password);
         cancelButton.setText(R.string.fingerprint_cancel);
         usePasswordButton.setText(R.string.fingerprint_use_password);
-        setStatus(R.string.fingerprint_state_scanning, statusScanningColor, R.drawable.fingerprint, iconScanningColor, iconCircleScanningColor);
+        setStatus(R.string.fingerprint_state_scanning, statusScanningColor, R.drawable.fingerprint, fingerprintScanningColor, circleScanningColor);
 
         builder.setView(view);
         dialog = builder.create();
@@ -273,14 +273,14 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
                 @Override
                 public void onAuthenticationError(int errorCode, CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);
-                    setStatus(errString.toString(), statusErrorColor, R.drawable.fingerprint_error, iconErrorColor, iconCircleErrorColor);
+                    setStatus(errString.toString(), statusErrorColor, R.drawable.fingerprint_error, fingerprintErrorColor, circleErrorColor);
                     handler.postDelayed(returnToScanning, delayAfterError);
                 }
 
                 @Override
                 public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
                     super.onAuthenticationHelp(helpCode, helpString);
-                    setStatus(helpString.toString(), statusErrorColor, R.drawable.fingerprint_error, iconErrorColor, iconCircleErrorColor);
+                    setStatus(helpString.toString(), statusErrorColor, R.drawable.fingerprint_error, fingerprintErrorColor, circleErrorColor);
                     handler.postDelayed(returnToScanning, delayAfterError);
                 }
 
@@ -288,7 +288,7 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
                 public void onAuthenticationSucceeded(final FingerprintManager.AuthenticationResult result) {
                     super.onAuthenticationSucceeded(result);
                     handler.removeCallbacks(returnToScanning);
-                    setStatus(R.string.fingerprint_state_success, statusSuccessColor, R.drawable.fingerprint_success, iconSuccessColor, iconCircleSuccessColor);
+                    setStatus(R.string.fingerprint_state_success, statusSuccessColor, R.drawable.fingerprint_success, fingerprintSuccessColor, circleSuccessColor);
 
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -308,7 +308,7 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
                 @Override
                 public void onAuthenticationFailed() {
                     super.onAuthenticationFailed();
-                    setStatus(R.string.fingerprint_state_failure, statusErrorColor, R.drawable.fingerprint_error, iconErrorColor, iconCircleErrorColor);
+                    setStatus(R.string.fingerprint_state_failure, statusErrorColor, R.drawable.fingerprint_error, fingerprintErrorColor, circleErrorColor);
                     handler.postDelayed(returnToScanning, delayAfterError);
                     tryCounter++;
                     if(counterCallback!=null && tryCounter==limit){
@@ -341,7 +341,7 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
     private Runnable returnToScanning = new Runnable() {
         @Override
         public void run() {
-            setStatus(R.string.fingerprint_state_scanning, statusScanningColor, R.drawable.fingerprint, iconScanningColor, iconCircleScanningColor);
+            setStatus(R.string.fingerprint_state_scanning, statusScanningColor, R.drawable.fingerprint, fingerprintScanningColor, circleScanningColor);
         }
     };
 }

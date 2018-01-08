@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="icon_scanning">#ffffff</color>
-    <color name="icon_success">#ffffff</color>
-    <color name="icon_failed">#ffffff</color>
+    <color name="fingerprint_scanning">#ffffff</color>
+    <color name="fingerprint_success">#ffffff</color>
+    <color name="fingerprint_failed">#ffffff</color>
 
-    <color name="icon_circle_scanning">#607D8B</color>
-    <color name="icon_circle_success">#009688</color>
-    <color name="icon_circle_failed">#F4511E</color>
+    <color name="circle_scanning">#607D8B</color>
+    <color name="circle_success">#009688</color>
+    <color name="circle_failed">#F4511E</color>
 
     <color name="status_scanning">#42000000</color>
     <color name="status_success">#009688</color>

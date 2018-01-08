@@ -29,7 +29,6 @@ public class FingerprintExample extends AppCompatActivity implements View.OnClic
                     .message(R.string.fingerprint_message)
                     .callback(this)
                     .show();
-
         }
     }
 

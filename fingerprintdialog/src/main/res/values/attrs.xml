@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FingerprintView">
+        <attr name="fingerprintScanningColor" format="color" />
+        <attr name="fingerprintSuccessColor" format="color" />
+        <attr name="fingerprintErrorColor" format="color" />
+
+        <attr name="circleScanningColor" format="color" />
+        <attr name="circleSuccessColor" format="color" />
+        <attr name="circleErrorColor" format="color" />
+    </declare-styleable>
+</resources>
