@@ -5,14 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import me.aflak.libraries.callback.FingerprintCallback;
+import me.aflak.libraries.callback.FingerprintDialogCallback;
 import me.aflak.libraries.dialog.FingerprintDialog;
 
 /**
  * Created by Omar on 10/07/2017.
  */
 
-public class FingerprintExample extends AppCompatActivity implements View.OnClickListener, FingerprintCallback{
+public class FingerprintExample extends AppCompatActivity implements View.OnClickListener, FingerprintDialogCallback {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class FingerprintExample extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onAuthenticationSuccess() {
+    public void onAuthenticationSucceeded() {
         // Fingerprint recognized
     }
 

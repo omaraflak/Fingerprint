@@ -5,6 +5,7 @@ package me.aflak.libraries.callback;
  */
 
 public interface FingerprintCallback {
-    void onAuthenticationSuccess();
-    void onAuthenticationCancel();
+    void onAuthenticationSucceeded();
+    void onAuthenticationFailed();
+    void onAuthenticationError(int errorCode, String error);
 }

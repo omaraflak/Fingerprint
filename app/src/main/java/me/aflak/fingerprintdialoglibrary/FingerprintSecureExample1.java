@@ -2,15 +2,17 @@ package me.aflak.fingerprintdialoglibrary;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import me.aflak.libraries.callback.FingerprintDialogSecureCallback;
 import me.aflak.libraries.dialog.FingerprintDialog;
 import me.aflak.libraries.callback.FingerprintSecureCallback;
 import me.aflak.libraries.dialog.FingerprintToken;
 import me.aflak.libraries.callback.PasswordCallback;
 import me.aflak.libraries.dialog.PasswordDialog;
 
-public class FingerprintSecureExample1 extends AppCompatActivity implements View.OnClickListener, FingerprintSecureCallback, PasswordCallback {
+public class FingerprintSecureExample1 extends AppCompatActivity implements View.OnClickListener, FingerprintDialogSecureCallback, PasswordCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class FingerprintSecureExample1 extends AppCompatActivity implements View
     }
 
     @Override
-    public void onAuthenticationSuccess() {
+    public void onAuthenticationSucceeded() {
         // Fingerprint recognized
     }
 
@@ -69,5 +71,10 @@ public class FingerprintSecureExample1 extends AppCompatActivity implements View
     @Override
     public void onPasswordCancel() {
         // User pressed cancel button
+    }
+
+    @Override
+    public void onPasswordSucceeded() {
+        // Password was correct and new keys have been generated
     }
 }

@@ -5,6 +5,7 @@ package me.aflak.libraries.callback;
  */
 
 public interface PasswordCallback {
+    void onPasswordSucceeded();
     boolean onPasswordCheck(String password);
     void onPasswordCancel();
 }

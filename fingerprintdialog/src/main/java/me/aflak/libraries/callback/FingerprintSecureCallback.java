@@ -7,7 +7,8 @@ import me.aflak.libraries.dialog.FingerprintToken;
  */
 
 public interface FingerprintSecureCallback {
-    void onAuthenticationSuccess();
-    void onAuthenticationCancel();
+    void onAuthenticationSucceeded();
+    void onAuthenticationFailed();
     void onNewFingerprintEnrolled(FingerprintToken token);
+    void onAuthenticationError(int errorCode, String error);
 }

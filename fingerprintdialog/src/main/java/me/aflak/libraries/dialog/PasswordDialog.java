@@ -69,14 +69,14 @@ public class PasswordDialog extends AnimatedDialog<PasswordDialog> {
             throw new RuntimeException("Title or message cannot be null.");
         }
 
-        view = layoutInflater.inflate(R.layout.password_dialog, null);
-        ((TextView) view.findViewById(R.id.password_dialog_title)).setText(title);
-        ((TextView) view.findViewById(R.id.password_dialog_message)).setText(message);
-        final EditText input = view.findViewById(R.id.password_dialog_input);
+        dialogView = layoutInflater.inflate(R.layout.password_dialog, null);
+        ((TextView) dialogView.findViewById(R.id.password_dialog_title)).setText(title);
+        ((TextView) dialogView.findViewById(R.id.password_dialog_message)).setText(message);
+        final EditText input = dialogView.findViewById(R.id.password_dialog_input);
 
         input.setInputType(passwordType);
 
-        dialog = builder.setView(view)
+        dialog = builder.setView(dialogView)
                 .setPositiveButton(R.string.password_confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -121,12 +121,13 @@ public class PasswordDialog extends AnimatedDialog<PasswordDialog> {
             {
                 if(callback!=null){
                     String password = input.getText().toString();
-                    if (callback.onPasswordCheck(password)){
+                    if(callback.onPasswordCheck(password)){
                         dialog.dismiss();
-                        if(token!=null) {
+                        if(token!=null){
                             token.validate();
                         }
                         tryCounter = 0;
+                        callback.onPasswordSucceeded();
                     }
                     else{
                         input.setText("");

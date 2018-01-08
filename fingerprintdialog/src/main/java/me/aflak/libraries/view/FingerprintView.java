@@ -1,5 +1,6 @@
 package me.aflak.libraries.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -7,17 +8,19 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.os.CancellationSignal;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import me.aflak.libraries.R;
 import me.aflak.libraries.callback.FailAuthCounterCallback;
-import me.aflak.libraries.callback.FingerprintViewCallback;
-import me.aflak.libraries.callback.FingerprintViewSecureCallback;
+import me.aflak.libraries.callback.FingerprintCallback;
+import me.aflak.libraries.callback.FingerprintSecureCallback;
 import me.aflak.libraries.dialog.CipherHelper;
 import me.aflak.libraries.dialog.FingerprintToken;
 
@@ -25,23 +28,32 @@ import me.aflak.libraries.dialog.FingerprintToken;
  * Created by Omar on 08/01/2018.
  */
 
-public class FingerprintView extends FrameLayout {
+public class FingerprintView extends RelativeLayout {
     private final static String TAG = "FingerprintView";
+
+    private View fingerprintImageView;
+    private View circleView;
 
     private FingerprintManager fingerprintManager;
     private CancellationSignal cancellationSignal;
-    private FingerprintViewCallback fingerprintViewCallback;
-    private FingerprintViewSecureCallback fingerprintViewSecureCallback;
+    private FingerprintCallback fingerprintCallback;
+    private FingerprintSecureCallback fingerprintSecureCallback;
     private FailAuthCounterCallback counterCallback;
     private FingerprintManager.CryptoObject cryptoObject;
     private CipherHelper cipherHelper;
     private Handler handler;
 
-    int fingerprintScanning, fingerprintSuccess, fingerprintError;
-    int circleScanning, circleSuccess, circleError;
+    private int fingerprintScanning, fingerprintSuccess, fingerprintError;
+    private int circleScanning, circleSuccess, circleError;
 
-    private long delayAfterError;
     private int limit, tryCounter;
+    private int delayAfterError;
+    private int size;
+
+    public final static int DEFAULT_DELAY_AFTER_ERROR = 1200;
+    public final static int DEFAULT_CIRCLE_SIZE = 50;
+    public final static int DEFAULT_FINGERPRINT_SIZE = 30;
+    public final static float SCALE = (float) DEFAULT_FINGERPRINT_SIZE/DEFAULT_CIRCLE_SIZE;
 
     public FingerprintView(Context context) {
         super(context);
@@ -65,53 +77,93 @@ public class FingerprintView extends FrameLayout {
         initView(context);
     }
 
+    @SuppressLint("ResourceType")
     private void initAttributes(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes){
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.FingerprintView, defStyleAttr, defStyleRes);
         try {
-            fingerprintScanning = a.getColor(R.styleable.FingerprintView_fingerprintScanningColor, ContextCompat.getColor(context, R.color.fingerprint_scanning));
-            fingerprintSuccess = a.getColor(R.styleable.FingerprintView_fingerprintSuccessColor, ContextCompat.getColor(context, R.color.fingerprint_success));
-            fingerprintError = a.getColor(R.styleable.FingerprintView_fingerprintErrorColor, ContextCompat.getColor(context, R.color.fingerprint_error));
+            fingerprintScanning = a.getResourceId(R.styleable.FingerprintView_fingerprintScanningColor, R.color.fingerprint_scanning);
+            fingerprintSuccess = a.getResourceId(R.styleable.FingerprintView_fingerprintSuccessColor, R.color.fingerprint_success);
+            fingerprintError = a.getResourceId(R.styleable.FingerprintView_fingerprintErrorColor, R.color.fingerprint_error);
 
-            circleScanning = a.getColor(R.styleable.FingerprintView_circleScanningColor, ContextCompat.getColor(context, R.color.circle_scanning));
-            circleSuccess = a.getColor(R.styleable.FingerprintView_circleSuccessColor, ContextCompat.getColor(context, R.color.circle_success));
-            circleError = a.getColor(R.styleable.FingerprintView_circleErrorColor, ContextCompat.getColor(context, R.color.circle_error));
+            circleScanning = a.getResourceId(R.styleable.FingerprintView_circleScanningColor, R.color.circle_scanning);
+            circleSuccess = a.getResourceId(R.styleable.FingerprintView_circleSuccessColor, R.color.circle_success);
+            circleError = a.getResourceId(R.styleable.FingerprintView_circleErrorColor, R.color.circle_error);
         } finally {
             a.recycle();
         }
-    }
 
-    private View setStatus(int drawableId, int drawableColorId, int circleColorId){
-        View view = inflate(getContext(), R.layout.fingerprint_view, null);
-        ImageView fingerprint = view.findViewById(R.id.fingerprint_view_fingerprint);
-        View circle = view.findViewById(R.id.fingerprint_view_circle);
-
-        fingerprint.setImageResource(drawableId);
-        fingerprint.setColorFilter(ContextCompat.getColor(getContext(), drawableColorId), android.graphics.PorterDuff.Mode.MULTIPLY);
-        circle.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(circleColorId)));
-        return view;
+        int[] systemAttrs = {android.R.attr.layout_width, android.R.attr.layout_height};
+        TypedArray ta = context.obtainStyledAttributes(attrs, systemAttrs);
+        try {
+            int width = ta.getLayoutDimension(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+            int height = ta.getLayoutDimension(1, ViewGroup.LayoutParams.WRAP_CONTENT);
+            if(width==-2 || height==-2) {
+                size = dipToPixels(DEFAULT_CIRCLE_SIZE);
+            } else{
+                size = width;
+            }
+        } finally {
+            ta.recycle();
+        }
     }
 
     private void initView(Context context){
         this.fingerprintManager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
         this.cipherHelper = null;
         this.handler = new Handler();
-        this.fingerprintViewCallback = null;
-        this.fingerprintViewSecureCallback = null;
+        this.fingerprintCallback = null;
+        this.fingerprintSecureCallback = null;
         this.counterCallback = null;
         this.cryptoObject = null;
-        this.delayAfterError = 1200;
         this.tryCounter = 0;
+        this.delayAfterError = DEFAULT_DELAY_AFTER_ERROR;
 
-        addView(setStatus(R.drawable.fingerprint, fingerprintScanning, circleScanning));
+        int fingerprintSize = (int) (size*SCALE);
+        int circleSize = size;
+
+        fingerprintImageView = new AppCompatImageView(context);
+        fingerprintImageView.setLayoutParams(new RelativeLayout.LayoutParams(fingerprintSize, fingerprintSize));
+        fingerprintImageView.setBackgroundResource(R.drawable.fingerprint);
+        ((RelativeLayout.LayoutParams)fingerprintImageView.getLayoutParams()).addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
+        circleView = new View(context);
+        circleView.setLayoutParams(new RelativeLayout.LayoutParams(circleSize, circleSize));
+        circleView.setBackgroundResource(R.drawable.circle);
+        ((RelativeLayout.LayoutParams)circleView.getLayoutParams()).addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
+        setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        addView(circleView);
+        addView(fingerprintImageView);
+
+        setStatus(R.drawable.fingerprint, fingerprintScanning, circleScanning);
     }
 
-    public FingerprintView callback(FingerprintViewCallback fingerprintViewCallback){
-        this.fingerprintViewCallback = fingerprintViewCallback;
+    private int dipToPixels(int dipValue) {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
+    }
+
+    private void setStatus(int drawableId, int drawableColorId, int circleColorId){
+        Context context = getContext();
+        fingerprintImageView.setBackgroundResource(drawableId);
+        fingerprintImageView.setBackgroundTintList(ColorStateList.valueOf(context.getColor(drawableColorId)));
+        circleView.setBackgroundTintList(ColorStateList.valueOf(context.getColor(circleColorId)));
+    }
+
+    private Runnable returnToScanning = new Runnable() {
+        @Override
+        public void run() {
+            setStatus(R.drawable.fingerprint, fingerprintScanning, circleScanning);
+        }
+    };
+
+    public FingerprintView callback(FingerprintCallback fingerprintCallback){
+        this.fingerprintCallback = fingerprintCallback;
         return this;
     }
 
-    public FingerprintView callback(FingerprintViewSecureCallback fingerprintViewSecureCallback, String KEY_NAME){
-        this.fingerprintViewSecureCallback = fingerprintViewSecureCallback;
+    public FingerprintView callback(FingerprintSecureCallback fingerprintSecureCallback, String KEY_NAME){
+        this.fingerprintSecureCallback = fingerprintSecureCallback;
         this.cipherHelper = new CipherHelper(KEY_NAME);
         return this;
     }
@@ -123,36 +175,37 @@ public class FingerprintView extends FrameLayout {
 
     public FingerprintView fingerprintScanningColor(int fingerprintScanning) {
         this.fingerprintScanning = fingerprintScanning;
+        this.fingerprintImageView.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(fingerprintScanning)));
         return this;
     }
 
     public FingerprintView fingerprintSuccessColor(int fingerprintSuccess) {
         this.fingerprintSuccess = fingerprintSuccess;
+        this.fingerprintImageView.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(fingerprintSuccess)));
         return this;
     }
 
     public FingerprintView fingerprintErrorColor(int fingerprintError) {
         this.fingerprintError = fingerprintError;
+        this.fingerprintImageView.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(fingerprintError)));
         return this;
     }
 
     public FingerprintView circleScanningColor(int circleScanning) {
         this.circleScanning = circleScanning;
+        this.circleView.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(circleScanning)));
         return this;
     }
 
     public FingerprintView circleSuccessColor(int circleSuccess) {
         this.circleSuccess = circleSuccess;
+        this.circleView.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(circleSuccess)));
         return this;
     }
 
     public FingerprintView circleErrorColor(int circleError) {
         this.circleError = circleError;
-        return this;
-    }
-
-    public FingerprintView delayAfterError(long delayAfterError){
-        this.delayAfterError = delayAfterError;
+        this.circleView.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(circleError)));
         return this;
     }
 
@@ -162,17 +215,30 @@ public class FingerprintView extends FrameLayout {
         return this;
     }
 
+    public FingerprintView delayAfterError(int delayAfterError){
+        this.delayAfterError = delayAfterError;
+        return this;
+    }
+
+    public static boolean isAvailable(Context context){
+        FingerprintManager fingerprintManager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
+        if(fingerprintManager!=null){
+            return (fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints());
+        }
+        return false;
+    }
+
     public void authenticate(){
-        if(fingerprintViewSecureCallback!=null){
+        if(fingerprintSecureCallback!=null){
             if(cryptoObject!=null){
                 throw new RuntimeException("If you specify a CryptoObject you have to use FingerprintCallback");
             }
             cryptoObject = cipherHelper.getEncryptionCryptoObject();
             if(cryptoObject==null) {
-                fingerprintViewSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(cipherHelper));
+                fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(cipherHelper));
             }
         }
-        else if(fingerprintViewCallback==null){
+        else if(fingerprintCallback==null){
             throw new RuntimeException("You must specify a callback.");
         }
 
@@ -184,6 +250,11 @@ public class FingerprintView extends FrameLayout {
                     super.onAuthenticationError(errorCode, errString);
                     setStatus(R.drawable.fingerprint_error, fingerprintError, circleError);
                     handler.postDelayed(returnToScanning, delayAfterError);
+                    if(fingerprintSecureCallback!=null){
+                        fingerprintSecureCallback.onAuthenticationError(errorCode, errString.toString());
+                    } else{
+                        fingerprintCallback.onAuthenticationError(errorCode, errString.toString());
+                    }
                 }
 
                 @Override
@@ -191,6 +262,11 @@ public class FingerprintView extends FrameLayout {
                     super.onAuthenticationHelp(helpCode, helpString);
                     setStatus(R.drawable.fingerprint_error, fingerprintError, circleError);
                     handler.postDelayed(returnToScanning, delayAfterError);
+                    if(fingerprintSecureCallback!=null){
+                        fingerprintSecureCallback.onAuthenticationError(helpCode, helpString.toString());
+                    } else{
+                        fingerprintCallback.onAuthenticationError(helpCode, helpString.toString());
+                    }
                 }
 
                 @Override
@@ -198,11 +274,11 @@ public class FingerprintView extends FrameLayout {
                     super.onAuthenticationSucceeded(result);
                     handler.removeCallbacks(returnToScanning);
                     setStatus(R.drawable.fingerprint_success, fingerprintSuccess, circleSuccess);
-                    if(fingerprintViewSecureCallback!=null){
-                        fingerprintViewSecureCallback.onAuthenticationSuccess();
+                    if(fingerprintSecureCallback!=null){
+                        fingerprintSecureCallback.onAuthenticationSucceeded();
                     }
                     else{
-                        fingerprintViewCallback.onAuthenticationSuccess();
+                        fingerprintCallback.onAuthenticationSucceeded();
                     }
                     tryCounter = 0;
                 }
@@ -212,15 +288,21 @@ public class FingerprintView extends FrameLayout {
                     super.onAuthenticationFailed();
                     setStatus(R.drawable.fingerprint_error, fingerprintError, circleError);
                     handler.postDelayed(returnToScanning, delayAfterError);
-                    tryCounter++;
-                    if(counterCallback!=null && tryCounter==limit){
+                    if(fingerprintSecureCallback!=null){
+                        fingerprintSecureCallback.onAuthenticationFailed();
+                    }
+                    else{
+                        fingerprintCallback.onAuthenticationFailed();
+                    }
+
+                    if(counterCallback!=null && ++tryCounter==limit){
                         counterCallback.onTryLimitReached();
                     }
                 }
             }, null);
         }
         else{
-            Log.e(TAG, "Fingerprint scanner not detected or no fingerprint enrolled. Use FingerprintDialog#isAvailable(Context) before.");
+            Log.e(TAG, "Fingerprint scanner not detected or no fingerprint enrolled. Use FingerprintView#isAvailable(Context) before.");
         }
     }
 
@@ -228,11 +310,4 @@ public class FingerprintView extends FrameLayout {
         cancellationSignal.cancel();
         returnToScanning.run();
     }
-
-    private Runnable returnToScanning = new Runnable() {
-        @Override
-        public void run() {
-            setStatus(R.drawable.fingerprint, fingerprintScanning, circleScanning);
-        }
-    };
 }

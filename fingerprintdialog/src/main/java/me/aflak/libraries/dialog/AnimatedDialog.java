@@ -25,7 +25,7 @@ public class AnimatedDialog<T extends AnimatedDialog> {
     LayoutInflater layoutInflater;
     AlertDialog.Builder builder;
     AlertDialog dialog;
-    View view;
+    View dialogView;
 
     public AnimatedDialog(Context context){
         this.context = context;
