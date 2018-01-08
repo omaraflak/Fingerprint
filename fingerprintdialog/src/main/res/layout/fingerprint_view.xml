@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <View
-        android:id="@+id/fingerprint_dialog_icon_background"
+        android:id="@+id/fingerprint_view_circle"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/circle"
@@ -12,7 +12,7 @@
         android:layout_centerVertical="true"/>
 
     <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/fingerprint_dialog_icon_foreground"
+        android:id="@+id/fingerprint_view_fingerprint"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/fingerprint"

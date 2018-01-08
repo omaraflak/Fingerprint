@@ -66,13 +66,13 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
         this.cryptoObject = null;
         this.fingerprintScanningColor = R.color.fingerprint_scanning;
         this.fingerprintSuccessColor = R.color.fingerprint_success;
-        this.fingerprintErrorColor = R.color.fingerprint_failed;
+        this.fingerprintErrorColor = R.color.fingerprint_error;
         this.circleScanningColor = R.color.circle_scanning;
         this.circleSuccessColor = R.color.circle_success;
-        this.circleErrorColor = R.color.circle_failed;
+        this.circleErrorColor = R.color.circle_error;
         this.statusScanningColor = R.color.status_scanning;
         this.statusSuccessColor = R.color.status_success;
-        this.statusErrorColor = R.color.status_failed;
+        this.statusErrorColor = R.color.status_error;
         this.delayAfterSuccess = 1200;
         this.delayAfterError = 1200;
         this.tryCounter = 0;
@@ -182,7 +182,13 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
             if(cryptoObject!=null){
                 throw new RuntimeException("If you specify a CryptoObject you have to use FingerprintCallback");
             }
-            showSecure();
+            cryptoObject = cipherHelper.getEncryptionCryptoObject();
+            if(cryptoObject==null) {
+                fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(cipherHelper));
+            }
+            else{
+                showDialog();
+            }
         }
         else if(fingerprintCallback!=null){
             showDialog();
@@ -192,16 +198,6 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
         }
 
         return this;
-    }
-
-    private void showSecure(){
-        this.cryptoObject = cipherHelper.getEncryptionCryptoObject();
-        if(cryptoObject==null) {
-            fingerprintSecureCallback.onNewFingerprintEnrolled(new FingerprintToken(cipherHelper));
-        }
-        else{
-            showDialog();
-        }
     }
 
     private void showDialog(){
