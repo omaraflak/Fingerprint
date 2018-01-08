@@ -91,5 +91,7 @@ FingerprintDialog.initialize(this)
 
 # Rendering
 
-![alt text](https://github.com/omaflak/FingerprintDialog/blob/master/GIF/demo1.gif?raw=true)
-![alt text](https://github.com/omaflak/FingerprintDialog/blob/master/GIF/demo2.gif?raw=true)
+<p float="left">
+    <img src="https://github.com/omaflak/FingerprintDialog/blob/master/GIF/demo1.gif" width="400" />
+    <img src="https://github.com/omaflak/FingerprintDialog/blob/master/GIF/demo2.gif" width="400" />
+</p>
