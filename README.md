@@ -2,9 +2,9 @@
 
 **FingerprintDialog** is an Android library that simplifies the process of fingerprint authentications.
 
-# Gradle
+# Download
 
-```gradle
+```groovy
 implementation 'me.aflak.libraries:fingerprintdialog:2.5.0'
 ```
 
