@@ -28,7 +28,7 @@ FingerprintDialog.initialize(this)
     .show();
 ```
         
-[EXAMPLE](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureExample1.java)
+[EXAMPLE](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureExample.java)
 
 # Usecase n°3 : Secure a CryptoObject via authentication
 
@@ -66,6 +66,8 @@ fingerprint.callback(new FingerprintCallback(...));
 fingerprint.authenticate();
 ```
 
+[EXAMPLE](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintViewExample.java)
+
 # Customization
 
 Several functions are available to customize your dialog.
@@ -80,8 +82,6 @@ FingerprintDialog.initialize(this)
         .callback(this)
         .show();
 ```
-
-[EXAMPLE](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureExample1.java)
 
 # Gradle
 
