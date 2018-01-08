@@ -1,4 +1,4 @@
-package me.aflak.libraries.fingerprint;
+package me.aflak.libraries.dialog;
 
 import android.content.Context;
 import android.hardware.fingerprint.FingerprintManager;
@@ -16,6 +16,8 @@ import me.aflak.libraries.callback.FingerprintDialogCallback;
 import me.aflak.libraries.callback.FingerprintDialogSecureCallback;
 import me.aflak.libraries.R;
 import me.aflak.libraries.callback.FingerprintSecureCallback;
+import me.aflak.libraries.view.Fingerprint;
+import me.aflak.libraries.view.FingerprintToken;
 
 /**
  * Created by Omar on 02/07/2017.

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <me.aflak.libraries.fingerprint.Fingerprint
+    <me.aflak.libraries.view.Fingerprint
         android:id="@+id/activity_view_example_fingerprint"
         android:layout_width="200dp"
         android:layout_height="200dp"

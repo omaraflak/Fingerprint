@@ -1,4 +1,4 @@
-package me.aflak.libraries.fingerprint;
+package me.aflak.libraries.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 import me.aflak.libraries.callback.FailAuthCounterCallback;
 import me.aflak.libraries.callback.PasswordCallback;
 import me.aflak.libraries.R;
+import me.aflak.libraries.view.FingerprintToken;
 
 /**
  * Created by Omar on 10/07/2017.

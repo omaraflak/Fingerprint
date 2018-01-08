@@ -1,4 +1,4 @@
-package me.aflak.libraries.fingerprint;
+package me.aflak.libraries.view;
 
 /**
  * Created by Omar on 10/07/2017.

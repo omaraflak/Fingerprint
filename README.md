@@ -2,6 +2,12 @@
 
 **FingerprintDialog** is an Android library that simplifies the process of fingerprint authentications.
 
+# Gradle
+
+```gradle
+implementation 'me.aflak.libraries:fingerprintdialog:2.5.0'
+```
+
 # Usecase n°1 : Without CryptoObject
 
 You only want to check if the user's fingerprint is enrolled in the phone.
@@ -51,10 +57,10 @@ if(FingerprintDialog.isAvailable(this)) {
 
 # Usecase n°4 : Fingerprint View
 
-The library also provides a Fingerprint object which a view that you can display the way you want it.
+The library also provides a Fingerprint object which is a view that you can display the way you want it.
 
 ```xml
-<me.aflak.libraries.fingerprint.Fingerprint
+<me.aflak.libraries.view.Fingerprint
     android:id="@+id/fingerprint"
     android:layout_width="200dp"
     android:layout_height="200dp"/>
@@ -78,17 +84,11 @@ FingerprintDialog.initialize(this)
         .message(R.string.fingerprint_message)
         .enterAnimation(DialogAnimation.Enter.RIGHT)
         .exitAnimation(DialogAnimation.Exit.RIGHT)
-        .iconCircleScanningColor(R.color.colorAccent)
+        .circleScanningColor(R.color.colorAccent)
         .callback(this)
         .show();
 ```
 
-# Gradle
-
-```gradle
-implementation 'me.aflak.libraries:fingerprintdialog:2.5.0'
-```
-    
 # Rendering
 
 ![alt text](https://github.com/omaflak/FingerprintDialog/blob/master/GIF/demo.gif?raw=true)

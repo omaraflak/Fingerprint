@@ -1,6 +1,6 @@
 package me.aflak.libraries.callback;
 
-import me.aflak.libraries.fingerprint.FingerprintToken;
+import me.aflak.libraries.view.FingerprintToken;
 
 /**
  * Created by Omar on 02/07/2017.

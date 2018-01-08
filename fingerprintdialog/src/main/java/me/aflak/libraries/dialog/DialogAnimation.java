@@ -1,4 +1,4 @@
-package me.aflak.libraries.fingerprint;
+package me.aflak.libraries.dialog;
 
 import me.aflak.libraries.R;
 

@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import me.aflak.libraries.callback.FingerprintDialogCallback;
-import me.aflak.libraries.fingerprint.FingerprintDialog;
+import me.aflak.libraries.dialog.FingerprintDialog;
 
 /**
  * Created by Omar on 10/07/2017.
