@@ -10,7 +10,7 @@ You only want to check if the user's fingerprint is enrolled in the phone.
 FingerprintDialog.initialize(this)
     .title(R.string.title)
     .message(R.string.message)
-    .callback(new FingerprintCallback(...))
+    .callback(new FingerprintDialogCallback(...))
     .show();
 ```
 
@@ -24,7 +24,7 @@ Check if the user's fingerprint is enrolled in the phone and detect if a new fin
 FingerprintDialog.initialize(this)
     .title(R.string.title)
     .message(R.string.message)
-    .callback(new FingerprintSecureCallback(...), "KeyName")
+    .callback(new FingerprintDialogSecureCallback(...), "KeyName")
     .show();
 ```
         
@@ -49,6 +49,23 @@ if(FingerprintDialog.isAvailable(this)) {
 }
 ```
 
+# Usecase n°4 : Fingerprint View
+
+The library also provides a Fingerprint object which a view that you can display the way you want it.
+
+```xml
+<me.aflak.libraries.fingerprint.Fingerprint
+    android:id="@+id/fingerprint"
+    android:layout_width="200dp"
+    android:layout_height="200dp"/>
+```
+
+```java
+Fingerprint fingerprint = findViewById(R.id.fingerprint);
+fingerprint.callback(new FingerprintCallback(...));
+fingerprint.authenticate();
+```
+
 # Customization
 
 Several functions are available to customize your dialog.
@@ -64,10 +81,12 @@ FingerprintDialog.initialize(this)
         .show();
 ```
 
+[EXAMPLE](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureExample1.java)
+
 # Gradle
 
 ```gradle
-implementation 'me.aflak.libraries:fingerprintdialog:2.4.4'
+implementation 'me.aflak.libraries:fingerprintdialog:2.5.0'
 ```
     
 # Rendering
