@@ -1,4 +1,4 @@
-package me.aflak.libraries.dialog;
+package me.aflak.libraries.fingerprint;
 
 import android.app.AlertDialog;
 import android.content.Context;

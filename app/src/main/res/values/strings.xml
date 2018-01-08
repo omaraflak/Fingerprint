@@ -6,4 +6,8 @@
 
     <string name="password_title">Password</string>
     <string name="password_message">You need to enter your password because a new fingerprint was added</string>
+
+    <string name="activity_menu_fingerprint_example">Dialog</string>
+    <string name="activity_menu_fingerprint_secure_example">Secure Dialog</string>
+    <string name="activity_menu_fingerprint_view_example">View</string>
 </resources>

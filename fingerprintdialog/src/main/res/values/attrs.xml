@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="FingerprintView">
+    <declare-styleable name="Fingerprint">
         <attr name="fingerprintScanningColor" format="color" />
         <attr name="fingerprintSuccessColor" format="color" />
         <attr name="fingerprintErrorColor" format="color" />

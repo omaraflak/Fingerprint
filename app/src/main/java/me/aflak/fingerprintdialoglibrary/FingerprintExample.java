@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import me.aflak.libraries.callback.FingerprintDialogCallback;
-import me.aflak.libraries.dialog.FingerprintDialog;
+import me.aflak.libraries.fingerprint.FingerprintDialog;
 
 /**
  * Created by Omar on 10/07/2017.
@@ -17,7 +17,7 @@ public class FingerprintExample extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_dialog_example);
         findViewById(R.id.button).setOnClickListener(this);
     }
 

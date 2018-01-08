@@ -2,22 +2,20 @@ package me.aflak.fingerprintdialoglibrary;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import me.aflak.libraries.callback.FingerprintDialogSecureCallback;
-import me.aflak.libraries.dialog.FingerprintDialog;
-import me.aflak.libraries.callback.FingerprintSecureCallback;
-import me.aflak.libraries.dialog.FingerprintToken;
+import me.aflak.libraries.fingerprint.FingerprintDialog;
+import me.aflak.libraries.fingerprint.FingerprintToken;
 import me.aflak.libraries.callback.PasswordCallback;
-import me.aflak.libraries.dialog.PasswordDialog;
+import me.aflak.libraries.fingerprint.PasswordDialog;
 
-public class FingerprintSecureExample1 extends AppCompatActivity implements View.OnClickListener, FingerprintDialogSecureCallback, PasswordCallback {
+public class FingerprintSecureExample extends AppCompatActivity implements View.OnClickListener, FingerprintDialogSecureCallback, PasswordCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_dialog_example);
         findViewById(R.id.button).setOnClickListener(this);
     }
 

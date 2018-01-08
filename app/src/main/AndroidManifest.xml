@@ -20,7 +20,8 @@
         </activity>
 
         <activity android:name=".FingerprintExample"/>
-        <activity android:name=".FingerprintSecureExample1"/>
+        <activity android:name=".FingerprintSecureExample"/>
+        <activity android:name=".FingerprintViewExample"/>
 
     </application>
 

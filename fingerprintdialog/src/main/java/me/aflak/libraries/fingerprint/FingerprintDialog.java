@@ -1,4 +1,4 @@
-package me.aflak.libraries.dialog;
+package me.aflak.libraries.fingerprint;
 
 import android.content.Context;
 import android.hardware.fingerprint.FingerprintManager;
@@ -16,14 +16,13 @@ import me.aflak.libraries.callback.FingerprintDialogCallback;
 import me.aflak.libraries.callback.FingerprintDialogSecureCallback;
 import me.aflak.libraries.R;
 import me.aflak.libraries.callback.FingerprintSecureCallback;
-import me.aflak.libraries.view.FingerprintView;
 
 /**
  * Created by Omar on 02/07/2017.
  */
 
 public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
-    private FingerprintView fingerprintView;
+    private Fingerprint fingerprint;
     private TextView dialogTitle, dialogMessage, dialogStatus;
     private AppCompatButton cancelButton, usePasswordButton;
 
@@ -46,15 +45,15 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
     private void init(){
         this.handler = new Handler();
         this.onUsePassword = null;
-        this.delayAfterError = FingerprintView.DEFAULT_DELAY_AFTER_ERROR;
-        this.delayAfterSuccess = FingerprintView.DEFAULT_DELAY_AFTER_ERROR;
+        this.delayAfterError = Fingerprint.DEFAULT_DELAY_AFTER_ERROR;
+        this.delayAfterSuccess = Fingerprint.DEFAULT_DELAY_AFTER_ERROR;
 
         this.statusScanningColor = R.color.status_scanning;
         this.statusSuccessColor = R.color.status_success;
         this.statusErrorColor = R.color.status_error;
 
         this.dialogView = layoutInflater.inflate(R.layout.fingerprint_dialog, null);
-        this.fingerprintView = dialogView.findViewById(R.id.fingerprint_dialog_fp);
+        this.fingerprint = dialogView.findViewById(R.id.fingerprint_dialog_fp);
         this.dialogTitle = dialogView.findViewById(R.id.fingerprint_dialog_title);
         this.dialogMessage = dialogView.findViewById(R.id.fingerprint_dialog_message);
         this.dialogStatus = dialogView.findViewById(R.id.fingerprint_dialog_status);
@@ -73,59 +72,59 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
 
     public FingerprintDialog callback(FingerprintDialogCallback fingerprintDialogCallback){
         this.fingerprintDialogCallback = fingerprintDialogCallback;
-        this.fingerprintView.callback(fingerprintCallback);
+        this.fingerprint.callback(fingerprintCallback);
         return this;
     }
 
     public FingerprintDialog callback(FingerprintDialogSecureCallback fingerprintDialogSecureCallback, String KEY_NAME){
         this.fingerprintDialogSecureCallback = fingerprintDialogSecureCallback;
-        this.fingerprintView.callback(fingerprintSecureCallback, KEY_NAME);
+        this.fingerprint.callback(fingerprintSecureCallback, KEY_NAME);
         return this;
     }
 
     public FingerprintDialog cryptoObject(FingerprintManager.CryptoObject cryptoObject){
-        this.fingerprintView.cryptoObject(cryptoObject);
+        this.fingerprint.cryptoObject(cryptoObject);
         return this;
     }
 
     public FingerprintDialog fingerprintScanningColor(int fingerprintScanningColor){
-        this.fingerprintView.fingerprintScanningColor(fingerprintScanningColor);
+        this.fingerprint.fingerprintScanningColor(fingerprintScanningColor);
         return this;
     }
 
     public FingerprintDialog fingerprintSuccessColor(int fingerprintSuccessColor){
-        this.fingerprintView.fingerprintSuccessColor(fingerprintSuccessColor);
+        this.fingerprint.fingerprintSuccessColor(fingerprintSuccessColor);
         return this;
     }
 
     public FingerprintDialog fingerprintErrorColor(int fingerprintErrorColor){
-        this.fingerprintView.fingerprintErrorColor(fingerprintErrorColor);
+        this.fingerprint.fingerprintErrorColor(fingerprintErrorColor);
         return this;
     }
 
     public FingerprintDialog circleScanningColor(int circleScanningColor){
-        this.fingerprintView.circleScanningColor(circleScanningColor);
+        this.fingerprint.circleScanningColor(circleScanningColor);
         return this;
     }
 
     public FingerprintDialog circleSuccessColor(int circleSuccessColor){
-        this.fingerprintView.circleSuccessColor(circleSuccessColor);
+        this.fingerprint.circleSuccessColor(circleSuccessColor);
         return this;
     }
 
     public FingerprintDialog circleErrorColor(int circleErrorColor){
-        this.fingerprintView.circleErrorColor(circleErrorColor);
+        this.fingerprint.circleErrorColor(circleErrorColor);
         return this;
     }
 
     public FingerprintDialog delayAfterError(int delayAfterError){
         this.delayAfterError = delayAfterError;
-        this.fingerprintView.delayAfterError(delayAfterError);
+        this.fingerprint.delayAfterError(delayAfterError);
         return this;
     }
 
     public FingerprintDialog tryLimit(int limit, FailAuthCounterCallback counterCallback){
-        this.fingerprintView.tryLimit(limit, counterCallback);
+        this.fingerprint.tryLimit(limit, counterCallback);
         return this;
     }
 
@@ -176,7 +175,7 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fingerprintView.cancel();
+                fingerprint.cancel();
                 if(fingerprintDialogSecureCallback!=null){
                     fingerprintDialogSecureCallback.onAuthenticationCancel();
                 }
@@ -194,7 +193,7 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
             usePasswordButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    fingerprintView.cancel();
+                    fingerprint.cancel();
                     dialog.cancel();
                     onUsePassword.onClick(view);
                 }
@@ -223,7 +222,7 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
     }
 
     private void authenticate(){
-        fingerprintView.authenticate();
+        fingerprint.authenticate();
     }
 
     private void setStatus(int textId, int textColorId){

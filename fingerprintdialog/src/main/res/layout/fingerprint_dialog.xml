@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <me.aflak.libraries.view.FingerprintView
+            <me.aflak.libraries.fingerprint.Fingerprint
                 android:id="@+id/fingerprint_dialog_fp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

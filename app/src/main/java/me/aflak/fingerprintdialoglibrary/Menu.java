@@ -16,7 +16,8 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         findViewById(R.id.activity_menu_fingerprint_example).setOnClickListener(onSample);
-        findViewById(R.id.activity_menu_fingerprint_secure_example1).setOnClickListener(onSecure1);
+        findViewById(R.id.activity_menu_fingerprint_secure_example).setOnClickListener(onSecure);
+        findViewById(R.id.activity_menu_fingerprint_view_example).setOnClickListener(onView);
     }
 
     private View.OnClickListener onSample = new View.OnClickListener() {
@@ -26,10 +27,17 @@ public class Menu extends AppCompatActivity {
         }
     };
 
-    private View.OnClickListener onSecure1 = new View.OnClickListener() {
+    private View.OnClickListener onSecure = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            startActivity(new Intent(Menu.this, FingerprintSecureExample1.class));
+            startActivity(new Intent(Menu.this, FingerprintSecureExample.class));
+        }
+    };
+
+    private View.OnClickListener onView = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            startActivity(new Intent(Menu.this, FingerprintViewExample.class));
         }
     };
 }
