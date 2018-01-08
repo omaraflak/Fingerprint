@@ -1,4 +1,4 @@
-package me.aflak.libraries;
+package me.aflak.libraries.dialog;
 
 /**
  * Created by Omar on 10/07/2017.

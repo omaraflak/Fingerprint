@@ -1,4 +1,4 @@
-package me.aflak.libraries;
+package me.aflak.libraries.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import me.aflak.libraries.callback.FailAuthCounterCallback;
+import me.aflak.libraries.callback.PasswordCallback;
+import me.aflak.libraries.R;
 
 /**
  * Created by Omar on 10/07/2017.

@@ -1,4 +1,4 @@
-package me.aflak.libraries;
+package me.aflak.libraries.dialog;
 
 import android.hardware.fingerprint.FingerprintManager;
 import android.security.keystore.KeyGenParameterSpec;

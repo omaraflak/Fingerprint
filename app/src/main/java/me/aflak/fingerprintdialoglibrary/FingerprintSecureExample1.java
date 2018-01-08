@@ -4,11 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import me.aflak.libraries.FingerprintDialog;
-import me.aflak.libraries.FingerprintSecureCallback;
-import me.aflak.libraries.FingerprintToken;
-import me.aflak.libraries.PasswordCallback;
-import me.aflak.libraries.PasswordDialog;
+import me.aflak.libraries.dialog.FingerprintDialog;
+import me.aflak.libraries.callback.FingerprintSecureCallback;
+import me.aflak.libraries.dialog.FingerprintToken;
+import me.aflak.libraries.callback.PasswordCallback;
+import me.aflak.libraries.dialog.PasswordDialog;
 
 public class FingerprintSecureExample1 extends AppCompatActivity implements View.OnClickListener, FingerprintSecureCallback, PasswordCallback {
 

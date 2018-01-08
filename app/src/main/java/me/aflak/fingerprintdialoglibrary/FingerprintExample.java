@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import me.aflak.libraries.FingerprintCallback;
-import me.aflak.libraries.FingerprintDialog;
+import me.aflak.libraries.callback.FingerprintCallback;
+import me.aflak.libraries.dialog.FingerprintDialog;
 
 /**
  * Created by Omar on 10/07/2017.

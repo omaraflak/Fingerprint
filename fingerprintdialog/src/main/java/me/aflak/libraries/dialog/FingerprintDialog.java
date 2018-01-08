@@ -1,4 +1,4 @@
-package me.aflak.libraries;
+package me.aflak.libraries.dialog;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -13,6 +13,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import me.aflak.libraries.callback.FailAuthCounterCallback;
+import me.aflak.libraries.callback.FingerprintCallback;
+import me.aflak.libraries.callback.FingerprintSecureCallback;
+import me.aflak.libraries.R;
 
 /**
  * Created by Omar on 02/07/2017.

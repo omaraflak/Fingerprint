@@ -1,4 +1,6 @@
-package me.aflak.libraries;
+package me.aflak.libraries.dialog;
+
+import me.aflak.libraries.R;
 
 /**
  * Created by Omar on 11/07/2017.

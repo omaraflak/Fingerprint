@@ -1,4 +1,6 @@
-package me.aflak.libraries;
+package me.aflak.libraries.callback;
+
+import me.aflak.libraries.dialog.FingerprintToken;
 
 /**
  * Created by Omar on 02/07/2017.
