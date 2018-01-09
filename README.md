@@ -89,6 +89,18 @@ FingerprintDialog.initialize(this)
         .show();
 ```
 
+You can also customize the fingerprint view directly from the xml :
+
+```xml
+<me.aflak.libraries.view.Fingerprint
+    xmlns:fingerprint="http://schemas.android.com/apk/res-auto"
+    fingerprint:circleScanningColor="@android:color/black"
+    fingerprint:fingerprintScanningColor="@color/colorAccent"
+    android:id="@+id/fingerprint"
+    android:layout_width="200dp"
+    android:layout_height="200dp" />
+```
+
 # Rendering
 
 <p float="left">
