@@ -2,26 +2,26 @@ apply plugin: 'com.android.library'
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'fingerprintdialog'
+    bintrayName = 'fingerprint'
 
     publishedGroupId = 'me.aflak.libraries'
-    libraryName = 'FingerprintDialog'
-    artifact = 'fingerprintdialog'
+    libraryName = 'Fingerprint'
+    artifact = 'fingerprint'
 
-    libraryDescription = 'Short library that allows you to create fingerprint dialogs for authentications.'
+    libraryDescription = 'Android library that simplifies fingerprint authentications.'
 
-    siteUrl = 'https://github.com/omaflak/FingerprintDialog'
-    gitUrl = 'https://github.com/omaflak/FingerprintDialog.git'
+    siteUrl = 'https://github.com/omaflak/Fingerprint'
+    gitUrl = 'https://github.com/omaflak/Fingerprint.git'
 
-    libraryVersion = '2.5.0'
+    libraryVersion = '2.5.1'
 
     developerId = 'omaflak'
     developerName = 'Omar Aflak'
     developerEmail = 'aflakomar@hotmail.fr'
 
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
+    licenseName = 'The MIT License'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ["MIT"]
 }
 
 android {
@@ -32,8 +32,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 34
-        versionName "2.5.0"
+        versionCode 35
+        versionName "2.5.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

@@ -1,14 +1,33 @@
-# Fingerprint Dialog [![Download](https://api.bintray.com/packages/omaflak/maven/fingerprintdialog/images/download.svg)](https://bintray.com/omaflak/maven/fingerprintdialog/_latestVersion)
+# Fingerprint [![Download](https://api.bintray.com/packages/omaflak/maven/fingerprint/images/download.svg)](https://bintray.com/omaflak/maven/fingerprint/_latestVersion)
 
-**FingerprintDialog** is an Android library that simplifies the process of **fingerprint** authentications. It can display **dialogs** to perform fingerprint auhentication very easily.
+**Fingerprint** is an Android library that simplifies the process of **fingerprint** authentications. The library provides a fingerprint view that you can use like regulars xml views. Furthermore, it can display **dialogs** to perform fingerprint auhentication very easily.
 
-Furthermore, the library provides a fingerprint view that you can use like regulars xml views. In both cases the FingerprintDialog library implements in a simple way the use of a CryptoObject.
+In both cases the FingerprintDialog library implements in a simple way the use of a CryptoObject.
 
 # Gradle Dependency
 
 ```groovy
-implementation 'me.aflak.libraries:fingerprintdialog:2.5.0'
+implementation 'me.aflak.libraries:fingerprint:2.5.1'
 ```
+
+## Fingerprint View
+
+The library also provides a Fingerprint object which is a view that you can display the way you want.
+
+```xml
+<me.aflak.libraries.view.Fingerprint
+    android:id="@+id/fingerprint"
+    android:layout_width="200dp"
+    android:layout_height="200dp"/>
+```
+
+```java
+Fingerprint fingerprint = findViewById(R.id.fingerprint);
+fingerprint.callback(new FingerprintCallback(...));
+fingerprint.authenticate();
+```
+
+[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintViewExample.java)
 
 ## Without CryptoObject
 
@@ -55,25 +74,6 @@ if(FingerprintDialog.isAvailable(this)) {
             .show();
 }
 ```
-
-## Fingerprint View
-
-The library also provides a Fingerprint object which is a view that you can display the way you want.
-
-```xml
-<me.aflak.libraries.view.Fingerprint
-    android:id="@+id/fingerprint"
-    android:layout_width="200dp"
-    android:layout_height="200dp"/>
-```
-
-```java
-Fingerprint fingerprint = findViewById(R.id.fingerprint);
-fingerprint.callback(new FingerprintCallback(...));
-fingerprint.authenticate();
-```
-
-[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintViewExample.java)
 
 # Customization
 
