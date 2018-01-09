@@ -1,7 +1,5 @@
 package me.aflak.libraries.utils;
 
-import me.aflak.libraries.utils.CipherHelper;
-
 /**
  * Created by Omar on 10/07/2017.
  */
