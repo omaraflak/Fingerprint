@@ -12,22 +12,28 @@
         android:layout_centerInParent="true">
 
         <Button
-            android:id="@+id/activity_menu_fingerprint_example"
+            android:id="@+id/activity_menu_fingerprint_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/activity_menu_fingerprint_example"/>
+            android:text="@string/activity_menu_fingerprint_view"/>
 
         <Button
-            android:id="@+id/activity_menu_fingerprint_secure_example"
+            android:id="@+id/activity_menu_fingerprint_secure_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/activity_menu_fingerprint_secure_example"/>
+            android:text="@string/activity_menu_fingerprint_secure_view"/>
 
         <Button
-            android:id="@+id/activity_menu_fingerprint_view_example"
+            android:id="@+id/activity_menu_fingerprint_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/activity_menu_fingerprint_view_example"/>
+            android:text="@string/activity_menu_fingerprint_dialog"/>
+
+        <Button
+            android:id="@+id/activity_menu_fingerprint_secure_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_menu_fingerprint_secure_dialog"/>
     </LinearLayout>
 
 </RelativeLayout>

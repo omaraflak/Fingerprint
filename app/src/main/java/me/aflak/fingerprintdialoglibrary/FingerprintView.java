@@ -11,11 +11,11 @@ import me.aflak.libraries.view.Fingerprint;
  * Created by Omar on 08/01/2018.
  */
 
-public class FingerprintViewExample extends AppCompatActivity implements FingerprintCallback {
+public class FingerprintView extends AppCompatActivity implements FingerprintCallback {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_example);
+        setContentView(R.layout.activity_view);
 
         Fingerprint fingerprint = findViewById(R.id.activity_view_example_fingerprint);
         fingerprint.callback(this)
@@ -26,17 +26,17 @@ public class FingerprintViewExample extends AppCompatActivity implements Fingerp
 
     @Override
     public void onAuthenticationSucceeded() {
-        // Fingerprint recognized
+        // Logic when fingerprint is recognized
     }
 
     @Override
     public void onAuthenticationFailed() {
-        // Fingerprint failed to recognize
+        // Logic when fingerprint failed to recognize
     }
 
     @Override
     public void onAuthenticationError(int errorCode, String error) {
-        // Error while authenticating
+        // Logic when an error raised while authenticating
         // See Android Doc for errorCode meaning
     }
 }

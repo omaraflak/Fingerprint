@@ -15,29 +15,37 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        findViewById(R.id.activity_menu_fingerprint_example).setOnClickListener(onSample);
-        findViewById(R.id.activity_menu_fingerprint_secure_example).setOnClickListener(onSecure);
-        findViewById(R.id.activity_menu_fingerprint_view_example).setOnClickListener(onView);
+        findViewById(R.id.activity_menu_fingerprint_view).setOnClickListener(onView);
+        findViewById(R.id.activity_menu_fingerprint_secure_view).setOnClickListener(onSecureView);
+        findViewById(R.id.activity_menu_fingerprint_dialog).setOnClickListener(onDialog);
+        findViewById(R.id.activity_menu_fingerprint_secure_dialog).setOnClickListener(onSecureDialog);
     }
-
-    private View.OnClickListener onSample = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            startActivity(new Intent(Menu.this, FingerprintExample.class));
-        }
-    };
-
-    private View.OnClickListener onSecure = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            startActivity(new Intent(Menu.this, FingerprintSecureExample.class));
-        }
-    };
 
     private View.OnClickListener onView = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            startActivity(new Intent(Menu.this, FingerprintViewExample.class));
+            startActivity(new Intent(Menu.this, FingerprintView.class));
+        }
+    };
+
+    private View.OnClickListener onSecureView = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            startActivity(new Intent(Menu.this, FingerprintSecureView.class));
+        }
+    };
+
+    private View.OnClickListener onDialog = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            startActivity(new Intent(Menu.this, FingerprintDialog.class));
+        }
+    };
+
+    private View.OnClickListener onSecureDialog = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            startActivity(new Intent(Menu.this, FingerprintSecureDialog.class));
         }
     };
 }

@@ -1,8 +1,8 @@
 # Fingerprint [![Download](https://api.bintray.com/packages/omaflak/maven/fingerprint/images/download.svg)](https://bintray.com/omaflak/maven/fingerprint/_latestVersion)
 
-**Fingerprint** is an Android library that simplifies the process of **fingerprint** authentications. The library provides a fingerprint view that you can use like regulars xml views. Furthermore, it can display **dialogs** to perform fingerprint auhentication very easily.
+**Fingerprint** is an Android library that simplifies the process of fingerprint authentications. The library provides a fingerprint view that you can use like regulars xml views. Furthermore, it can display **dialogs** to perform fingerprint authentication very easily.
 
-In both cases the FingerprintDialog library implements in a simple way the use of a CryptoObject.
+In both cases the Fingerprint library implements in a simple way the use of a CryptoObject.
 
 # Gradle Dependency
 
@@ -31,17 +31,19 @@ fingerprint.callback(new FingerprintCallback(...));
 fingerprint.authenticate();
 ```
 
+[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintView.java)
+
 ## With CryptoObject
 
 Check if the user's fingerprint is enrolled in the phone and detect if a new fingerprint was added since last time authentication was used.
 
 ```java
 Fingerprint fingerprint = findViewById(R.id.fingerprint);
-fingerprint.callback(new FingerprintDialogSecureCallback(...), "KeyName");
+fingerprint.callback(new FingerprintDialogSecureCallback(...), "Key");
 fingerprint.authenticate();
 ```
 
-[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintViewExample.java)
+[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureView.java)
 
 # Fingerprint Dialog
 
@@ -57,7 +59,7 @@ FingerprintDialog.initialize(this)
     .show();
 ```
 
-[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintExample.java)
+[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintDialog.java)
         
 ## With CryptoObject
 
@@ -67,11 +69,11 @@ Check if the user's fingerprint is enrolled in the phone and detect if a new fin
 FingerprintDialog.initialize(this)
     .title(R.string.title)
     .message(R.string.message)
-    .callback(new FingerprintDialogSecureCallback(...), "KeyName")
+    .callback(new FingerprintDialogSecureCallback(...), "Key")
     .show();
 ```
         
-[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureExample.java)
+[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureDialog.java)
 
 # Secure a CryptoObject via authentication
 
