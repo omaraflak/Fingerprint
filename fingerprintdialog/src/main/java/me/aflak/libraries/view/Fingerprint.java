@@ -21,6 +21,8 @@ import me.aflak.libraries.R;
 import me.aflak.libraries.callback.FailAuthCounterCallback;
 import me.aflak.libraries.callback.FingerprintCallback;
 import me.aflak.libraries.callback.FingerprintSecureCallback;
+import me.aflak.libraries.utils.CipherHelper;
+import me.aflak.libraries.utils.FingerprintToken;
 
 /**
  * Created by Omar on 08/01/2018.

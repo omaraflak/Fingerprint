@@ -1,4 +1,4 @@
-package me.aflak.libraries.view;
+package me.aflak.libraries.utils;
 
 import android.hardware.fingerprint.FingerprintManager;
 import android.security.keystore.KeyGenParameterSpec;
@@ -23,7 +23,7 @@ import javax.crypto.spec.IvParameterSpec;
  * Created by Omar on 04/08/2017.
  */
 
-class CipherHelper {
+public class CipherHelper {
     private KeyStore keyStore;
     private Cipher cipher;
     private SecretKey cipherKey;

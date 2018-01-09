@@ -17,7 +17,7 @@ import me.aflak.libraries.callback.FingerprintDialogSecureCallback;
 import me.aflak.libraries.R;
 import me.aflak.libraries.callback.FingerprintSecureCallback;
 import me.aflak.libraries.view.Fingerprint;
-import me.aflak.libraries.view.FingerprintToken;
+import me.aflak.libraries.utils.FingerprintToken;
 
 /**
  * Created by Omar on 02/07/2017.

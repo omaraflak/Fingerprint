@@ -6,7 +6,7 @@ import android.view.View;
 
 import me.aflak.libraries.callback.FingerprintDialogSecureCallback;
 import me.aflak.libraries.dialog.FingerprintDialog;
-import me.aflak.libraries.view.FingerprintToken;
+import me.aflak.libraries.utils.FingerprintToken;
 import me.aflak.libraries.callback.PasswordCallback;
 import me.aflak.libraries.dialog.PasswordDialog;
 

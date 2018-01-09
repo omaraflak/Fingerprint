@@ -13,7 +13,7 @@ import android.widget.TextView;
 import me.aflak.libraries.callback.FailAuthCounterCallback;
 import me.aflak.libraries.callback.PasswordCallback;
 import me.aflak.libraries.R;
-import me.aflak.libraries.view.FingerprintToken;
+import me.aflak.libraries.utils.FingerprintToken;
 
 /**
  * Created by Omar on 10/07/2017.
