@@ -10,9 +10,9 @@ In both cases the FingerprintDialog library implements in a simple way the use o
 implementation 'me.aflak.libraries:fingerprint:2.5.1'
 ```
 
-## Fingerprint View
+# Fingerprint View
 
-The library also provides a Fingerprint object which is a view that you can display the way you want.
+The library provides a `Fingerprint` object which is a view that you can display the way you want and use for authentications. Customizations are at the end of the README.
 
 ```xml
 <me.aflak.libraries.view.Fingerprint
@@ -21,13 +21,29 @@ The library also provides a Fingerprint object which is a view that you can disp
     android:layout_height="200dp"/>
 ```
 
+## Without CryptoObject
+
+You only want to check if the user's fingerprint is enrolled in the phone.
+
 ```java
 Fingerprint fingerprint = findViewById(R.id.fingerprint);
 fingerprint.callback(new FingerprintCallback(...));
 fingerprint.authenticate();
 ```
 
+## With CryptoObject
+
+Check if the user's fingerprint is enrolled in the phone and detect if a new fingerprint was added since last time authentication was used.
+
+```java
+Fingerprint fingerprint = findViewById(R.id.fingerprint);
+fingerprint.callback(new FingerprintDialogSecureCallback(...), "KeyName");
+fingerprint.authenticate();
+```
+
 [**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintViewExample.java)
+
+# Fingerprint Dialog
 
 ## Without CryptoObject
 
@@ -57,7 +73,7 @@ FingerprintDialog.initialize(this)
         
 [**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureExample.java)
 
-## Secure a CryptoObject via authentication
+# Secure a CryptoObject via authentication
 
 CryptoObject can be used to perform cryptographic operations on Android. You can set the CryptoObject to be valid only if the user has authenticated via fingerprint before. You have to use `setUserAuthenticationRequired(true)` when creating the CryptoObject.
 
@@ -77,7 +93,19 @@ if(FingerprintDialog.isAvailable(this)) {
 
 # Customization
 
-Several functions are available to customize your dialog.
+You can customize the fingerprint view directly from the xml.
+
+```xml
+<me.aflak.libraries.view.Fingerprint
+    xmlns:fingerprint="http://schemas.android.com/apk/res-auto"
+    fingerprint:circleScanningColor="@android:color/black"
+    fingerprint:fingerprintScanningColor="@color/colorAccent"
+    android:id="@+id/fingerprint"
+    android:layout_width="200dp"
+    android:layout_height="200dp" />
+```
+
+Several functions are also available to customize your dialog.
 
 ```java
 FingerprintDialog.initialize(this)
@@ -88,18 +116,6 @@ FingerprintDialog.initialize(this)
         .circleScanningColor(R.color.colorAccent)
         .callback(this)
         .show();
-```
-
-You can also customize the fingerprint view directly from the xml.
-
-```xml
-<me.aflak.libraries.view.Fingerprint
-    xmlns:fingerprint="http://schemas.android.com/apk/res-auto"
-    fingerprint:circleScanningColor="@android:color/black"
-    fingerprint:fingerprintScanningColor="@color/colorAccent"
-    android:id="@+id/fingerprint"
-    android:layout_width="200dp"
-    android:layout_height="200dp" />
 ```
 
 # Rendering
