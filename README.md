@@ -7,7 +7,7 @@ In both cases the Fingerprint library implements in a simple way the use of a Cr
 # Gradle Dependency
 
 ```groovy
-implementation 'me.aflak.libraries:fingerprint:2.5.1'
+implementation 'me.aflak.libraries:fingerprint:2.5.2'
 ```
 
 # Fingerprint View
@@ -85,11 +85,11 @@ FingerprintManager.CryptoObject cryptoObject;
 
 if(FingerprintDialog.isAvailable(this)) {
     FingerprintDialog.initialize(this)
-            .title(R.string.fingerprint_title)
-            .message(R.string.fingerprint_message)
-            .callback(new FingerprintCallback(...))
-            .cryptoObject(cryptoObject)
-            .show();
+        .title(R.string.fingerprint_title)
+        .message(R.string.fingerprint_message)
+        .callback(new FingerprintCallback(...))
+        .cryptoObject(cryptoObject)
+        .show();
 }
 ```
 
@@ -111,13 +111,13 @@ Several functions are also available to customize your dialog.
 
 ```java
 FingerprintDialog.initialize(this)
-        .title(R.string.fingerprint_title)
-        .message(R.string.fingerprint_message)
-        .enterAnimation(DialogAnimation.Enter.RIGHT)
-        .exitAnimation(DialogAnimation.Exit.RIGHT)
-        .circleScanningColor(R.color.colorAccent)
-        .callback(this)
-        .show();
+    .title(R.string.fingerprint_title)
+    .message(R.string.fingerprint_message)
+    .enterAnimation(DialogAnimation.Enter.RIGHT)
+    .exitAnimation(DialogAnimation.Exit.RIGHT)
+    .circleScanningColor(R.color.colorAccent)
+    .callback(this)
+    .show();
 ```
 
 # Rendering
