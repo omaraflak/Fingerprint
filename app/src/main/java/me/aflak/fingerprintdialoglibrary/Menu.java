@@ -15,37 +15,37 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        findViewById(R.id.activity_menu_fingerprint_view).setOnClickListener(onView);
-        findViewById(R.id.activity_menu_fingerprint_secure_view).setOnClickListener(onSecureView);
-        findViewById(R.id.activity_menu_fingerprint_dialog).setOnClickListener(onDialog);
-        findViewById(R.id.activity_menu_fingerprint_secure_dialog).setOnClickListener(onSecureDialog);
+        findViewById(R.id.activity_menu_simple_view).setOnClickListener(onView);
+        findViewById(R.id.activity_menu_secure_view).setOnClickListener(onSecureView);
+        findViewById(R.id.activity_menu_simple_dialog).setOnClickListener(onDialog);
+        findViewById(R.id.activity_menu_secure_dialog).setOnClickListener(onSecureDialog);
     }
 
     private View.OnClickListener onView = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            startActivity(new Intent(Menu.this, FingerprintView.class));
+            startActivity(new Intent(Menu.this, SimpleView.class));
         }
     };
 
     private View.OnClickListener onSecureView = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            startActivity(new Intent(Menu.this, FingerprintSecureView.class));
+            startActivity(new Intent(Menu.this, SecureView.class));
         }
     };
 
     private View.OnClickListener onDialog = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            startActivity(new Intent(Menu.this, FingerprintDialog.class));
+            startActivity(new Intent(Menu.this, SimpleDialog.class));
         }
     };
 
     private View.OnClickListener onSecureDialog = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            startActivity(new Intent(Menu.this, FingerprintSecureDialog.class));
+            startActivity(new Intent(Menu.this, SecureDialog.class));
         }
     };
 }

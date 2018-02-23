@@ -157,69 +157,131 @@ public class Fingerprint extends RelativeLayout {
         }
     };
 
+    /**
+     * Set fingerprint callback.
+     * @param fingerprintCallback callback
+     * @return the Fingerprint object itself
+     */
     public Fingerprint callback(FingerprintCallback fingerprintCallback){
         this.fingerprintCallback = fingerprintCallback;
         return this;
     }
 
+    /**
+     * Set fingerprint secure callback.
+     * @param fingerprintSecureCallback secure callback
+     * @param KEY_NAME key that will be used for the cipher
+     * @return the Fingerprint object itself
+     */
     public Fingerprint callback(FingerprintSecureCallback fingerprintSecureCallback, String KEY_NAME){
         this.fingerprintSecureCallback = fingerprintSecureCallback;
         this.cipherHelper = new CipherHelper(KEY_NAME);
         return this;
     }
 
+    /**
+     * Set a CryptoObject which is going to be unlocked by the fingerprint.
+     * @param cryptoObject CryptoObject to be unlocked
+     * @return the Fingerprint object itself
+     */
     public Fingerprint cryptoObject(FingerprintManager.CryptoObject cryptoObject){
         this.cryptoObject = cryptoObject;
         return this;
     }
 
+    /**
+     * Set the fingerprint icon color in scanning state.
+     * @param fingerprintScanning color id
+     * @return the Fingerprint object itself
+     */
     public Fingerprint fingerprintScanningColor(int fingerprintScanning) {
         this.fingerprintScanning = fingerprintScanning;
         this.fingerprintImageView.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(fingerprintScanning)));
         return this;
     }
 
+    /**
+     * Set the fingerprint icon color in success state.
+     * @param fingerprintSuccess color id
+     * @return the Fingerprint object itself
+     */
     public Fingerprint fingerprintSuccessColor(int fingerprintSuccess) {
         this.fingerprintSuccess = fingerprintSuccess;
         this.fingerprintImageView.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(fingerprintSuccess)));
         return this;
     }
 
+    /**
+     * Set the fingerprint icon color in error state.
+     * @param fingerprintError color id
+     * @return the Fingerprint object itself
+     */
     public Fingerprint fingerprintErrorColor(int fingerprintError) {
         this.fingerprintError = fingerprintError;
         this.fingerprintImageView.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(fingerprintError)));
         return this;
     }
 
+    /**
+     * Set the fingerprint circular background color in scanning state.
+     * @param circleScanning color id
+     * @return the Fingerprint object itself
+     */
     public Fingerprint circleScanningColor(int circleScanning) {
         this.circleScanning = circleScanning;
         this.circleView.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(circleScanning)));
         return this;
     }
 
+    /**
+     * Set the fingerprint circular background color in success state.
+     * @param circleSuccess color id
+     * @return the Fingerprint object itself
+     */
     public Fingerprint circleSuccessColor(int circleSuccess) {
         this.circleSuccess = circleSuccess;
         this.circleView.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(circleSuccess)));
         return this;
     }
 
+    /**
+     * Set the fingerprint circular background color in error state.
+     * @param circleError color id
+     * @return the Fingerprint object itself
+     */
     public Fingerprint circleErrorColor(int circleError) {
         this.circleError = circleError;
         this.circleView.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(circleError)));
         return this;
     }
 
+    /**
+     * Set a failing authentication limit. Android will block automatically the fingerprint scanner when 5 attempts will have failed.
+     * @param limit the number of fails accepted
+     * @param counterCallback a callback triggered when limit is reached
+     * @return the Fingerprint object itself
+     */
     public Fingerprint tryLimit(int limit, FailAuthCounterCallback counterCallback){
         this.limit = limit;
         this.counterCallback = counterCallback;
         return this;
     }
 
+    /**
+     * Set delay before scanning again after a failed authentication.
+     * @param delayAfterError the delay in milliseconds
+     * @return the Fingerprint object itself
+     */
     public Fingerprint delayAfterError(int delayAfterError){
         this.delayAfterError = delayAfterError;
         return this;
     }
 
+    /**
+     * Check if fingerprint authentication is supported by the device and if a fingerprint is enrolled in the device.
+     * @param context an activity context
+     * @return a boolean value
+     */
     public static boolean isAvailable(Context context){
         FingerprintManager fingerprintManager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
         if(fingerprintManager!=null){
@@ -228,6 +290,9 @@ public class Fingerprint extends RelativeLayout {
         return false;
     }
 
+    /**
+     * start fingerprint scan
+     */
     public void authenticate(){
         if(fingerprintSecureCallback!=null){
             if(cryptoObject!=null){
@@ -306,6 +371,9 @@ public class Fingerprint extends RelativeLayout {
         }
     }
 
+    /**
+     * cancel fingerprint scan
+     */
     public void cancel(){
         cancellationSignal.cancel();
         returnToScanning.run();

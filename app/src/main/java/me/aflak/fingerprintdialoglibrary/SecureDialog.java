@@ -10,7 +10,7 @@ import me.aflak.libraries.utils.FingerprintToken;
 import me.aflak.libraries.callback.PasswordCallback;
 import me.aflak.libraries.dialog.PasswordDialog;
 
-public class FingerprintSecureDialog extends AppCompatActivity implements View.OnClickListener, FingerprintDialogSecureCallback, PasswordCallback {
+public class SecureDialog extends AppCompatActivity implements View.OnClickListener, FingerprintDialogSecureCallback, PasswordCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +23,10 @@ public class FingerprintSecureDialog extends AppCompatActivity implements View.O
     public void onClick(View view) {
         if(FingerprintDialog.isAvailable(this)) {
             FingerprintDialog.initialize(this)
-                    .title(R.string.fingerprint_title)
-                    .message(R.string.fingerprint_message)
-                    .callback(this, "KeyName1")
-                    .show();
+                .title(R.string.fingerprint_title)
+                .message(R.string.fingerprint_message)
+                .callback(this, "KeyName1")
+                .show();
         }
     }
 

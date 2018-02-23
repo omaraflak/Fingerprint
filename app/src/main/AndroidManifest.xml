@@ -19,10 +19,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".FingerprintDialog"/>
-        <activity android:name=".FingerprintSecureDialog"/>
-        <activity android:name=".FingerprintView"/>
-        <activity android:name=".FingerprintSecureView"/>
+        <activity android:name=".SimpleDialog"/>
+        <activity android:name=".SecureDialog"/>
+        <activity android:name=".SimpleView"/>
+        <activity android:name=".SecureView"/>
 
     </application>
 

@@ -63,105 +63,199 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
         this.usePasswordButton = dialogView.findViewById(R.id.fingerprint_dialog_use_password);
     }
 
+    /**
+     * Check if a fingerprint scanner is available and if at least one finger is enrolled in the phone.
+     * @param context A context
+     * @return True is authentication is available, False otherwise
+     */
     public static boolean isAvailable(Context context){
         FingerprintManager manager = (FingerprintManager) context.getSystemService(Context.FINGERPRINT_SERVICE);
         return (manager!=null && manager.isHardwareDetected() && manager.hasEnrolledFingerprints());
     }
 
+    /**
+     * Create a FingerprintDialog instance.
+     * @param context Activity Context
+     * @return FingerprintDialog instance
+     */
     public static FingerprintDialog initialize(Context context){
         return new FingerprintDialog(context);
     }
 
+    /**
+     * Set an authentication callback.
+     * @param fingerprintDialogCallback The callback
+     * @return FingerprintDialog object
+     */
     public FingerprintDialog callback(FingerprintDialogCallback fingerprintDialogCallback){
         this.fingerprintDialogCallback = fingerprintDialogCallback;
         this.fingerprint.callback(fingerprintCallback);
         return this;
     }
 
+    /**
+     * Set a callback for secured authentication.
+     * @param fingerprintDialogSecureCallback The callback
+     * @param KEY_NAME An arbitrary string used to create a cipher pair in the Android KeyStore
+     * @return FingerprintDialog object
+     */
     public FingerprintDialog callback(FingerprintDialogSecureCallback fingerprintDialogSecureCallback, String KEY_NAME){
         this.fingerprintDialogSecureCallback = fingerprintDialogSecureCallback;
         this.fingerprint.callback(fingerprintSecureCallback, KEY_NAME);
         return this;
     }
 
+    /**
+     * Perform a secured authentication using that particular CryptoObject.
+     * @param cryptoObject CryptoObject to use
+     * @return FingerprintDialog object
+     */
     public FingerprintDialog cryptoObject(FingerprintManager.CryptoObject cryptoObject){
         this.fingerprint.cryptoObject(cryptoObject);
         return this;
     }
 
+    /**
+     * Set color of the fingerprint scanning status.
+     * @param fingerprintScanningColor resource color
+     * @return FingerprintDialog object
+     */
     public FingerprintDialog fingerprintScanningColor(int fingerprintScanningColor){
         this.fingerprint.fingerprintScanningColor(fingerprintScanningColor);
         return this;
     }
 
+    /**
+     * Set color of the fingerprint success status.
+     * @param fingerprintSuccessColor resource color
+     * @return FingerprintDialog object
+     */
     public FingerprintDialog fingerprintSuccessColor(int fingerprintSuccessColor){
         this.fingerprint.fingerprintSuccessColor(fingerprintSuccessColor);
         return this;
     }
 
+    /**
+     * Set color of the fingerprint error status.
+     * @param fingerprintErrorColor resource color
+     * @return FingerprintDialog object
+     */
     public FingerprintDialog fingerprintErrorColor(int fingerprintErrorColor){
         this.fingerprint.fingerprintErrorColor(fingerprintErrorColor);
         return this;
     }
 
+    /**
+     * Set color of the circle scanning status.
+     * @param circleScanningColor resource color
+     * @return FingerprintDialog object
+     */
     public FingerprintDialog circleScanningColor(int circleScanningColor){
         this.fingerprint.circleScanningColor(circleScanningColor);
         return this;
     }
 
+    /**
+     * Set color of the circle success status.
+     * @param circleSuccessColor resource color
+     * @return FingerprintDialog object
+     */
     public FingerprintDialog circleSuccessColor(int circleSuccessColor){
         this.fingerprint.circleSuccessColor(circleSuccessColor);
         return this;
     }
 
+    /**
+     * Set color of the circle error status.
+     * @param circleErrorColor resource color
+     * @return FingerprintDialog object
+     */
     public FingerprintDialog circleErrorColor(int circleErrorColor){
         this.fingerprint.circleErrorColor(circleErrorColor);
         return this;
     }
 
+    /**
+     * Set color of the text scanning status.
+     * @param statusScanningColor resource color
+     * @return FingerprintDialog object
+     */
+    public FingerprintDialog statusScanningColor(int statusScanningColor){
+        this.statusScanningColor = statusScanningColor;
+        return this;
+    }
+
+    /**
+     * Set color of the text success status.
+     * @param statusSuccessColor resource color
+     * @return FingerprintDialog object
+     */
+    public FingerprintDialog statusSuccessColor(int statusSuccessColor){
+        this.statusSuccessColor = statusSuccessColor;
+        return this;
+    }
+
+    /**
+     * Set color of the text error status.
+     * @param statusErrorColor resource color
+     * @return FingerprintDialog object
+     */
+    public FingerprintDialog statusErrorColor(int statusErrorColor){
+        this.statusErrorColor = statusErrorColor;
+        return this;
+    }
+
+    /**
+     * Set delay before triggering callback after a failed attempt to authenticate.
+     * @param delayAfterError delay in milliseconds
+     * @return FingerprintDialog object
+     */
     public FingerprintDialog delayAfterError(int delayAfterError){
         this.delayAfterError = delayAfterError;
         this.fingerprint.delayAfterError(delayAfterError);
         return this;
     }
 
-    public FingerprintDialog tryLimit(int limit, FailAuthCounterCallback counterCallback){
-        this.fingerprint.tryLimit(limit, counterCallback);
-        return this;
-    }
-
+    /**
+     * Set delay before triggering callback after a successful authentication.
+     * @param delayAfterSuccess delay in milliseconds
+     * @return FingerprintDialog object
+     */
     public FingerprintDialog delayAfterSuccess(int delayAfterSuccess){
         this.delayAfterSuccess = delayAfterSuccess;
         return this;
     }
 
-    public FingerprintDialog statusScanningColor(int statusScanningColor){
-        this.statusScanningColor = statusScanningColor;
+    /**
+     * Set a fail limit. Android blocks automatically when 5 attempts failed.
+     * @param limit number of tries
+     * @param counterCallback callback to be triggered when limit is reached
+     * @return FingerprintDialog object
+     */
+    public FingerprintDialog tryLimit(int limit, FailAuthCounterCallback counterCallback){
+        this.fingerprint.tryLimit(limit, counterCallback);
         return this;
     }
 
-    public FingerprintDialog statusSuccessColor(int statusSuccessColor){
-        this.statusSuccessColor = statusSuccessColor;
-        return this;
-    }
-
-    public FingerprintDialog statusErrorColor(int statusErrorColor){
-        this.statusErrorColor = statusErrorColor;
-        return this;
-    }
-
+    /**
+     * Display a "use password" button on the dialog.
+     * @param onUsePassword OnClickListener triggered when button is clicked
+     * @return FingerprintDialog object
+     */
     public FingerprintDialog usePasswordButton(View.OnClickListener onUsePassword){
         this.onUsePassword = onUsePassword;
         return this;
     }
 
-    public FingerprintDialog show(){
+    /**
+     * Show the dialog.
+     */
+    public void show(){
         if(title==null || message==null){
             throw new RuntimeException("Title or message cannot be null.");
         }
 
         showDialog();
-        return this;
     }
 
     private void showDialog(){

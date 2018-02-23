@@ -41,31 +41,61 @@ public class PasswordDialog extends AnimatedDialog<PasswordDialog> {
         this.tryCounter = 0;
     }
 
+    /**
+     * Create a PasswordDialog instance.
+     * @param context Activity Context
+     * @param token Token got with FingerprintDialogSecureCallback
+     * @return PasswordDialog instance
+     */
     public static PasswordDialog initialize(Context context, FingerprintToken token){
         return new PasswordDialog(context, token);
     }
 
+    /**
+     * Create a PasswordDialog instance.
+     * @param context Activity Context
+     * @return PasswordDialog instance
+     */
     public static PasswordDialog initialize(Context context){
         return new PasswordDialog(context, null);
     }
 
+    /**
+     * Set callback triggered when Password is entered.
+     * @param callback The callback
+     * @return PasswordDialog object
+     */
     public PasswordDialog callback(PasswordCallback callback){
         this.callback = callback;
         return this;
     }
 
+    /**
+     * Set a fail limit.
+     * @param limit Number of tries
+     * @param counterCallback Callback triggered when limit is reached
+     * @return PasswordDialog object
+     */
     public PasswordDialog tryLimit(int limit, FailAuthCounterCallback counterCallback){
         this.limit = limit;
         this.counterCallback = counterCallback;
         return this;
     }
 
+    /**
+     * Set the password type (text or numbers)
+     * @param passwordType PASSWORD_TYPE_TEXT or PASSWORD_TYPE_NUMBER
+     * @return PasswordDialog object
+     */
     public PasswordDialog passwordType(int passwordType){
         this.passwordType = passwordType;
         return this;
     }
 
-    public PasswordDialog show(){
+    /**
+     * Show the password dialog
+     */
+    public void show(){
         if(title==null || message==null) {
             throw new RuntimeException("Title or message cannot be null.");
         }
@@ -141,7 +171,5 @@ public class PasswordDialog extends AnimatedDialog<PasswordDialog> {
                 }
             }
         });
-
-        return this;
     }
 }

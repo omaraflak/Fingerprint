@@ -11,7 +11,7 @@ import me.aflak.libraries.view.Fingerprint;
  * Created by Omar on 08/01/2018.
  */
 
-public class FingerprintView extends AppCompatActivity implements FingerprintCallback {
+public class SimpleView extends AppCompatActivity implements FingerprintCallback {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
