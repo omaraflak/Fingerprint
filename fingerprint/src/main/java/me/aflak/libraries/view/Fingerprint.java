@@ -157,6 +157,15 @@ public class Fingerprint extends RelativeLayout {
         }
     };
 
+    private Runnable checkForLimit = new Runnable() {
+        @Override
+        public void run() {
+            if(counterCallback!=null && ++tryCounter==limit){
+                counterCallback.onTryLimitReached();
+            }
+        }
+    };
+
     /**
      * Set fingerprint callback.
      * @param fingerprintCallback callback
@@ -353,15 +362,12 @@ public class Fingerprint extends RelativeLayout {
                     super.onAuthenticationFailed();
                     setStatus(R.drawable.fingerprint_error, fingerprintError, circleError);
                     handler.postDelayed(returnToScanning, delayAfterError);
+                    handler.postDelayed(checkForLimit, delayAfterError);
                     if(fingerprintSecureCallback!=null){
                         fingerprintSecureCallback.onAuthenticationFailed();
                     }
                     else{
                         fingerprintCallback.onAuthenticationFailed();
-                    }
-
-                    if(counterCallback!=null && ++tryCounter==limit){
-                        counterCallback.onTryLimitReached();
                     }
                 }
             }, null);

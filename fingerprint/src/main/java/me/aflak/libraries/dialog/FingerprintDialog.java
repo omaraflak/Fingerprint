@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import me.aflak.libraries.callback.FailAuthCounterCallback;
+import me.aflak.libraries.callback.FailAuthCounterDialogCallback;
 import me.aflak.libraries.callback.FingerprintCallback;
 import me.aflak.libraries.callback.FingerprintDialogCallback;
 import me.aflak.libraries.callback.FingerprintDialogSecureCallback;
@@ -232,8 +233,13 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
      * @param counterCallback callback to be triggered when limit is reached
      * @return FingerprintDialog object
      */
-    public FingerprintDialog tryLimit(int limit, FailAuthCounterCallback counterCallback){
-        this.fingerprint.tryLimit(limit, counterCallback);
+    public FingerprintDialog tryLimit(int limit, final FailAuthCounterDialogCallback counterCallback){
+        this.fingerprint.tryLimit(limit, new FailAuthCounterCallback() {
+            @Override
+            public void onTryLimitReached() {
+                counterCallback.onTryLimitReached(FingerprintDialog.this);
+            }
+        });
         return this;
     }
 
@@ -256,6 +262,15 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
         }
 
         showDialog();
+    }
+
+    /**
+     * Dismiss the dialog.
+     */
+    public void dismiss(){
+        if(dialog.isShowing()){
+            dialog.dismiss();
+        }
     }
 
     private void showDialog(){
