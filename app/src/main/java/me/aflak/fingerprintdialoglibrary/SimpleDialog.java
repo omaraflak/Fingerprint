@@ -30,13 +30,6 @@ public class SimpleDialog extends AppCompatActivity implements View.OnClickListe
                 .title(R.string.fingerprint_title)
                 .message(R.string.fingerprint_message)
                 .callback(this)
-
-                    .tryLimit(1, new FailAuthCounterDialogCallback() {
-                        @Override
-                        public void onTryLimitReached(FingerprintDialog fingerprintDialog) {
-                            fingerprintDialog.dismiss();
-                        }
-                    })
                 .show();
         }
     }
