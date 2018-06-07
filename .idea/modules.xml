@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FingerprintDialogLibrary.iml" filepath="$PROJECT_DIR$/FingerprintDialogLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Fingerprint.iml" filepath="$PROJECT_DIR$/Fingerprint.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/fingerprint/fingerprint.iml" filepath="$PROJECT_DIR$/fingerprint/fingerprint.iml" />
-      <module fileurl="file://C:\Users\Omar\Documents\JAVA\FingerprintDialogLibrary\fingerprint\fingerprintdialog.iml" filepath="C:\Users\Omar\Documents\JAVA\FingerprintDialogLibrary\fingerprint\fingerprintdialog.iml" />
     </modules>
   </component>
 </project>
