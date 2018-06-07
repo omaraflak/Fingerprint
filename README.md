@@ -7,7 +7,7 @@ In both cases the Fingerprint library implements in a simple way the use of a Cr
 # Gradle Dependency
 
 ```groovy
-implementation 'me.aflak.libraries:fingerprint:2.5.2'
+implementation 'me.aflak.libraries:fingerprint:2.5.3'
 ```
 
 # Fingerprint View
