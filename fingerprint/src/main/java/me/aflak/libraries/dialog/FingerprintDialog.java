@@ -236,7 +236,7 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
     public FingerprintDialog tryLimit(int limit, final FailAuthCounterDialogCallback counterCallback){
         this.fingerprint.tryLimit(limit, new FailAuthCounterCallback() {
             @Override
-            public void onTryLimitReached() {
+            public void onTryLimitReached(Fingerprint fingerprint) {
                 counterCallback.onTryLimitReached(FingerprintDialog.this);
             }
         });
@@ -268,6 +268,7 @@ public class FingerprintDialog extends AnimatedDialog<FingerprintDialog> {
      * Dismiss the dialog.
      */
     public void dismiss(){
+        fingerprint.cancel();
         if(dialog.isShowing()){
             dialog.dismiss();
         }

@@ -161,7 +161,7 @@ public class Fingerprint extends RelativeLayout {
         @Override
         public void run() {
             if(counterCallback!=null && ++tryCounter==limit){
-                counterCallback.onTryLimitReached();
+                counterCallback.onTryLimitReached(Fingerprint.this);
             }
         }
     };

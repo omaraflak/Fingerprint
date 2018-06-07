@@ -22,10 +22,8 @@ import me.aflak.libraries.utils.FingerprintToken;
 public class PasswordDialog extends AnimatedDialog<PasswordDialog> {
     private FingerprintToken token;
     private PasswordCallback callback;
-    private FailAuthCounterCallback counterCallback;
 
     private int passwordType;
-    private int limit, tryCounter;
 
     public static final int PASSWORD_TYPE_TEXT = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
     public static final int PASSWORD_TYPE_NUMBER = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD;
@@ -37,8 +35,6 @@ public class PasswordDialog extends AnimatedDialog<PasswordDialog> {
         this.token = token;
         this.passwordType = PASSWORD_TYPE_TEXT;
         this.callback = null;
-        this.counterCallback = null;
-        this.tryCounter = 0;
     }
 
     /**
@@ -67,18 +63,6 @@ public class PasswordDialog extends AnimatedDialog<PasswordDialog> {
      */
     public PasswordDialog callback(PasswordCallback callback){
         this.callback = callback;
-        return this;
-    }
-
-    /**
-     * Set a fail limit.
-     * @param limit Number of tries
-     * @param counterCallback Callback triggered when limit is reached
-     * @return PasswordDialog object
-     */
-    public PasswordDialog tryLimit(int limit, FailAuthCounterCallback counterCallback){
-        this.limit = limit;
-        this.counterCallback = counterCallback;
         return this;
     }
 
@@ -157,16 +141,11 @@ public class PasswordDialog extends AnimatedDialog<PasswordDialog> {
                         if(token!=null){
                             token.validate();
                         }
-                        tryCounter = 0;
                         callback.onPasswordSucceeded();
                     }
                     else{
                         input.setText("");
                         input.setError(context.getResources().getString(R.string.password_incorrect));
-                        tryCounter++;
-                        if(counterCallback!=null && tryCounter==limit){
-                            counterCallback.onTryLimitReached();
-                        }
                     }
                 }
             }
