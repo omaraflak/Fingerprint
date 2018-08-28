@@ -31,7 +31,7 @@ fingerprint.callback(new FingerprintCallback(...));
 fingerprint.authenticate();
 ```
 
-[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintView.java)
+[**EXAMPLE**](https://github.com/OmarAflak/Fingerprint/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/SimpleView.java)
 
 ## With CryptoObject
 
@@ -43,7 +43,7 @@ fingerprint.callback(new FingerprintDialogSecureCallback(...), "Key");
 fingerprint.authenticate();
 ```
 
-[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureView.java)
+[**EXAMPLE**](https://github.com/OmarAflak/Fingerprint/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/SecureView.java)
 
 # Fingerprint Dialog
 
@@ -59,7 +59,7 @@ FingerprintDialog.initialize(this)
     .show();
 ```
 
-[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintDialog.java)
+[**EXAMPLE**](https://github.com/OmarAflak/Fingerprint/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/SimpleDialog.java)
         
 ## With CryptoObject
 
@@ -73,7 +73,7 @@ FingerprintDialog.initialize(this)
     .show();
 ```
         
-[**EXAMPLE**](https://github.com/omaflak/FingerprintDialog-Library/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/FingerprintSecureDialog.java)
+[**EXAMPLE**](https://github.com/OmarAflak/Fingerprint/blob/master/app/src/main/java/me/aflak/fingerprintdialoglibrary/SecureDialog.java)
 
 # Secure a CryptoObject via authentication
 
