@@ -10,8 +10,8 @@ ext {
 
     libraryDescription = 'Android library that simplifies fingerprint authentications.'
 
-    siteUrl = 'https://github.com/omaflak/Fingerprint'
-    gitUrl = 'https://github.com/omaflak/Fingerprint.git'
+    siteUrl = 'https://github.com/omaraflak/Fingerprint'
+    gitUrl = 'https://github.com/omaraflak/Fingerprint.git'
 
     libraryVersion = '2.5.3'
 
@@ -31,7 +31,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 27
         versionCode 37
-        versionName "2.5.3"
+        versionName project.ext.libraryVersion
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
